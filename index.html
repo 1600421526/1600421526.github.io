@@ -204,42 +204,21 @@
 
         <section class="introduction">
             <h2><i class="fas fa-info-circle"></i> Introduction</h2>
-            <p>🧠 Large language models (LLMs) have demonstrated remarkable capabilities, especially the recent advancements in reasoning, such as o1 and o3, pushing the boundaries of AI. Despite these impressive achievements in mathematics and coding, the reasoning abilities of LLMs in domains requiring 🔒 cryptographic expertise remain underexplored.<br>
+            <p> 🌐 LOOM-Scape offers a comprehensive suite of tools, featuring 15 standard long-context benchmarks covering faithfulness, retrieval, reasoning, generation, and more. With hundreds of subtasks and support for diverse model architectures—including Transformers, Mamba, and RWKV—it enables researchers to rigorously assess model capabilities under real-world long-context demands. A standout feature is its single-line command workflow, automating dataset/model detection, download, and evaluation for seamless usability.<br>
 
-                🌉 To bridge this gap, we introduce CipherBank, a comprehensive benchmark designed to evaluate the reasoning capabilities of LLMs in cryptographic decryption tasks. CipherBank comprises 2,358 📊 meticulously crafted problems, covering 262 unique plaintexts across 5 domains 🌐 and 14 subdomains 🏷️, with a focus on privacy-sensitive and real-world scenarios that necessitate encryption. From a cryptographic perspective, CipherBank incorporates 3 major categories of encryption methods, spanning 9 distinct algorithms, ranging from classical ciphers to custom cryptographic techniques.<br>
+                🚀 Efficiency is at the core of LOOM-Scape: it integrates 12 computational acceleration methods like CakeKV and FlexPrefill, leveraging vLLM for fast, memory-efficient inference. This makes it compatible with a range of hardware, from 24GB 3090 to 96GB H20 GPUs, with publicly documented computational costs and reproducible results across platforms. Whether evaluating base models or adapters (via HuggingFace PEFT), LOOM-Scape ensures consistency and scalability.<br>
                 
-                🔥 We evaluate state-of-the-art LLMs on CipherBank, e.g., GPT-4o, DeepSeek-V3 , and cutting-edge reasoning-focused models such as o1 🧠 and DeepSeek-R1. Our results reveal significant gaps in reasoning abilities not only between general-purpose chat LLMs and reasoning-focused LLMs but also in the performance of current reasoning-focused models when applied to classical cryptographic decryption tasks, highlighting the challenges these models face in understanding and manipulating encrypted data.<br>
+                🔄 By bridging model compatibility, benchmark diversity, and inference optimization, LOOM-Scape empowers the research community to push the boundaries of long-context LLMs. Our evaluation results highlight strengths and gaps in current models, guiding future advancements in context handling, reasoning, and retrieval-augmented generation. Dive into LOOM-Scape to unlock systematic, efficient long-context model evaluation.<br>
                 
-                💡 Through detailed analysis and error investigations, we provide several key observations that shed light on the limitations and potential improvement areas for LLMs in cryptographic reasoning. These findings underscore the need for continuous advancements in LLM reasoning capabilities. </p>
         </section>
 
         <section class="introduction">
-            <h2><i class="fa-solid fa-database"></i> Dataset Composition</h2>
+            <h2><i class="fa-solid fa-database"></i> Benchmark Composition</h2>
             <div class="overview-image">
-                <img src="images/overview.jpg" alt="CipherBank Overview" class="full-width-image">
-                <p class="image-caption"></i> Overview of CipherBank</p>
+                <img src="images/newplot.png" alt="LOOM-Scape Overview" class="full-width-image">
+                <p class="image-caption"></i> Overview of LOOM-Scape</p>
             </div>
             
-            <div class="dataset-content">
-                <h3><i class="fas fa-layer-group"></i> 5 Main Domains</h3>
-                <ul>
-                    <li><i class="fas fa-user-shield"></i> Personal Privacy Data</li>
-                    <li><i class="fas fa-building-shield"></i> Enterprise Sensitive Data</li>
-                    <li><i class="fas fa-shield-halved"></i> Public Safety Data</li>
-                    <li><i class="fas fa-money-bill-transfer"></i> Financial Asset Data</li>
-                    <li><i class="fas fa-globe"></i> Internet Records</li>
-                </ul>
-                <p><i class="fas fa-tags"></i> 14 Subdomains + 89 Realistic Tags (e.g., passport number, tax ID, medical history)</p>
-
-                <h3><i class="fas fa-key"></i> 9 Encryption Algorithms</h3>
-                <p>Across 3 categories:</p>
-                <div class="algorithm-category"><i class="fas fa-exchange-alt"></i> <span>Substitution:</span> ROT13, Atbash, Vigenère, Polybius</div>
-                <div class="algorithm-category"><i class="fas fa-random"></i> <span>Transposition:</span> Reverse, SwapPairs</div>
-                <div class="algorithm-category"><i class="fas fa-code"></i> <span>Custom:</span> DualAvgCode, ParityShift, WordShift</div>
-
-                <h3><i class="fas fa-stairs"></i> 5 Difficulty Tiers</h3>
-                <p class="difficulty-tiers">From T1 (Basic) to T5 (Expert)</p>
-            </div>
         </section>
 
         <section class="evaluation">
@@ -513,28 +492,7 @@
                 </table>
             </div>
         </section>
-        <div class="overview-image">
-            <img src="images/xy.jpg" alt="CipherBank Overview" class="full-width-image" style="width: 95%; max-width: 1200px; height: auto;">
-            <p class="image-caption">Model Performance - Accuracy vs. Levenshtein Similarity</p>
-        </div>
-
-        <div class="findings">
-            <h3>Key Findings</h3>
-
-            <div class="overview-image">
-                <img src="images/ana.jpeg" alt="Analysis Results" class="full-width-image" style="width: 95%; max-width: 1200px; height: auto;">
-                <p class="image-caption">Evaluation of LLM Performance Under Different Encryption and Prompting Conditions.</p>
-            </div>
-            <ul>
-                <li>Even top models like Claude-3.5 and o1 only achieved <span class="score">45.14</span> and <span class="score">40.59</span> scores respectively, revealing the difficulty of cryptographic reasoning.</li>
-                <li>Most LLMs struggle with systematic decryption tasks, especially when they require more than pattern matching.</li>
-                <li>Reasoning Models Generally Outperform Chat Models. </li>
-                <li>Closed-source Chat Model Models Retain an Edge Over Open-source Chat Models. </li>
-                <li>The performance of LLMs is sensitive to the Noise Interference and Encryption Scope.</li>
-                <li>Detailed prompts can significantly enhance model performance, but the improvement for chat and reasoning models still differs.</li>
-            </ul>
-        </div>
-        
+                
         <section class="citation">
             <h2><i class="fas fa-quote-right"></i> BibTeX</h2>
             <div class="citation-container">
