@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CipherBank - Cryptography Challenges for LLMs</title>
+    <meta name="description" content="CipherBank: Exploring the Boundary of LLM Reasoning Capabilities through Cryptography Challenges">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .evaluation {
+            overflow-x: auto;
+            margin: 20px 0;
+            padding: 0 20px;
+            width: 100%;
+            max-width: 100%;
+            -webkit-overflow-scrolling: touch; /* 为iOS设备添加平滑滚动 */
+        }
+
+        .evaluation .table-container {
+            width: 100%;
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+
+        .evaluation table {
+            border-collapse: collapse;
+            min-width: 100%;
+            width: max-content;
+            margin: 20px auto;
+            font-size: 14px;
+        }
+        
+        .evaluation th, .evaluation td {
+            padding: 8px 15px;
+            text-align: center;
+            border: none;
+            min-width: 80px;
+            white-space: nowrap; /* 防止内容换行 */
+        }
+        
+        .evaluation tbody tr {
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .evaluation thead tr {
+            border-bottom: 2px solid #000;
+        }
+        
+        .evaluation th {
+            background-color: transparent;
+            font-weight: bold;
+            white-space: nowrap;
+            height: 40px;
+            position: sticky; /* 固定表头 */
+            top: 0;
+            background: white; /* 确保表头不透明 */
+            z-index: 1;
+        }
+        
+        .evaluation th.rank-col {
+            min-width: 60px;
+            position: sticky; /* 固定第一列 */
+            left: 0;
+            z-index: 2;
+            background: white;
+        }
+        
+        .evaluation th.type-col {
+            min-width: 120px;
+        }
+        
+        .evaluation th.model-col {
+            min-width: 200px;
+        }
+        
+        .evaluation th.score-col {
+            min-width: 100px;
+        }
+        
+        .evaluation th.algorithm-col {
+            min-width: 100px;
+        }
+        
+        .evaluation tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .model-type-label {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #000;
+            white-space: nowrap;
+        }
+        
+        .model-type-closed {
+            background-color: #ffebee;
+        }
+        
+        .model-type-reasoning {
+            background-color: #e8f5e9;
+        }
+        
+        .model-type-opensource {
+            background-color: #e3f2fd;
+        }
+        
+        .algorithm-group {
+            border-left: none;
+            padding-left: 15px;
+            font-weight: bold;
+        }
+        
+        .model-type-legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 10px 0;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        .best-score {
+            font-weight: bold;
+        }
+
+        .second-best {
+            text-decoration: underline;
+        }
+
+        .basic-header {
+            height: 60px !important;
+        }
+
+        .evaluation::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .evaluation::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .evaluation::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        .evaluation::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <section class="hero">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <h1>CipherBank</h1>
+            <h2>Exploring the Boundary of LLM Reasoning Capabilities through Cryptography Challenges</h2>
+            
+            <div class="authors">
+                <p>
+                    <i class="fas fa-users"></i>
+                    Yu Li<sup>1,2</sup>, Qizhi Pei<sup>1,3</sup>, Mengyuan Sun<sup>1,2</sup>, Honglin Lin<sup>1,4</sup>, <br>
+                    Chenlin Ming<sup>1,5</sup>, Xin Gao<sup>1</sup>, Jiang Wu<sup>1</sup>, 
+                    Conghui He<sup>1</sup>, Lijun Wu<sup>1</sup>
+                </p>
+                <p class="affiliations">
+                    <i class="fas fa-university"></i>
+                    <sup>1</sup>Shanghai AI Laboratory <sup>2</sup>Wuhan University <sup>3</sup>Renmin University of China , <br>
+                    <sup>4</sup>Beijing University of Posts and Telecommunications <sup>5</sup>Shanghai Jiao Tong University
+                </p>
+            </div>
+            
+            <div class="nav-buttons">
+                <a href="https://briefmind-daily.github.io" class="button">
+                    <i class="fas fa-file-alt"></i>
+                    Paper
+                </a>
+                <a href="https://github.com/Goodman-liyu/CipherBank" class="button">
+                    <i class="fab fa-github"></i>
+                    Code
+                </a>
+                <a href="https://huggingface.co/datasets/yu0226/CipherBank" class="button">
+                    <i class="fas fa-database"></i>
+                    Data
+                </a>
+            </div>
+        </section>
+
+        <section class="introduction">
+            <h2><i class="fas fa-info-circle"></i> Introduction</h2>
+            <p>🧠 Large language models (LLMs) have demonstrated remarkable capabilities, especially the recent advancements in reasoning, such as o1 and o3, pushing the boundaries of AI. Despite these impressive achievements in mathematics and coding, the reasoning abilities of LLMs in domains requiring 🔒 cryptographic expertise remain underexplored.<br>
+
+                🌉 To bridge this gap, we introduce CipherBank, a comprehensive benchmark designed to evaluate the reasoning capabilities of LLMs in cryptographic decryption tasks. CipherBank comprises 2,358 📊 meticulously crafted problems, covering 262 unique plaintexts across 5 domains 🌐 and 14 subdomains 🏷️, with a focus on privacy-sensitive and real-world scenarios that necessitate encryption. From a cryptographic perspective, CipherBank incorporates 3 major categories of encryption methods, spanning 9 distinct algorithms, ranging from classical ciphers to custom cryptographic techniques.<br>
+                
+                🔥 We evaluate state-of-the-art LLMs on CipherBank, e.g., GPT-4o, DeepSeek-V3 , and cutting-edge reasoning-focused models such as o1 🧠 and DeepSeek-R1. Our results reveal significant gaps in reasoning abilities not only between general-purpose chat LLMs and reasoning-focused LLMs but also in the performance of current reasoning-focused models when applied to classical cryptographic decryption tasks, highlighting the challenges these models face in understanding and manipulating encrypted data.<br>
+                
+                💡 Through detailed analysis and error investigations, we provide several key observations that shed light on the limitations and potential improvement areas for LLMs in cryptographic reasoning. These findings underscore the need for continuous advancements in LLM reasoning capabilities. </p>
+        </section>
+
+        <section class="introduction">
+            <h2><i class="fa-solid fa-database"></i> Dataset Composition</h2>
+            <div class="overview-image">
+                <img src="images/overview.jpg" alt="CipherBank Overview" class="full-width-image">
+                <p class="image-caption"></i> Overview of CipherBank</p>
+            </div>
+            
+            <div class="dataset-content">
+                <h3><i class="fas fa-layer-group"></i> 5 Main Domains</h3>
+                <ul>
+                    <li><i class="fas fa-user-shield"></i> Personal Privacy Data</li>
+                    <li><i class="fas fa-building-shield"></i> Enterprise Sensitive Data</li>
+                    <li><i class="fas fa-shield-halved"></i> Public Safety Data</li>
+                    <li><i class="fas fa-money-bill-transfer"></i> Financial Asset Data</li>
+                    <li><i class="fas fa-globe"></i> Internet Records</li>
+                </ul>
+                <p><i class="fas fa-tags"></i> 14 Subdomains + 89 Realistic Tags (e.g., passport number, tax ID, medical history)</p>
+
+                <h3><i class="fas fa-key"></i> 9 Encryption Algorithms</h3>
+                <p>Across 3 categories:</p>
+                <div class="algorithm-category"><i class="fas fa-exchange-alt"></i> <span>Substitution:</span> ROT13, Atbash, Vigenère, Polybius</div>
+                <div class="algorithm-category"><i class="fas fa-random"></i> <span>Transposition:</span> Reverse, SwapPairs</div>
+                <div class="algorithm-category"><i class="fas fa-code"></i> <span>Custom:</span> DualAvgCode, ParityShift, WordShift</div>
+
+                <h3><i class="fas fa-stairs"></i> 5 Difficulty Tiers</h3>
+                <p class="difficulty-tiers">From T1 (Basic) to T5 (Expert)</p>
+            </div>
+        </section>
+
+        <section class="evaluation">
+            <h2><i class="fas fa-chart-bar"></i> Model Evaluation</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th rowspan="2" class="basic-header rank-col">Rank</th>
+                            <th rowspan="2" class="basic-header type-col">Model Type</th>
+                            <th rowspan="2" class="basic-header model-col">Model</th>
+                            <th rowspan="2" class="basic-header score-col">Avg Score</th>
+                            <th colspan="4" class="algorithm-group">Substitution</th>
+                            <th colspan="2" class="algorithm-group">Transposition</th>
+                            <th colspan="3" class="algorithm-group">Custom</th>
+                        </tr>
+                        <tr>
+                            <th class="algorithm-col">ROT</th>
+                            <th class="algorithm-col">Atbash</th>
+                            <th class="algorithm-col">Polybius</th>
+                            <th class="algorithm-col">Vigenère</th>
+                            <th class="algorithm-col">Reverse</th>
+                            <th class="algorithm-col">SwapPairs</th>
+                            <th class="algorithm-col">DualAvgCode</th>
+                            <th class="algorithm-col">ParityShift</th>
+                            <th class="algorithm-col">WordShift</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td><span class="model-type-label model-type-closed">Closed-source Chat Model</span></td>
+                            <td>Claude-Sonnet-3.5-1022</td>
+                            <td class="best-score">45.14</td>
+                            <td>83.21</td>
+                            <td>75.19</td>
+                            <td>72.90</td>
+                            <td>1.91</td>
+                            <td>63.93</td>
+                            <td>6.87</td>
+                            <td>4.96</td>
+                            <td>58.21</td>
+                            <td>39.12</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><span class="model-type-label model-type-reasoning">Reasoning Model</span></td>
+                            <td>o1-2024-12-17</td>
+                            <td class="best-score">40.59</td>
+                            <td>59.92</td>
+                            <td>79.01</td>
+                            <td>79.39</td>
+                            <td>7.25</td>
+                            <td>14.89</td>
+                            <td>32.14</td>
+                            <td>50.38</td>
+                            <td>12.39</td>
+                            <td>29.90</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><span class="model-type-label model-type-reasoning">Reasoning Model</span></td>
+                            <td>DeepSeek-R1</td>
+                            <td class="best-score">25.91</td>
+                            <td>73.28</td>
+                            <td>58.78</td>
+                            <td>44.27</td>
+                            <td>0.38</td>
+                            <td>10.69</td>
+                            <td>0.38</td>
+                            <td>24.05</td>
+                            <td>12.98</td>
+                            <td>8.40</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td><span class="model-type-label model-type-reasoning">Reasoning Model</span></td>
+                            <td>o1-mini-2024-09-12</td>
+                            <td class="best-score">20.07</td>
+                            <td>46.18</td>
+                            <td>68.32</td>
+                            <td>46.95</td>
+                            <td>1.53</td>
+                            <td>5.15</td>
+                            <td>0.38</td>
+                            <td>2.93</td>
+                            <td>7.63</td>
+                            <td>1.53</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td><span class="model-type-label model-type-reasoning">Reasoning Model</span></td>
+                            <td>gemini-2.0-flash-thinking</td>
+                            <td class="best-score">13.49</td>
+                            <td>40.46</td>
+                            <td>17.18</td>
+                            <td>21.76</td>
+                            <td>1.15</td>
+                            <td>22.90</td>
+                            <td>1.15</td>
+                            <td>0</td>
+                            <td>7.63</td>
+                            <td>9.16</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td><span class="model-type-label model-type-opensource">Open-source Chat Model</span></td>
+                            <td>DeepSeek-V3</td>
+                            <td class="best-score">9.86</td>
+                            <td>32.44</td>
+                            <td>14.88</td>
+                            <td>2.29</td>
+                            <td>0.76</td>
+                            <td>28.47</td>
+                            <td>0.38</td>
+                            <td>0.38</td>
+                            <td>1.14</td>
+                            <td>8.02</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td><span class="model-type-label model-type-closed">Closed-source Chat Model</span></td>
+                            <td>gemini-1.5-pro</td>
+                            <td class="best-score">9.54</td>
+                            <td>55.34</td>
+                            <td>0.76</td>
+                            <td>0.38</td>
+                            <td>0.76</td>
+                            <td>10.31</td>
+                            <td>0.76</td>
+                            <td>0.38</td>
+                            <td>0.76</td>
+                            <td>16.41</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td><span class="model-type-label model-type-closed">Closed-source Chat Model</span></td>
+                            <td>GPT-4o-2024-08-06</td>
+                            <td class="best-score">8.82</td>
+                            <td>38.17</td>
+                            <td>3.05</td>
+                            <td>0.38</td>
+                            <td>0.76</td>
+                            <td>25.19</td>
+                            <td>2.29</td>
+                            <td>0</td>
+                            <td>1.14</td>
+                            <td>8.40</td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td><span class="model-type-label model-type-closed">Closed-source Chat Model</span></td>
+                            <td>gemini-2.0-flash-exp</td>
+                            <td class="best-score">8.65</td>
+                            <td>35.88</td>
+                            <td>3.05</td>
+                            <td>1.53</td>
+                            <td>0.38</td>
+                            <td>29.39</td>
+                            <td>1.53</td>
+                            <td>0</td>
+                            <td>0.76</td>
+                            <td>5.34</td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td><span class="model-type-label model-type-closed">Closed-source Chat Model</span></td>
+                            <td>GPT-4o-2024-11-20</td>
+                            <td class="best-score">6.40</td>
+                            <td>26.46</td>
+                            <td>6.99</td>
+                            <td>0.13</td>
+                            <td>0.76</td>
+                            <td>15.27</td>
+                            <td>0.76</td>
+                            <td>0.25</td>
+                            <td>0.89</td>
+                            <td>6.11</td>
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td><span class="model-type-label model-type-closed">Closed-source Chat Model</span></td>
+                            <td>GPT-4o-mini-2024-07-18</td>
+                            <td class="best-score">1.00</td>
+                            <td>3.69</td>
+                            <td>2.03</td>
+                            <td>0</td>
+                            <td>0.51</td>
+                            <td>2.16</td>
+                            <td>0</td>
+                            <td>0.38</td>
+                            <td>0</td>
+                            <td>0.25</td>
+                        </tr>
+                        <tr>
+                            <td>12</td>
+                            <td><span class="model-type-label model-type-reasoning">Reasoning Model</span></td>
+                            <td>QwQ-32B-Preview</td>
+                            <td class="best-score">0.76</td>
+                            <td>1.53</td>
+                            <td>0.38</td>
+                            <td>1.91</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0.38</td>
+                            <td>0.38</td>
+                            <td>2.29</td>
+                        </tr>
+                        <tr>
+                            <td>13</td>
+                            <td><span class="model-type-label model-type-opensource">Open-source Chat Model</span></td>
+                            <td>Qwen2.5-72B-Instruct</td>
+                            <td class="best-score">0.55</td>
+                            <td>1.15</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0.38</td>
+                            <td>1.15</td>
+                            <td>0</td>
+                            <td>2.29</td>
+                        </tr>
+                        <tr>
+                            <td>14</td>
+                            <td><span class="model-type-label model-type-opensource">Open-source Chat Model</span></td>
+                            <td>Llama-3.3-70B-Instruct</td>
+                            <td class="best-score">0.42</td>
+                            <td>2.67</td>
+                            <td>0.38</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0.76</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>15</td>
+                            <td><span class="model-type-label model-type-opensource">Open-source Chat Model</span></td>
+                            <td>Llama-3.1-70B-Instruct</td>
+                            <td class="best-score">0.38</td>
+                            <td>1.15</td>
+                            <td>0.38</td>
+                            <td>0</td>
+                            <td>0.38</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0.38</td>
+                            <td>0.38</td>
+                            <td>0.76</td>
+                        </tr>
+                        <tr>
+                            <td>16</td>
+                            <td><span class="model-type-label model-type-opensource">Open-source Chat Model</span></td>
+                            <td>Mixtral-8x22B-v0.1</td>
+                            <td class="best-score">0.30</td>
+                            <td>0.38</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0.76</td>
+                            <td>0</td>
+                            <td>0.38</td>
+                            <td>0</td>
+                            <td>1.15</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <div class="overview-image">
+            <img src="images/xy.jpg" alt="CipherBank Overview" class="full-width-image" style="width: 95%; max-width: 1200px; height: auto;">
+            <p class="image-caption">Model Performance - Accuracy vs. Levenshtein Similarity</p>
+        </div>
+
+        <div class="findings">
+            <h3>Key Findings</h3>
+
+            <div class="overview-image">
+                <img src="images/ana.jpeg" alt="Analysis Results" class="full-width-image" style="width: 95%; max-width: 1200px; height: auto;">
+                <p class="image-caption">Evaluation of LLM Performance Under Different Encryption and Prompting Conditions.</p>
+            </div>
+            <ul>
+                <li>Even top models like Claude-3.5 and o1 only achieved <span class="score">45.14</span> and <span class="score">40.59</span> scores respectively, revealing the difficulty of cryptographic reasoning.</li>
+                <li>Most LLMs struggle with systematic decryption tasks, especially when they require more than pattern matching.</li>
+                <li>Reasoning Models Generally Outperform Chat Models. </li>
+                <li>Closed-source Chat Model Models Retain an Edge Over Open-source Chat Models. </li>
+                <li>The performance of LLMs is sensitive to the Noise Interference and Encryption Scope.</li>
+                <li>Detailed prompts can significantly enhance model performance, but the improvement for chat and reasoning models still differs.</li>
+            </ul>
+        </div>
+
+        <section class="citation">
+            <h2><i class="fas fa-quote-right"></i> BibTeX</h2>
+            <div class="citation-container">
+                <button class="copy-button" onclick="copyBibTeX()">
+                    <i class="fas fa-copy"></i> Copy
+                </button>
+                <pre id="bibtex">@misc{,
+    title={LOOM-Scape: LOng-cOntext Model evaluation framework }, 
+    author={ },
+    year={2025},
+    eprint={2504.19093},
+    archivePrefix={arXiv},
+    primaryClass={cs.CR},
+    url={}, 
+}</pre>
+            </div>
+        </section>
+
+        <script>
+        function copyBibTeX() {
+            const bibtex = document.getElementById('bibtex').textContent;
+            navigator.clipboard.writeText(bibtex).then(() => {
+                const button = document.querySelector('.copy-button');
+                const originalContent = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                setTimeout(() => {
+                    button.innerHTML = originalContent;
+                }, 2000);
+            });
+        }
+        </script>
+    </main>
+</body>
+</html> 
