@@ -86,14 +86,7 @@
             background-color: #f5f5f5;
         }
         
-        .model-label {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            color: #000;
-            white-space: nowrap;
-        }
+c
         
         .Llama {
             background-color: #ffebee;
@@ -218,7 +211,182 @@
             
         </section>
         <section class="evaluation">
-            <h2><i class="fas fa-chart-bar"></i> Model Evaluation</h2>
+            <h2><i class="fas fa-chart-bar"></i> Benchmark Validation Platform</h2>
+            <div class="table-container">
+                <!-- L_CiteEval Section -->
+                <h2 id="L_CiteEval">1. L_CiteEval</h2>
+                <h3>a. Computational Cost (Inference Time)</h3>
+                <table class="evaluation-table">
+                    <thead>
+                        <tr>
+                            <th>Benchmark</th>
+                            <th>Hardware Configuration</th>
+                            <th>Inference Time (ALL tasks)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>L_CiteEval</td>
+                            <td>3090 (24GB) × 8</td>
+                            <td>10:49:25</td>
+                        </tr>
+                        <tr>
+                            <td>L_CiteEval</td>
+                            <td>A100 (40GB) × 4</td>
+                            <td>7:35:33</td>
+                        </tr>
+                        <tr>
+                            <td>L_CiteEval</td>
+                            <td>H20 (96GB) × 2</td>
+                            <td>6:45:38</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>b. Evaluation Results</h3>
+                <table class="evaluation-table">
+                    <thead>
+                        <tr>
+                            <th>Benchmark</th>
+                            <th>Subtask</th>
+                            <th>Metrics</th>
+                            <th>Model</th>
+                            <th>Results (Evaluated)</th>
+                            <th>Official Results (Reported in Paper)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- 此处添加L_CiteEval评估结果行，与Markdown内容一致 -->
+                        <tr>
+                            <td>L_CiteEval</td>
+                            <td>Single Document QA</td>
+                            <td>CP</td>
+                            <td>Meta-Llama-3.1-8B-Instruct</td>
+                            <td>24.2</td>
+                            <td>22.7</td>
+                        </tr>
+                        <!-- 其他行按Markdown内容依次添加 -->
+                    </tbody>
+                </table>
+
+                <!-- LEval Section -->
+                <h2 id="LEval">1. LEval</h2>
+                <h3>a. Computational Cost (Inference Time)</h3>
+                <table class="evaluation-table">
+                    <thead>
+                        <tr>
+                            <th>Benchmark</th>
+                            <th>Hardware Configuration</th>
+                            <th>Inference Time (ALL tasks)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>LEval</td>
+                            <td>3090 (24GB) × 8</td>
+                            <td>6:09:10</td>
+                        </tr>
+                        <tr>
+                            <td>LEval</td>
+                            <td>A100 (40GB) × 4</td>
+                            <td>3:58:46</td>
+                        </tr>
+                        <tr>
+                            <td>LEval</td>
+                            <td>H20 (96GB) × 2</td>
+                            <td>3:41:35</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>b. Evaluation Results</h3>
+                <table class="evaluation-table">
+                    <thead>
+                        <tr>
+                            <th>Benchmark</th>
+                            <th>Subtask</th>
+                            <th>Metrics</th>
+                            <th>Model</th>
+                            <th>Results (Evaluated)</th>
+                            <th>Official Results (Reported in Paper)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- LEval评估结果行 -->
+                        <tr>
+                            <td>LEval</td>
+                            <td>TOEFL</td>
+                            <td>exam</td>
+                            <td>Meta-Llama-3.1-8B-Instruct</td>
+                            <td>81.4</td>
+                            <td>82.9</td>
+                        </tr>
+                        <!-- 其他行按Markdown内容依次添加 -->
+                    </tbody>
+                </table>
+
+                <!-- 其他基准测试部分（LongBench, LooGLE, RULER等）按相同结构续写 -->
+                <!-- 注意保持h2 id与Markdown标题一致，表格结构统一 -->
+
+                <h2 id="LongBench">2. LongBench</h2>
+                <h3>a. Computational Cost (Inference Time)</h3>
+                <table class="evaluation-table">
+                    <thead>
+                        <tr>
+                            <th>Benchmark</th>
+                            <th>Hardware Configuration</th>
+                            <th>Inference Time (ALL tasks)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>longbench</td>
+                            <td>3090 (24GB) × 2</td>
+                            <td>8:28:28</td>
+                        </tr>
+                        <tr>
+                            <td>longbench</td>
+                            <td>A100 (40GB) × 1</td>
+                            <td>4:00:00</td>
+                        </tr>
+                        <tr>
+                            <td>longbench</td>
+                            <td>H20 (96GB) × 1</td>
+                            <td>6:25:36</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>b. Evaluation Results</h3>
+                <table class="evaluation-table">
+                    <thead>
+                        <tr>
+                            <th>Benchmark</th>
+                            <th>Subtask</th>
+                            <th>Model</th>
+                            <th>Results (Evaluated)</th>
+                            <th>Official Results (Reported in Paper)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>longbench</td>
+                            <td>Single-Doc QA</td>
+                            <td>ChatGLM2-6B</td>
+                            <td>24.9</td>
+                            <td>25.6</td>
+                        </tr>
+                        <!-- 其他行按Markdown内容依次添加 -->
+                    </tbody>
+                </table>
+
+                <!-- 继续添加LooGLE, RULER, LongWriter等部分，结构同上 -->
+
+            </div>
+        </section>
+
+        <section class="evaluation">
+            <h2><i class="fas fa-chart-bar"></i> Model leaderboard</h2>
             <div class="table-container">
                 <table>
                     <thead>
