@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LOOM-Scape - LOng-cOntext Model evaluation framework</title>
+    <title>LOOM-Scope - LOng-cOntext Model evaluation framework</title>
     <meta name="description" content="Providing a convient and comprehensive framework for long-context model evaluation.">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -169,7 +169,7 @@
             <div class="logo">
                 <i class="fas fa-shield-alt"></i>
             </div>
-            <h1>LOOM-Scape</h1>
+            <h1>LOOM-Scope</h1>
             <h2>Providing a convient and comprehensive framework for long-context model evaluation.</h2>
             
             <div class="authors">
@@ -201,19 +201,19 @@
 
         <section class="introduction">
             <h2><i class="fas fa-info-circle"></i> Introduction</h2>
-            <p> 🌐 LOOM-Scape offers a comprehensive suite of tools, featuring 15 standard long-context benchmarks covering faithfulness, retrieval, reasoning, generation, and more. With hundreds of subtasks and support for diverse model architectures—including Transformers, Mamba, and RWKV—it enables researchers to rigorously assess model capabilities under real-world long-context demands. A standout feature is its single-line command workflow, automating dataset/model detection, download, and evaluation for seamless usability.<br>
+            <p> 🌐 LOOM-Scope offers a comprehensive suite of tools, featuring 15 standard long-context benchmarks covering faithfulness, retrieval, reasoning, generation, and more. With hundreds of subtasks and support for diverse model architectures—including Transformers, Mamba, and RWKV—it enables researchers to rigorously assess model capabilities under real-world long-context demands. A standout feature is its single-line command workflow, automating dataset/model detection, download, and evaluation for seamless usability.<br>
 
-                🚀 Efficiency is at the core of LOOM-Scape: it integrates 12 computational acceleration methods like CakeKV and FlexPrefill, leveraging vLLM for fast, memory-efficient inference. This makes it compatible with a range of hardware, from 24GB 3090 to 96GB H20 GPUs, with publicly documented computational costs and reproducible results across platforms. Whether evaluating base models or adapters (via HuggingFace PEFT), LOOM-Scape ensures consistency and scalability.<br>
+                🚀 Efficiency is at the core of LOOM-Scope: it integrates 12 computational acceleration methods like CakeKV and FlexPrefill, leveraging vLLM for fast, memory-efficient inference. This makes it compatible with a range of hardware, from 24GB 3090 to 96GB H20 GPUs, with publicly documented computational costs and reproducible results across platforms. Whether evaluating base models or adapters (via HuggingFace PEFT), LOOM-Scope ensures consistency and scalability.<br>
                 
-                🔄 By bridging model compatibility, benchmark diversity, and inference optimization, LOOM-Scape empowers the research community to push the boundaries of long-context LLMs. Our evaluation results highlight strengths and gaps in current models, guiding future advancements in context handling, reasoning, and retrieval-augmented generation. Dive into LOOM-Scape to unlock systematic, efficient long-context model evaluation.<br>
+                🔄 By bridging model compatibility, benchmark diversity, and inference optimization, LOOM-Scope empowers the research community to push the boundaries of long-context LLMs. Our evaluation results highlight strengths and gaps in current models, guiding future advancements in context handling, reasoning, and retrieval-augmented generation. Dive into LOOM-Scope to unlock systematic, efficient long-context model evaluation.<br>
                 
         </section>
 
         <section class="introduction">
             <h2><i class="fa-solid fa-database"></i>Benchmark Composition</h2>
             <div class="overview-image">
-                <img src="images/newplot.png" alt="LOOM-Scape Overview" class="full-width-image">
-                <p class="image-caption"></i> Overview of LOOM-Scape</p>
+                <img src="images/newplot.png" alt="LOOM-Scope Overview" class="full-width-image">
+                <p class="image-caption"></i> Overview of LOOM-Scope</p>
             </div>
             
         </section>
@@ -224,267 +224,135 @@
                 <table>
                     <thead>
                         <tr>
-                            <th rowspan="2" class="basic-header rank-col">Rank</th>
-                            <th rowspan="2" class="basic-header type-col">Model Type</th>
+                            <th rowspan="3" class="basic-header rank-col">Rank</th>
                             <th rowspan="2" class="basic-header model-col">Model</th>
                             <th rowspan="2" class="basic-header score-col">Avg Score</th>
-                            <th colspan="4" class="algorithm-group">Substitution</th>
-                            <th colspan="2" class="algorithm-group">Transposition</th>
-                            <th colspan="3" class="algorithm-group">Custom</th>
+                            <th colspan="1" class="algorithm-group">Faithfulness/th>
+                            <th colspan="4" class="algorithm-group">General/th>
+                            <th colspan="5" class="algorithm-group">Reasoning/th>
+                            <th colspan="3" class="algorithm-group">Retrieve/th>
+                            <th colspan="1" class="algorithm-group">Generation/th>
+                            <th colspan="1" class="algorithm-group">Specialization/th>
                         </tr>
                         <tr>
-                            <th class="algorithm-col">ROT</th>
-                            <th class="algorithm-col">Atbash</th>
-                            <th class="algorithm-col">Polybius</th>
-                            <th class="algorithm-col">Vigenère</th>
-                            <th class="algorithm-col">Reverse</th>
-                            <th class="algorithm-col">SwapPairs</th>
-                            <th class="algorithm-col">DualAvgCode</th>
-                            <th class="algorithm-col">ParityShift</th>
-                            <th class="algorithm-col">WordShift</th>
+                            <th class="algorithm-col">L_CiteEval</th>
+                            <th class="algorithm-col">LEval</th>
+                            <th class="algorithm-col">LooGLE</th>
+                            <th class="algorithm-col">RULER（0 - 128k)</th>
+                            <th class="algorithm-col">longbench</th>
+                            <th class="algorithm-col">babilong（0 - 128k)</th>
+                            <th class="algorithm-col">Counting - Stars</th>
+                            <th class="algorithm-col">LongIns</th>
+                            <th class="algorithm-col">LVEval</th>
+                            <th class="algorithm-col">longbench_v2</th>
+                            <th class="algorithm-col">NIAH</th>
+                            <th class="algorithm-col">NThread</th>
+                            <th class="algorithm-col">InfiniteBench</th>
+                            <th class="algorithm-col">LongWriter</th>
+                            <th class="algorithm-col">LIBRA</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>1</td>
-                            <td><span class="model-type-label model-type-closed">Closed-source Chat Model</span></td>
-                            <td>Claude-Sonnet-3.5-1022</td>
-                            <td class="best-score">45.14</td>
-                            <td>83.21</td>
-                            <td>75.19</td>
-                            <td>72.90</td>
-                            <td>1.91</td>
-                            <td>63.93</td>
-                            <td>6.87</td>
-                            <td>4.96</td>
-                            <td>58.21</td>
-                            <td>39.12</td>
-                        </tr>
+                            <td>Qwen3-30B-A3B</td>
+                            <td>46.08</td>
+                            <td>37.96</td>
+                            <td>40.61</td>
+                            <td>11.61</td>
+                            <td>78.32</td>
+                            <td>43.24</td>
+                            <td>60.31</td>
+                            <td>48.96</td>
+                            <td>41.3</td>
+                            <td>22.82</td>
+                            <td>28.42</td>
+                            <td>100</td>
+                            <td>24.12</td>
+                            <td>14.14</td>
+                            <td>83.24</td>
+                            <td>56.09</td>
+                        </tr>    
                         <tr>
                             <td>2</td>
-                            <td><span class="model-type-label model-type-reasoning">Reasoning Model</span></td>
-                            <td>o1-2024-12-17</td>
-                            <td class="best-score">40.59</td>
-                            <td>59.92</td>
-                            <td>79.01</td>
-                            <td>79.39</td>
-                            <td>7.25</td>
-                            <td>14.89</td>
-                            <td>32.14</td>
-                            <td>50.38</td>
-                            <td>12.39</td>
-                            <td>29.90</td>
+                            <td>Qwen3-14B</td>
+                            <td>45.97</td>
+                            <td>35.64</td>
+                            <td>43.84</td>
+                            <td>11.79</td>
+                            <td>74.94</td>
+                            <td>45.47</td>
+                            <td>59.15</td>
+                            <td>56.41</td>
+                            <td>31.95</td>
+                            <td>21.26</td>
+                            <td>29.85</td>
+                            <td>100</td>
+                            <td>27.35</td>
+                            <td>10.24</td>
+                            <td>85.75</td>
+                            <td>55.87</td>
                         </tr>
                         <tr>
                             <td>3</td>
-                            <td><span class="model-type-label model-type-reasoning">Reasoning Model</span></td>
-                            <td>DeepSeek-R1</td>
-                            <td class="best-score">25.91</td>
-                            <td>73.28</td>
-                            <td>58.78</td>
-                            <td>44.27</td>
-                            <td>0.38</td>
-                            <td>10.69</td>
-                            <td>0.38</td>
-                            <td>24.05</td>
-                            <td>12.98</td>
-                            <td>8.40</td>
+                            <td>Meta-Llama-3.1-8B-Instruct</td>
+                            <td>41.37</td>
+                            <td>25.79</td>
+                            <td>39.7</td>
+                            <td>11.81</td>
+                            <td>86.79</td>
+                            <td>37.94</td>
+                            <td>57.42</td>
+                            <td>37.68</td>
+                            <td>25.4</td>
+                            <td>25.66</td>
+                            <td>30.4</td>
+                            <td>91</td>
+                            <td>20.06</td>
+                            <td>33.64</td>
+                            <td>45.96</td>
+                            <td>51.24</td>
                         </tr>
                         <tr>
                             <td>4</td>
-                            <td><span class="model-type-label model-type-reasoning">Reasoning Model</span></td>
-                            <td>o1-mini-2024-09-12</td>
-                            <td class="best-score">20.07</td>
-                            <td>46.18</td>
-                            <td>68.32</td>
-                            <td>46.95</td>
-                            <td>1.53</td>
-                            <td>5.15</td>
-                            <td>0.38</td>
-                            <td>2.93</td>
-                            <td>7.63</td>
-                            <td>1.53</td>
+                            <td>Qwen3-8B</td>
+                            <td>40.18</td>
+                            <td>33.18</td>
+                            <td>41.15</td>
+                            <td>11.67</td>
+                            <td>67.68</td>
+                            <td>38.62</td>
+                            <td>55.28</td>
+                            <td>52.32</td>
+                            <td>32.61</td>
+                            <td>15.15</td>
+                            <td>27.25</td>
+                            <td>64</td>
+                            <td>21.92</td>
+                            <td>8.06</td>
+                            <td>81.99</td>
+                            <td>51.78</td>
                         </tr>
                         <tr>
                             <td>5</td>
-                            <td><span class="model-type-label model-type-reasoning">Reasoning Model</span></td>
-                            <td>gemini-2.0-flash-thinking</td>
-                            <td class="best-score">13.49</td>
-                            <td>40.46</td>
-                            <td>17.18</td>
-                            <td>21.76</td>
-                            <td>1.15</td>
-                            <td>22.90</td>
-                            <td>1.15</td>
-                            <td>0</td>
-                            <td>7.63</td>
-                            <td>9.16</td>
-                        </tr>
-                        <tr>
-                            <td>6</td>
-                            <td><span class="model-type-label model-type-opensource">Open-source Chat Model</span></td>
-                            <td>DeepSeek-V3</td>
-                            <td class="best-score">9.86</td>
-                            <td>32.44</td>
-                            <td>14.88</td>
-                            <td>2.29</td>
-                            <td>0.76</td>
-                            <td>28.47</td>
-                            <td>0.38</td>
-                            <td>0.38</td>
-                            <td>1.14</td>
-                            <td>8.02</td>
-                        </tr>
-                        <tr>
-                            <td>7</td>
-                            <td><span class="model-type-label model-type-closed">Closed-source Chat Model</span></td>
-                            <td>gemini-1.5-pro</td>
-                            <td class="best-score">9.54</td>
-                            <td>55.34</td>
-                            <td>0.76</td>
-                            <td>0.38</td>
-                            <td>0.76</td>
-                            <td>10.31</td>
-                            <td>0.76</td>
-                            <td>0.38</td>
-                            <td>0.76</td>
-                            <td>16.41</td>
-                        </tr>
-                        <tr>
-                            <td>8</td>
-                            <td><span class="model-type-label model-type-closed">Closed-source Chat Model</span></td>
-                            <td>GPT-4o-2024-08-06</td>
-                            <td class="best-score">8.82</td>
-                            <td>38.17</td>
-                            <td>3.05</td>
-                            <td>0.38</td>
-                            <td>0.76</td>
-                            <td>25.19</td>
-                            <td>2.29</td>
-                            <td>0</td>
-                            <td>1.14</td>
-                            <td>8.40</td>
-                        </tr>
-                        <tr>
-                            <td>9</td>
-                            <td><span class="model-type-label model-type-closed">Closed-source Chat Model</span></td>
-                            <td>gemini-2.0-flash-exp</td>
-                            <td class="best-score">8.65</td>
-                            <td>35.88</td>
-                            <td>3.05</td>
-                            <td>1.53</td>
-                            <td>0.38</td>
-                            <td>29.39</td>
-                            <td>1.53</td>
-                            <td>0</td>
-                            <td>0.76</td>
-                            <td>5.34</td>
-                        </tr>
-                        <tr>
-                            <td>10</td>
-                            <td><span class="model-type-label model-type-closed">Closed-source Chat Model</span></td>
-                            <td>GPT-4o-2024-11-20</td>
-                            <td class="best-score">6.40</td>
-                            <td>26.46</td>
-                            <td>6.99</td>
-                            <td>0.13</td>
-                            <td>0.76</td>
-                            <td>15.27</td>
-                            <td>0.76</td>
-                            <td>0.25</td>
-                            <td>0.89</td>
-                            <td>6.11</td>
-                        </tr>
-                        <tr>
-                            <td>11</td>
-                            <td><span class="model-type-label model-type-closed">Closed-source Chat Model</span></td>
-                            <td>GPT-4o-mini-2024-07-18</td>
-                            <td class="best-score">1.00</td>
-                            <td>3.69</td>
-                            <td>2.03</td>
-                            <td>0</td>
-                            <td>0.51</td>
-                            <td>2.16</td>
-                            <td>0</td>
-                            <td>0.38</td>
-                            <td>0</td>
-                            <td>0.25</td>
-                        </tr>
-                        <tr>
-                            <td>12</td>
-                            <td><span class="model-type-label model-type-reasoning">Reasoning Model</span></td>
-                            <td>QwQ-32B-Preview</td>
-                            <td class="best-score">0.76</td>
-                            <td>1.53</td>
-                            <td>0.38</td>
-                            <td>1.91</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0.38</td>
-                            <td>0.38</td>
-                            <td>2.29</td>
-                        </tr>
-                        <tr>
-                            <td>13</td>
-                            <td><span class="model-type-label model-type-opensource">Open-source Chat Model</span></td>
-                            <td>Qwen2.5-72B-Instruct</td>
-                            <td class="best-score">0.55</td>
-                            <td>1.15</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0.38</td>
-                            <td>1.15</td>
-                            <td>0</td>
-                            <td>2.29</td>
-                        </tr>
-                        <tr>
-                            <td>14</td>
-                            <td><span class="model-type-label model-type-opensource">Open-source Chat Model</span></td>
-                            <td>Llama-3.3-70B-Instruct</td>
-                            <td class="best-score">0.42</td>
-                            <td>2.67</td>
-                            <td>0.38</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0.76</td>
-                            <td>0</td>
-                        </tr>
-                        <tr>
-                            <td>15</td>
-                            <td><span class="model-type-label model-type-opensource">Open-source Chat Model</span></td>
-                            <td>Llama-3.1-70B-Instruct</td>
-                            <td class="best-score">0.38</td>
-                            <td>1.15</td>
-                            <td>0.38</td>
-                            <td>0</td>
-                            <td>0.38</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0.38</td>
-                            <td>0.38</td>
-                            <td>0.76</td>
-                        </tr>
-                        <tr>
-                            <td>16</td>
-                            <td><span class="model-type-label model-type-opensource">Open-source Chat Model</span></td>
-                            <td>Mixtral-8x22B-v0.1</td>
-                            <td class="best-score">0.30</td>
-                            <td>0.38</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0.76</td>
-                            <td>0</td>
-                            <td>0.38</td>
-                            <td>0</td>
-                            <td>1.15</td>
-                        </tr>
+                            <td>Qwen3-4B</td>
+                            <td>38.70</td>
+                            <td>24.55</td>
+                            <td>39.03</td>
+                            <td>11.69</td>
+                            <td>70.29</td>
+                            <td>39.32</td>
+                            <td>55.01</td>
+                            <td>42.06</td>
+                            <td>33.66</td>
+                            <td>18.24</td>
+                            <td>32.52</td>
+                            <td>62</td>
+                            <td>17.95</td>
+                            <td>13.05</td>
+                            <td>74.25</td>
+                            <td>46.92</td>
+                        </tr>    
                     </tbody>
                 </table>
             </div>
@@ -497,7 +365,7 @@
                     <i class="fas fa-copy"></i> Copy
                 </button>
                 <pre id="bibtex">@misc{,
-    title={LOOM-Scape: LOng-cOntext Model evaluation framework }, 
+    title={LOOM-Scope: LOng-cOntext Model evaluation framework }, 
     author={ },
     year={2025},
     eprint={2504.19093},
