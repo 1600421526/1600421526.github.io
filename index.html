@@ -8,171 +8,124 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+.evaluation {
+    overflow-x: auto;
+    margin: 20px 0;
+    padding: 0 20px;
+    width: 100%;
+    max-width: 100%;
+    background-color: #f0f8ff; /* 月白色主背景 */
+    -webkit-overflow-scrolling: touch;
+}
 
-        .evaluation {
-            overflow-x: auto;
-            margin: 20px 0;
-            padding: 0 20px;
-            width: 100%;
-            max-width: 100%;
-            -webkit-overflow-scrolling: touch; /* 为iOS设备添加平滑滚动 */
-        }
+.evaluation .table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin-bottom: 20px;
+    background: white; /* 表格区域纯白背景 */
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(192, 208, 230, 0.2); /* 淡蓝色阴影 */
+}
 
-        .evaluation .table-container {
-            width: 100%;
-            overflow-x: auto;
-            margin-bottom: 20px;
-        }
+.evaluation table {
+    border-collapse: collapse;
+    min-width: 100%;
+    width: max-content;
+    margin: 20px auto;
+    font-size: 14px;
+}
 
-        
-        .evaluation table {
-            border-collapse: collapse;
-            min-width: 100%;
-            width: max-content;
-            margin: 20px auto;
-            font-size: 14px;
-        }
-        
-        .evaluation th, .evaluation td {
-            padding: 8px 15px;
-            text-align: center;
-            border: none;
-            min-width: 80px;
-            white-space: nowrap; /* 防止内容换行 */
-        }
-        
-        .evaluation tbody tr {
-            border-bottom: 1px solid #ddd;
-        }
-        
-        
-        .evaluation thead tr {
-            border-bottom: 2px solid #000;
-        }
-        
-        .evaluation th {
-            background-color: transparent;
-            font-weight: bold;
-            white-space: nowrap;
-            height: 40px;
-            position: sticky; /* 固定表头 */
-            top: 0;
-            background: white; /* 确保表头不透明 */
-            z-index: 1;
-        }
-        
-        .evaluation th.rank-col {
-            min-width: 60px;
-            position: sticky; /* 固定第一列 */
-            left: 0;
-            z-index: 2;
-            background: white;
-        }
-        
-        .evaluation th.type-col {
-            min-width: 120px;
-        }
-        
-        .evaluation th.model-col {
-            min-width: 200px;
-        }
-        
-        .evaluation th.score-col {
-            min-width: 100px;
-        }
-        
-        .evaluation th.algorithm-col {
-            min-width: 100px;
-        }
-        .Generation{
-            background-color: #e8f5e9
-        }
-        .General{
-            background-color: #f5f5f5;
-        }
-        .Reasoning{
-            background-color: #86ccec;
-        }
-        .Retrieval{
-            background-color: #ffebee
-        }
-        .Faithfulness{
-            background-color: #d4cc83
-        }
-        .Specialization{
-            background-color: #e3f2fd;
-        }
+.evaluation th, .evaluation td {
+    padding: 8px 15px;
+    text-align: center;
+    border: none;
+    min-width: 80px;
+    white-space: nowrap;
+}
 
-        
-        .evaluation tr:hover {
-            background-color: #f5f5f5;
-        }
-        .Llama {
-            background-color: #ffebee
-        }
-        
-        .model-type-reasoning {
-            background-color: #e8f5e9;
-        }
-        
-        .Qwen {
-            background-color: #e3f2fd;
-        }
-        
-        .algorithm-group {
-            border-left: none;
-            padding-left: 15px;
-            font-weight: bold;
-        }
-        
-        .model-type-legend {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin: 10px 0;
-        }
-        
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .legend-color {
-            width: 20px;
-            height: 20px;
-            border-radius: 4px;
-        }
+.evaluation tbody tr {
+    border-bottom: 1px solid #e0e8f0; /* 淡蓝色分割线 */
+}
 
-        .best-score {
-            font-weight: bold;
-        }
+.evaluation thead tr {
+    border-bottom: 2px solid #aab8d6; /* 稍深蓝色表头分割线 */
+}
 
-        .second-best {
-            text-decoration: underline;
-        }
+.evaluation th {
+    background-color: #f5f9ff; /* 浅月白表头背景 */
+    font-weight: bold;
+    white-space: nowrap;
+    height: 40px;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
 
-        .basic-header {
-            height: 60px !important;
-        }
+.evaluation th.rank-col {
+    min-width: 60px;
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background: white; /* 固定列纯白背景 */
+}
 
-        .evaluation::-webkit-scrollbar {
-            height: 8px;
-        }
+/* 能力分类背景色（月白衍生色系） */
+.Generation { background-color: #e8f0ff; }  /* 淡蓝紫 */
+.General { background-color: #f0f8ff; }     /* 主色 */
+.Reasoning { background-color: #e0f2f1; }   /* 淡青蓝 */
+.Retrieval { background-color: #fff3e0; }   /* 淡暖黄（对比色） */
+.Faithfulness { background-color: #f5f5dc; } /* 淡米黄 */
+.Specialization { background-color: #e3f2fd; } /* 标准淡蓝 */
 
-        .evaluation::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 4px;
-        }
+.evaluation tr:hover {
+    background-color: #f5f9ff; /* hover时浅月白 */
+}
 
-        .evaluation::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 4px;
-        }
+/* 模型标签颜色（保持区分度但柔和化） */
+.Llama { background-color: #ffebe7; }       /* 淡粉（对比模型） */
+.Qwen { background-color: #e3f2fd; }        /* 标准淡蓝 */
 
-        .evaluation::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
+.algorithm-group {
+    border-left: none;
+    padding-left: 15px;
+    font-weight: bold;
+    color: #364f6b; /* 深蓝色标题文字 */
+}
+
+.model-type-legend {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 10px 0;
+    color: #4a6384; /* 蓝灰色说明文字 */
+}
+
+.legend-item .legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(192, 208, 230, 0.3); /* 阴影增强立体感 */
+}
+
+.best-score {
+    font-weight: bold;
+    color: #2c3e50; /* 深灰蓝强调分数 */
+}
+
+.evaluation::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+}
+
+.evaluation::-webkit-scrollbar-track {
+    background: #f0f8ff;
+    border-radius: 4px;
+}
+
+.evaluation::-webkit-scrollbar-thumb {
+    background: #aab8d6; /* 表头同色滚动条 */
+    border-radius: 4px;
+}
     </style>
 </head>
 <body>
