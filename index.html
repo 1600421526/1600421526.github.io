@@ -292,7 +292,6 @@
             Plotly.newPlot('sunburst-chart', fig);
         </script>
             <p> 
-
                 LOOM-Scope offers a comprehensive suite of tools, featuring 15 standard long-context benchmarks covering faithfulness, retrieval, reasoning, generation, and more. With hundreds of subtasks and support for diverse model architectures—including Transformers, Mamba, and RWKV—it enables researchers to rigorously assess model capabilities under real-world long-context demands. A standout feature is its single-line command workflow, automating dataset/model detection, download, and evaluation for seamless usability.<br>
                 <br>
                 Efficiency is at the core of LOOM-Scope: it integrates 12 computational acceleration methods like CakeKV and FlexPrefill, leveraging vLLM for fast, memory-efficient inference. We have evaluated a range of GPU hardware, from the 3090 with 24GB VRAM to the H20 with 96GB VRAM, and publicly documented their computational costs while ensuring reproducible results across platforms. Whether evaluating base models or adapters (via HuggingFace PEFT), LOOM-Scope ensures consistency and scalability.<br>
@@ -303,6 +302,9 @@
 
         <section class="evaluation">
             <h2><i class="fas fa-chart-bar"></i> Model leaderboard</h2>
+            <p> 
+                The model leaderboard showcases performance rankings across LOOM-Scope's multidimensional benchmarks, evaluating models on key capabilities including Faithfulness, General tasks, Reasoning, Retrieval, Generation, and Specialization. Scores reflect performance across 15+ long-context benchmarks like L_CiteEval, RULER, and LongWriter, providing a comprehensive view of model strengths of model across diverse long-context scenarios.
+            </p> 
             <div class="table-container">
                 <table>
                     <thead>
@@ -443,6 +445,9 @@
         <section class="evaluation">
             <h2><i class="fa-solid fa-flask"></i> Benchmark Validation Platform</h2>
             <div class="table-container">
+                <p>
+                    The Benchmark Validation Platform provides a side-by-side comparison of scores from our framework’s evaluations and official scores reported in benchmark papers, demonstrating research findings’ reproducibility. 
+                </p>
                 <table>
                     <thead>
                         <tr>
