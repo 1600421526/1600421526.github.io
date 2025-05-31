@@ -158,15 +158,15 @@ h2 {
     display: inline-flex;
     align-items: center;
     gap: 0.8rem;
-    padding: 1rem 2rem;
+    padding: 0.8rem 1.8rem;
     background-color: var(--primary-color);
     color: white;
     text-decoration: none;
-    border-radius: 8px;
+    border-radius: 6px;
     font-weight: 500;
     transition: var(--transition);
     border: 2px solid var(--primary-color);
-    min-width: 160px;
+    min-width: 140px;
     justify-content: center;
     position: relative;
     overflow: hidden;
