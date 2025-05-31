@@ -31,6 +31,98 @@
                 </a>
             </div>
         </section>
+        <section class="evaluation">
+            <h2><i class="fas fa-chart-bar"></i> Model leaderboard</h2>
+            <p> 
+                The model leaderboard showcases performance rankings across LOOM-Scope's multidimensional benchmarks, evaluating models on key capabilities including Faithfulness, General tasks, Reasoning, Retrieval, Generation, and Specialization.
+            </p> 
+            <script>
+                // 数据处理函数
+                function generateLeaderboard() {
+                    const scores = {
+                        "Qwen3-30B-A3B":[37.96,40.61,11.61,78.32,43.24,60.31,48.96,41.30,22.82,28.42,100.00,24.12,14.14,83.24,56.09],
+                        "Qwen3-14B":[35.64,43.84,11.79,74.94,45.47,59.15,56.41,31.95,21.26,29.85,100.00,27.35,10.24,85.75,55.87],
+                        "Meta-Llama-3.1-8B-Instruct":[25.79,39.70,11.81,86.79,37.94,57.42,37.68,25.40,25.66,30.40,91.00,20.06,33.64,45.96,51.24], // 修正原始数据中的5.79为25.79
+                        "Qwen3-8B":[33.18,41.15,11.67,67.68,38.62,55.28,52.32,32.61,15.15,27.25,64.00,21.92,8.06,81.99,51.78],
+                        "Qwen3-4B":[24.55,39.03,11.69,70.29,39.32,55.01,42.06,33.66,18.24,32.52,62.00,17.95,13.05,74.25,46.92]
+                    };
+                    const sequence = ["L_CiteEval", "LEval", "LooGLE", "RULER（0-128k）", "longbench", "babilong（0-128k）", "Counting-Stars", "LongIns", "LVEval", "longbench_v2", "NIAH", "NThread", "InfiniteBench", "LongWriter", "LIBRA"];
+                    const ability = {
+                        "Faithfulness": ["L_CiteEval"], 
+                        "General": ["LEval", "LooGLE", "RULER（0-128k）", "longbench"],
+                        "Reasoning": ["Counting-Stars", "LongIns", "LVEval", "longbench_v2", "NIAH"], 
+                        "Retrieval": ["NThread", "InfiniteBench", "LongWriter"], 
+                        "Generation": ["LongWriter"], 
+                        "Specialization": ["LIBRA"] 
+                    };
+
+                    // 计算平均分并生成模型数组
+                    const models = Object.entries(scores).map(([model, values]) => {
+                        const avgScore = values.reduce((a, b) => a + b, 0) / values.length;
+                        return {
+                            model,
+                            values,
+                            avgScore: avgScore.toFixed(2),
+                            type: model.startsWith('Qwen') ? 'Qwen' : 'Llama'
+                        };
+                    });
+
+                    // 按平均分降序排序
+                    models.sort((a, b) => parseFloat(b.avgScore) - parseFloat(a.avgScore));
+
+                    // 生成表格行
+                    const tbody = document.querySelector('tbody');
+                    tbody.innerHTML = models.map((model, index) => `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td><span class="model-label ${model.type}">${model.model}</span></td>
+                            <td class="best-score">${model.avgScore}</td>
+                            ${sequence.map(metric => `<td>${model.values[sequence.indexOf(metric)].toFixed(2)}</td>`).join('')}
+                        </tr>
+                    `).join('');
+                }
+
+                // 页面加载后执行生成函数
+                document.addEventListener('DOMContentLoaded', generateLeaderboard);
+            </script>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th rowspan="3" class="basic-header rank-col">Rank</th>
+                            <th rowspan="2" class="basic-header model-col">Model</th>
+                            <th rowspan="2" class="basic-header score-col">Avg Score</th>
+                            <th colspan="1" class="algorithm-group">Faithfulness</th>
+                            <th colspan="4" class="algorithm-group">General</th>
+                            <th colspan="5" class="algorithm-group">Reasoning</th>
+                            <th colspan="3" class="algorithm-group">Retrieval</th>
+                            <th colspan="1" class="algorithm-group">Generation</th>
+                            <th colspan="1" class="algorithm-group">Specialization</th>
+                        </tr>
+                        <tr>
+                            <th class="algorithm-col">L_CiteEval</th>
+                            <th class="algorithm-col">LEval</th>
+                            <th class="algorithm-col">LooGLE</th>
+                            <th class="algorithm-col">RULER（0-128k）</th>
+                            <th class="algorithm-col">longbench</th>
+                            <th class="algorithm-col">babilong（0-128k）</th>
+                            <th class="algorithm-col">Counting-Stars</th>
+                            <th class="algorithm-col">LongIns</th>
+                            <th class="algorithm-col">LVEval</th>
+                            <th class="algorithm-col">longbench_v2</th>
+                            <th class="algorithm-col">NIAH</th>
+                            <th class="algorithm-col">NThread</th>
+                            <th class="algorithm-col">InfiniteBench</th>
+                            <th class="algorithm-col">LongWriter</th>
+                            <th class="algorithm-col">LIBRA</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- 动态生成的行将插入此处 -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
 
         <section class="introduction">
             <h2><i class="fas fa-info-circle"></i> Introduction</h2>
