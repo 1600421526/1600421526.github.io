@@ -133,6 +133,38 @@
             
                 
         </section>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                // 获取表格tbody元素
+                const tbody = document.querySelector('tbody');
+                
+                // 提取数据行并转换为数组
+                const rows = Array.from(tbody.querySelectorAll('tr'))
+                    .map(row => {
+                        // 提取排名、模型名称和平均分数
+                        const rankCell = row.querySelector('td:first-child');
+                        const scoreCell = row.querySelector('.best-score');
+                        const score = parseFloat(scoreCell.textContent);
+                        
+                        return {
+                            row: row,
+                            score: score,
+                            rankCell: rankCell,
+                            scoreCell: scoreCell
+                        };
+                    })
+                    .filter(item => !isNaN(item.score)); // 过滤无效数据
+
+                // 按平均分数降序排序
+                rows.sort((a, b) => b.score - a.score);
+
+                // 更新排名和行顺序
+                rows.forEach((item, index) => {
+                    item.rankCell.textContent = index + 1; // 设置新排名
+                    tbody.appendChild(item.row); // 保持排序后的顺序
+                });
+            });
+            </script>
 
         <section class="evaluation">
             <h2><i class="fas fa-chart-bar"></i> Model leaderboard</h2>
