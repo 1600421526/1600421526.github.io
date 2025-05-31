@@ -149,49 +149,6 @@
                 "Generation": ["LongWriter"], 
                 "Specialization": ["LIBRA"] 
                 }
-                const models = Object.entries(scores).map(([model, arr]) => {
-                const avgScore = arr.reduce((a, b) => a + b, 0) / arr.length;
-                const abilityScores = {};
-                
-                // 计算每个能力的分数（取对应指标的平均值）
-                for (const [abilityName, metrics] of Object.entries(ability)) {
-                    const metricScores = metrics.map(metric => arr[sequence.indexOf(metric)]);
-                    abilityScores[abilityName] = metricScores.reduce((a, b) => a + b, 0) / metricScores.length;
-                }
-                
-                return {
-                    model,
-                    avgScore: avgScore.toFixed(2),
-                    ...abilityScores
-                };
-                });
-
-                // 按平均分降序排序
-                models.sort((a, b) => parseFloat(b.avgScore) - parseFloat(a.avgScore));
-
-                // 生成排名
-                models.forEach((model, index) => model.rank = index + 1);
-
-                // 动态生成表格
-                const table = document.getElementById('leaderboard');
-                table.innerHTML = `
-                <tr>
-                    <th>Rank</th>
-                    <th>Model</th>
-                    <th>Avg Score</th>
-                    ${Object.keys(ability).map(abilityName => `<th>${abilityName}</th>`).join('')}
-                </tr>
-                ${models.map(model => `
-                    <tr>
-                    <td>${model.rank}</td>
-                    <td>${model.model}</td>
-                    <td>${model.avgScore}</td>
-                    ${Object.values(ability).map(metrics => {
-                        const metric = metrics[0]; // 对于单指标能力直接取第一个值
-                        return `<td>${model[Object.keys(ability).find(key => key.toLowerCase() === abilityName.toLowerCase())].toFixed(2)}</td>`;
-                    }).join('')}
-                    </tr>
-                `).join('')}`;
             </script>
             <div class="table-container">
                 <table>
