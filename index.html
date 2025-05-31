@@ -144,17 +144,7 @@
             "Generation": ["LongWriter"], 
             "Specialization": ["LIBRA"] 
             };
-            const models = Object.entries(scores).map(([model, scoresArr]) => {
-            const avgScore = scoresArr.reduce((a, b) => a + b, 0) / scoresArr.length;
-            const modelType = model.startsWith('Qwen') ? 'Qwen' : 'Llama';
-            return {
-                model,
-                modelType,
-                scores: scoresArr,
-                avgScore: avgScore.toFixed(2),
-                rank: null
-            };
-        });
+
 
     
             <h2><i class="fas fa-chart-bar"></i> Model leaderboard</h2>
