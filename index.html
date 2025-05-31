@@ -51,51 +51,34 @@
             color: #bbdefb;
         }
         
-        .controls {
+        .ability-controls {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
+            gap: 15px;
             margin-bottom: 20px;
             flex-wrap: wrap;
-            gap: 15px;
         }
         
-        .filter-section {
-            background: rgba(16, 42, 67, 0.7);
-            padding: 15px;
-            border-radius: 10px;
-            flex: 1;
-            min-width: 250px;
-        }
-        
-        .filter-section h3 {
-            margin-bottom: 12px;
-            color: #4fc3f7;
-            font-size: 1.1rem;
-        }
-        
-        .filter-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        
-        .filter-btn {
+        .ability-btn {
             background: rgba(30, 70, 110, 0.8);
             border: 1px solid #3a7bd5;
             color: #e3f2fd;
-            padding: 8px 15px;
-            border-radius: 20px;
+            padding: 12px 20px;
+            border-radius: 30px;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 0.9rem;
+            font-size: 1rem;
+            font-weight: 600;
+            min-width: 140px;
+            text-align: center;
         }
         
-        .filter-btn:hover {
+        .ability-btn:hover {
             background: rgba(58, 123, 213, 0.6);
             transform: translateY(-2px);
         }
         
-        .filter-btn.active {
+        .ability-btn.active {
             background: rgba(58, 123, 213, 0.9);
             box-shadow: 0 0 12px rgba(58, 123, 213, 0.7);
         }
@@ -107,12 +90,13 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
             padding: 20px;
             backdrop-filter: blur(4px);
+            margin-bottom: 30px;
         }
         
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 1200px;
+            min-width: 1000px;
         }
         
         th, td {
@@ -127,6 +111,22 @@
             font-weight: 600;
             position: sticky;
             top: 0;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        thead th:hover {
+            background: rgba(40, 85, 135, 0.9);
+        }
+        
+        thead th.sorted-asc::after {
+            content: " ▲";
+            font-size: 0.8em;
+        }
+        
+        thead th.sorted-desc::after {
+            content: " ▼";
+            font-size: 0.8em;
         }
         
         tbody tr:nth-child(odd) {
@@ -142,19 +142,19 @@
         }
         
         .rank-col {
-            width: 50px;
+            width: 70px;
             font-weight: bold;
             color: #4fc3f7;
         }
         
         .model-col {
-            min-width: 200px;
+            min-width: 220px;
             text-align: left;
             padding-left: 15px;
         }
         
         .score-col {
-            width: 80px;
+            width: 100px;
             font-weight: bold;
         }
         
@@ -162,21 +162,12 @@
             background: rgba(40, 80, 120, 0.7);
         }
         
-        .algorithm-col {
-            min-width: 90px;
-            font-size: 0.85rem;
-        }
-        
-        .basic-header {
-            background: rgba(30, 70, 110, 0.9);
-        }
-        
         .model-label {
             display: inline-block;
-            padding: 5px 12px;
+            padding: 6px 15px;
             border-radius: 20px;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
         }
         
         .Qwen {
@@ -200,7 +191,7 @@
             display: flex;
             justify-content: center;
             gap: 20px;
-            margin-top: 20px;
+            margin: 20px 0;
             flex-wrap: wrap;
         }
         
@@ -235,6 +226,7 @@
         .ability-explanation h2 {
             color: #4fc3f7;
             margin-bottom: 15px;
+            text-align: center;
         }
         
         .ability-list {
@@ -248,12 +240,25 @@
             padding: 15px;
             border-radius: 8px;
             border-left: 4px solid #3a7bd5;
+            transition: transform 0.3s;
+        }
+        
+        .ability-item:hover {
+            transform: translateY(-5px);
+            background: rgba(40, 85, 135, 0.5);
         }
         
         .ability-item h3 {
             color: #bbdefb;
             margin-bottom: 10px;
             font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .ability-item h3 i {
+            color: #4fc3f7;
         }
         
         .ability-item p {
@@ -270,16 +275,14 @@
         }
         
         @media (max-width: 768px) {
-            .controls {
-                flex-direction: column;
-            }
-            
             h1 {
                 font-size: 2.2rem;
             }
             
-            .table-container {
-                padding: 10px;
+            .ability-btn {
+                padding: 10px 15px;
+                min-width: 120px;
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -289,63 +292,33 @@
         <header>
             <h1><i class="fas fa-chart-bar"></i> LOOM-Scope 模型排行榜</h1>
             <p class="subtitle">
-                该排行榜展示了在LOOM-Scope多维基准测试中的模型性能排名，评估模型在忠实度、通用任务、推理能力、检索能力、生成能力和专业能力等关键能力上的表现。
+                该排行榜展示了在LOOM-Scope多维基准测试中的模型性能排名，评估模型在关键能力维度上的表现
             </p>
         </header>
         
-        <div class="controls">
-            <div class="filter-section">
-                <h3><i class="fas fa-filter"></i> 模型筛选</h3>
-                <div class="filter-group" id="model-filters">
-                    <!-- 模型筛选按钮由JS动态生成 -->
-                </div>
-            </div>
-            
-            <div class="filter-section">
-                <h3><i class="fas fa-sort"></i> 排序方式</h3>
-                <div class="filter-group" id="sort-filters">
-                    <button class="filter-btn active" data-sort="avg">按平均分排序</button>
-                    <button class="filter-btn" data-sort="faith">按忠实度排序</button>
-                    <button class="filter-btn" data-sort="reason">按推理能力排序</button>
-                </div>
-            </div>
-            
-            <div class="filter-section">
-                <h3><i class="fas fa-search"></i> 模型搜索</h3>
-                <input type="text" id="model-search" placeholder="输入模型名称..." class="filter-btn" style="width: 100%; text-align: left; cursor: text;">
-            </div>
+        <div class="ability-controls">
+            <button class="ability-btn active" data-ability="all">全部能力</button>
+            <button class="ability-btn" data-ability="faithfulness">忠实度</button>
+            <button class="ability-btn" data-ability="general">通用任务</button>
+            <button class="ability-btn" data-ability="reasoning">推理能力</button>
+            <button class="ability-btn" data-ability="retrieval">检索能力</button>
+            <button class="ability-btn" data-ability="generation">生成能力</button>
+            <button class="ability-btn" data-ability="specialization">专业能力</button>
         </div>
         
         <div class="table-container">
             <table id="model-leaderboard">
                 <thead>
                     <tr>
-                        <th rowspan="3" class="basic-header rank-col">排名</th>
-                        <th rowspan="2" class="basic-header model-col">模型</th>
-                        <th rowspan="2" class="basic-header score-col">平均分</th>
-                        <th colspan="1" class="algorithm-group">忠实度</th>
-                        <th colspan="4" class="algorithm-group">通用任务</th>
-                        <th colspan="5" class="algorithm-group">推理能力</th>
-                        <th colspan="3" class="algorithm-group">检索能力</th>
-                        <th colspan="1" class="algorithm-group">生成能力</th>
-                        <th colspan="1" class="algorithm-group">专业能力</th>
-                    </tr>
-                    <tr>
-                        <th class="algorithm-col">L_CiteEval</th>
-                        <th class="algorithm-col">LEval</th>
-                        <th class="algorithm-col">LooGLE</th>
-                        <th class="algorithm-col">RULER(0-128k)</th>
-                        <th class="algorithm-col">longbench</th>
-                        <th class="algorithm-col">babilong(0-128k)</th>
-                        <th class="algorithm-col">Counting-Stars</th>
-                        <th class="algorithm-col">LongIns</th>
-                        <th class="algorithm-col">LVEval</th>
-                        <th class="algorithm-col">longbench_v2</th>
-                        <th class="algorithm-col">NIAH</th>
-                        <th class="algorithm-col">NThread</th>
-                        <th class="algorithm-col">InfiniteBench</th>
-                        <th class="algorithm-col">LongWriter</th>
-                        <th class="algorithm-col">LIBRA</th>
+                        <th class="basic-header rank-col">排名</th>
+                        <th class="basic-header model-col">模型</th>
+                        <th class="basic-header score-col">平均分</th>
+                        <th class="algorithm-group" data-ability="faithfulness">忠实度</th>
+                        <th class="algorithm-group" data-ability="general">通用任务</th>
+                        <th class="algorithm-group" data-ability="reasoning">推理能力</th>
+                        <th class="algorithm-group" data-ability="retrieval">检索能力</th>
+                        <th class="algorithm-group" data-ability="generation">生成能力</th>
+                        <th class="algorithm-group" data-ability="specialization">专业能力</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -369,28 +342,28 @@
             <h2><i class="fas fa-lightbulb"></i> 能力维度说明</h2>
             <div class="ability-list">
                 <div class="ability-item">
-                    <h3>忠实度 (Faithfulness)</h3>
-                    <p>评估模型生成内容与原始信息的一致性，避免虚构或错误信息的能力。</p>
+                    <h3><i class="fas fa-check-circle"></i> 忠实度 (Faithfulness)</h3>
+                    <p>评估模型生成内容与原始信息的一致性，避免虚构或错误信息的能力。测试模型在引用准确性、事实一致性等方面的表现。</p>
                 </div>
                 <div class="ability-item">
-                    <h3>通用任务 (General Tasks)</h3>
-                    <p>衡量模型在各种常见任务上的表现，如文本理解、分类和基础问答。</p>
+                    <h3><i class="fas fa-tasks"></i> 通用任务 (General Tasks)</h3>
+                    <p>衡量模型在各种常见任务上的表现，包括文本理解、分类、基础问答、信息提取等通用NLP任务的能力。</p>
                 </div>
                 <div class="ability-item">
-                    <h3>推理能力 (Reasoning)</h3>
-                    <p>测试模型进行逻辑推理、数学计算和解决复杂问题的能力。</p>
+                    <h3><i class="fas fa-brain"></i> 推理能力 (Reasoning)</h3>
+                    <p>测试模型进行逻辑推理、数学计算、因果推断和解决复杂问题的能力。包括多步推理和抽象思维等高级认知能力。</p>
                 </div>
                 <div class="ability-item">
-                    <h3>检索能力 (Retrieval)</h3>
-                    <p>评估模型从大量信息中准确查找并提取相关内容的能力。</p>
+                    <h3><i class="fas fa-search"></i> 检索能力 (Retrieval)</h3>
+                    <p>评估模型从大量信息中准确查找、定位并提取相关内容的能力。测试模型在长文档处理和信息定位方面的表现。</p>
                 </div>
                 <div class="ability-item">
-                    <h3>生成能力 (Generation)</h3>
-                    <p>衡量模型生成流畅、连贯且符合上下文的文本能力。</p>
+                    <h3><i class="fas fa-pen-alt"></i> 生成能力 (Generation)</h3>
+                    <p>衡量模型生成流畅、连贯、符合上下文且具有创造性的文本能力。包括内容生成、文本续写、创意写作等任务。</p>
                 </div>
                 <div class="ability-item">
-                    <h3>专业能力 (Specialization)</h3>
-                    <p>测试模型在特定领域（如法律、医学、编程等）的专业知识水平。</p>
+                    <h3><i class="fas fa-graduation-cap"></i> 专业能力 (Specialization)</h3>
+                    <p>测试模型在特定领域（如法律、医学、编程、金融等）的专业知识水平和专业问题解决能力。</p>
                 </div>
             </div>
         </div>
@@ -402,6 +375,7 @@
     </div>
 
     <script>
+        // 原始数据
         const scores = {
             "Qwen3-30B-A3B": [37.96,40.61,11.61,78.32,43.24,60.31,48.96,41.30,22.82,28.42,100.00,24.12,14.14,83.24,56.09],
             "Qwen3-14B": [35.64,43.84,11.79,74.94,45.47,59.15,56.41,31.95,21.26,29.85,100.00,27.35,10.24,85.75,55.87],
@@ -410,45 +384,67 @@
             "Qwen3-4B": [24.55,39.03,11.69,70.29,39.32,55.01,42.06,33.66,18.24,32.52,62.00,17.95,13.05,74.25,46.92]
         };
         
-        const sequence = [
-            "L_CiteEval", "LEval", "LooGLE", "RULER(0-128k)", "longbench", 
-            "babilong(0-128k)", "Counting-Stars", "LongIns", "LVEval", 
-            "longbench_v2", "NIAH", "NThread", "InfiniteBench", "LongWriter", "LIBRA"
-        ];
-        
         const ability = {
-            "Faithfulness": ["L_CiteEval"], 
-            "General": ["LEval", "LooGLE", "RULER(0-128k)", "longbench"],
-            "Reasoning": ["Counting-Stars", "LongIns", "LVEval", "longbench_v2", "NIAH"], 
-            "Retrieval": ["NThread", "InfiniteBench", "LongWriter"], 
-            "Generation": ["LongWriter"], 
-            "Specialization": ["LIBRA"] 
+            "faithfulness": ["L_CiteEval"], 
+            "general": ["LEval", "LooGLE", "RULER(0-128k)", "longbench"],
+            "reasoning": ["Counting-Stars", "LongIns", "LVEval", "longbench_v2", "NIAH"], 
+            "retrieval": ["NThread", "InfiniteBench", "LongWriter"], 
+            "generation": ["LongWriter"], 
+            "specialization": ["LIBRA"] 
         };
         
-        // 计算每个模型的平均分
-        const calculateAverage = (scores) => {
-            const sum = scores.reduce((acc, score) => acc + score, 0);
-            return sum / scores.length;
+        // 能力维度对应的测试项目数
+        const abilitySize = {
+            "faithfulness": 1,
+            "general": 4,
+            "reasoning": 5,
+            "retrieval": 3,
+            "generation": 1,
+            "specialization": 1
         };
         
-        // 计算能力维度平均分
-        const calculateAbilityAverage = (modelScores, abilityTests) => {
-            const indices = abilityTests.map(test => sequence.indexOf(test));
-            const abilityScores = indices.map(index => modelScores[index]);
-            const sum = abilityScores.reduce((acc, score) => acc + score, 0);
-            return sum / abilityScores.length;
+        // 计算每个模型在特定能力维度的平均分
+        const calculateAbilityAverage = (modelScores, abilityName) => {
+            const abilityTests = ability[abilityName];
+            const startIndex = getAbilityStartIndex(abilityName);
+            const count = abilitySize[abilityName];
+            
+            let sum = 0;
+            for (let i = startIndex; i < startIndex + count; i++) {
+                sum += modelScores[i];
+            }
+            return sum / count;
+        };
+        
+        // 获取能力维度的起始索引
+        const getAbilityStartIndex = (abilityName) => {
+            let index = 0;
+            const abilities = Object.keys(ability);
+            
+            for (const ability of abilities) {
+                if (ability === abilityName) break;
+                index += abilitySize[ability];
+            }
+            
+            return index;
         };
         
         // 准备模型数据
         const prepareModelData = () => {
             return Object.keys(scores).map(model => {
                 const modelScores = scores[model];
+                const avgScore = modelScores.reduce((sum, score) => sum + score, 0) / modelScores.length;
+                
                 return {
                     name: model,
                     scores: modelScores,
-                    avgScore: calculateAverage(modelScores),
-                    faithScore: calculateAbilityAverage(modelScores, ability.Faithfulness),
-                    reasonScore: calculateAbilityAverage(modelScores, ability.Reasoning)
+                    avgScore: avgScore,
+                    faithScore: calculateAbilityAverage(modelScores, "faithfulness"),
+                    generalScore: calculateAbilityAverage(modelScores, "general"),
+                    reasoningScore: calculateAbilityAverage(modelScores, "reasoning"),
+                    retrievalScore: calculateAbilityAverage(modelScores, "retrieval"),
+                    generationScore: calculateAbilityAverage(modelScores, "generation"),
+                    specializationScore: calculateAbilityAverage(modelScores, "specialization")
                 };
             });
         };
@@ -458,17 +454,17 @@
             const isQwen = model.name.includes("Qwen");
             const modelClass = isQwen ? "Qwen" : "Llama";
             
-            let rowHTML = `<tr>
+            return `<tr>
                 <td class="rank-col">${rank}</td>
                 <td class="model-col"><span class="model-label ${modelClass}">${model.name}</span></td>
-                <td class="best-score">${model.avgScore.toFixed(2)}</td>`;
-            
-            model.scores.forEach(score => {
-                rowHTML += `<td>${score.toFixed(2)}</td>`;
-            });
-            
-            rowHTML += `</tr>`;
-            return rowHTML;
+                <td class="best-score">${model.avgScore.toFixed(2)}</td>
+                <td>${model.faithScore.toFixed(2)}</td>
+                <td>${model.generalScore.toFixed(2)}</td>
+                <td>${model.reasoningScore.toFixed(2)}</td>
+                <td>${model.retrievalScore.toFixed(2)}</td>
+                <td>${model.generationScore.toFixed(2)}</td>
+                <td>${model.specializationScore.toFixed(2)}</td>
+            </tr>`;
         };
         
         // 渲染表格
@@ -481,113 +477,100 @@
             });
         };
         
-        // 初始化模型筛选按钮
-        const initModelFilters = () => {
-            const modelFilters = document.getElementById("model-filters");
-            const models = Object.keys(scores);
+        // 排序表格
+        const sortTable = (ability, direction = "desc") => {
+            let models = prepareModelData();
             
-            // 添加"全部"按钮
-            modelFilters.innerHTML = `<button class="filter-btn active" data-model="all">全部模型</button>`;
-            
-            // 添加每个模型的按钮
-            models.forEach(model => {
-                modelFilters.innerHTML += `<button class="filter-btn" data-model="${model}">${model}</button>`;
+            // 移除之前的排序指示
+            document.querySelectorAll("th[data-ability]").forEach(th => {
+                th.classList.remove("sorted-asc", "sorted-desc");
             });
+            
+            // 添加当前排序指示
+            const header = document.querySelector(`th[data-ability="${ability}"]`);
+            if (header) {
+                header.classList.add(direction === "asc" ? "sorted-asc" : "sorted-desc");
+            }
+            
+            // 排序逻辑
+            models.sort((a, b) => {
+                const aScore = a[`${ability}Score`];
+                const bScore = b[`${ability}Score`];
+                
+                if (direction === "asc") {
+                    return aScore - bScore;
+                } else {
+                    return bScore - aScore;
+                }
+            });
+            
+            renderTable(models);
+        };
+        
+        // 筛选显示的能力维度
+        const filterAbilities = (selectedAbility) => {
+            // 显示所有列
+            document.querySelectorAll("th[data-ability], td").forEach(cell => {
+                cell.style.display = "";
+            });
+            
+            // 移除所有活动按钮
+            document.querySelectorAll(".ability-btn").forEach(btn => {
+                btn.classList.remove("active");
+            });
+            
+            // 设置当前按钮为活动状态
+            document.querySelector(`.ability-btn[data-ability="${selectedAbility}"]`).classList.add("active");
+            
+            if (selectedAbility !== "all") {
+                // 隐藏非选中的能力列（除了排名、模型和平均分）
+                document.querySelectorAll("th[data-ability], td").forEach((cell, index) => {
+                    if (index > 2 && cell.dataset.ability !== selectedAbility) {
+                        cell.style.display = "none";
+                    }
+                });
+            }
         };
         
         // 初始化事件监听
         const initEventListeners = () => {
-            // 模型筛选
-            document.getElementById("model-filters").addEventListener("click", (e) => {
-                if (e.target.classList.contains("filter-btn")) {
-                    document.querySelectorAll("#model-filters .filter-btn").forEach(btn => {
-                        btn.classList.remove("active");
-                    });
-                    e.target.classList.add("active");
+            // 表头排序点击
+            document.querySelectorAll("th[data-ability]").forEach(th => {
+                th.addEventListener("click", (e) => {
+                    const ability = e.target.dataset.ability;
+                    const currentDirection = e.target.classList.contains("sorted-asc") ? "desc" : "asc";
+                    sortTable(ability, currentDirection);
+                });
+            });
+            
+            // 能力筛选按钮
+            document.querySelectorAll(".ability-btn").forEach(btn => {
+                btn.addEventListener("click", (e) => {
+                    const ability = e.target.dataset.ability;
+                    filterAbilities(ability);
                     
-                    const modelName = e.target.dataset.model;
-                    filterModels(modelName);
-                }
+                    // 如果是具体能力，按该能力排序
+                    if (ability !== "all") {
+                        sortTable(ability, "desc");
+                    } else {
+                        // 全部能力时按平均分排序
+                        sortTable("avg", "desc");
+                    }
+                });
             });
-            
-            // 排序筛选
-            document.getElementById("sort-filters").addEventListener("click", (e) => {
-                if (e.target.classList.contains("filter-btn")) {
-                    document.querySelectorAll("#sort-filters .filter-btn").forEach(btn => {
-                        btn.classList.remove("active");
-                    });
-                    e.target.classList.add("active");
-                    
-                    const sortType = e.target.dataset.sort;
-                    sortModels(sortType);
-                }
-            });
-            
-            // 模型搜索
-            document.getElementById("model-search").addEventListener("input", (e) => {
-                const searchTerm = e.target.value.toLowerCase();
-                filterModelsBySearch(searchTerm);
-            });
-        };
-        
-        // 模型筛选
-        const filterModels = (modelName) => {
-            let models = prepareModelData();
-            
-            if (modelName !== "all") {
-                models = models.filter(model => model.name === modelName);
-            }
-            
-            // 按平均分排序
-            models.sort((a, b) => b.avgScore - a.avgScore);
-            renderTable(models);
-        };
-        
-        // 模型搜索
-        const filterModelsBySearch = (searchTerm) => {
-            let models = prepareModelData();
-            
-            if (searchTerm) {
-                models = models.filter(model => 
-                    model.name.toLowerCase().includes(searchTerm)
-                );
-            }
-            
-            // 按平均分排序
-            models.sort((a, b) => b.avgScore - a.avgScore);
-            renderTable(models);
-        };
-        
-        // 模型排序
-        const sortModels = (sortType) => {
-            let models = prepareModelData();
-            
-            switch(sortType) {
-                case "avg":
-                    models.sort((a, b) => b.avgScore - a.avgScore);
-                    break;
-                case "faith":
-                    models.sort((a, b) => b.faithScore - a.faithScore);
-                    break;
-                case "reason":
-                    models.sort((a, b) => b.reasonScore - a.reasonScore);
-                    break;
-                default:
-                    models.sort((a, b) => b.avgScore - a.avgScore);
-            }
-            
-            renderTable(models);
         };
         
         // 页面加载时初始化
         window.onload = () => {
-            initModelFilters();
             initEventListeners();
             
             // 初始渲染（按平均分排序）
             let models = prepareModelData();
             models.sort((a, b) => b.avgScore - a.avgScore);
             renderTable(models);
+            
+            // 设置初始排序指示
+            document.querySelector("th[data-ability]").classList.add("sorted-desc");
         };
     </script>
 </body>
