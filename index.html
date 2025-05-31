@@ -379,7 +379,7 @@
                 ]
             },
             "reasoning": {
-                "tests": ["Counting-Stars", "LongIns", "LVEval", "longbench_v2", "NIAH"],
+                "tests": ["Counting_Stars", "LongIns", "LVEval", "longbench_v2", "NIAH"],
                 "description": "Tests logical reasoning, mathematical computation, causal inference and complex problem-solving abilities. Evaluates multi-step reasoning and abstract thinking capabilities.",
                 "columns": [
                     { name: "Rank", type: "fixed", sortable: true },
@@ -429,7 +429,7 @@
         // Test sequence
         const sequence = [
             "L_CiteEval", "LEval", "LooGLE", "RULER(0-128k)", "longbench", 
-            "babilong(0-128k)", "Counting-Stars", "LongIns", "LVEval", 
+            "babilong(0-128k)", "Counting_Stars", "LongIns", "LVEval", 
             "longbench_v2", "NIAH", "NThread", "InfiniteBench", "LongWriter", "LIBRA"
         ];
         
@@ -444,10 +444,14 @@
             const testIndices = tests.map(test => sequence.indexOf(test));
             
             let sum = 0;
+            let count = 0;
             for (const index of testIndices) {
-                sum += modelScores[index];
+                if (index !== -1) {
+                    sum += modelScores[index];
+                    count++;
+                }
             }
-            return sum / tests.length;
+            return count > 0 ? sum / count : 0;
         };
         
         // Prepare model data with calculated metrics
@@ -509,8 +513,10 @@
         
         // Get score for a specific test
         const getTestScore = (model, testName) => {
-            const testIndex = sequence.indexOf(testName);
-            return model.scores[testIndex];
+            // Normalize test names (replace hyphens with underscores)
+            const normalizedTestName = testName.replace(/-/g, '_');
+            const testIndex = sequence.indexOf(normalizedTestName);
+            return testIndex !== -1 ? model.scores[testIndex] : 0;
         };
         
         // Get score for a capability
@@ -531,7 +537,9 @@
             if (currentCapability === "overview") {
                 return model.avgScore;
             } else {
-                return getCapabilityScore(model, currentCapability);
+                // Calculate average of current capability tests
+                const tests = capabilities[currentCapability].tests;
+                return calculateAbilityAverage(model.scores, tests);
             }
         };
         
@@ -551,13 +559,14 @@
                     aValue = getAvgScore(a);
                     bValue = getAvgScore(b);
                 } else if (capabilities[currentCapability].tests && 
-                           capabilities[currentCapability].tests.includes(sortColumn)) {
+                           capabilities[currentCapability].tests.includes(sortColumn.replace(/-/g, '_'))) {
                     aValue = getTestScore(a, sortColumn);
                     bValue = getTestScore(b, sortColumn);
                 } else if (currentCapability === "overview") {
                     // For overview, sort by capability scores
-                    aValue = getCapabilityScore(a, sortColumn.toLowerCase().replace(" ", ""));
-                    bValue = getCapabilityScore(b, sortColumn.toLowerCase().replace(" ", ""));
+                    const capabilityKey = sortColumn.toLowerCase().replace(" ", "");
+                    aValue = getCapabilityScore(a, capabilityKey);
+                    bValue = getCapabilityScore(b, capabilityKey);
                 } else {
                     aValue = 0;
                     bValue = 0;
@@ -586,7 +595,7 @@
                         td.textContent = getAvgScore(model).toFixed(2);
                         td.classList.add("best-score");
                     } else if (capabilities[currentCapability].tests && 
-                               capabilities[currentCapability].tests.includes(col.name)) {
+                               capabilities[currentCapability].tests.includes(col.name.replace(/-/g, '_'))) {
                         // Test score
                         td.textContent = getTestScore(model, col.name).toFixed(2);
                     } else if (currentCapability === "overview") {
@@ -609,7 +618,7 @@
             
             title.textContent = currentCapability === "overview" 
                 ? "Model Performance Overview" 
-                : currentCapability.charAt(0).toUpperCase() + currentCapability.slice(1);
+                : currentCapability.charAt(0).toUpperCase() + currentCapability.slice(1) + " Capability";
             
             description.textContent = capabilities[currentCapability].description;
         };
