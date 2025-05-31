@@ -9,4 +9,127 @@
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 投影样式 */
     --transition: all 0.3s ease;            /* 过渡动画 */
 }
-.hr
+/* 通知栏样式 */
+.notification-bar {
+    background-color: #2a1c5a;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.notification-left {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.news-badge {
+    background-color: #46f09b;
+    color: #2a1c5a;
+    padding: 2px 5px;
+    border-radius: 2px;
+    font-size: 12px;
+}
+
+.notification-text {
+    font-size: 14px;
+}
+
+.notification-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.action-btn {
+    background-color: #46f09b;
+    color: #2a1c5a;
+    padding: 5px 10px;
+    border-radius: 2px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* 导航栏样式 */
+.navbar {
+    background-color: #2a1c5a;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.logo i {
+    font-size: 20px;
+    color: #46f09b;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.nav-link.active {
+    color: #46f09b;
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-toggle {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 120%;
+    right: 0;
+    background-color: white;
+    color: #333;
+    padding: 5px;
+    border-radius: 2px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    display: none;
+}
+
+.dropdown:hover.dropdown-menu {
+    display: block;
+}
+
+.separator {
+    border-left: 1px solid white;
+    height: 16px;
+    margin: 0 10px;
+}
+
+.settings-icon {
+    font-size: 18px;
+    cursor: pointer;
+}
