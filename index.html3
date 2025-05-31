@@ -474,7 +474,6 @@
         const generateModelRow = (model, rank) => {
             const isQwen = model.name.includes("Qwen");
             const modelClass = isQwen ? "Qwen" : "Llama";
-            
             return `<tr>
                 <td class="rank-col">${rank}</td>
                 <td class="model-col"><span class="model-label ${modelClass}">${model.name}</span></td>
