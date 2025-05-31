@@ -9,3 +9,9 @@
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 投影样式 */
     --transition: all 0.3s ease;            /* 过渡动画 */
 }
+.navbar {
+    display: flex;
+    align-items: center; /* 垂直居中 */
+    gap: 20px;
+    height: 30px; /* 设置具体高度（根据需要调整） */
+}
