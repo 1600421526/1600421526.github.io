@@ -32,14 +32,12 @@ body {
 
 /* Main content */
 main {
-    max-width: var(--max-width);
-    margin: 0 auto;
-    padding: 2rem;
+  width: 100%; 
+  padding: 2rem; 
 }
 
 .hero {
     padding: 2rem 0;
-    max-width: 900px;
     margin: 0 auto;
     animation: fadeInUp 1s ease;
 }
@@ -47,7 +45,6 @@ main {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1200px;
     margin: 0 auto;
 }
 
