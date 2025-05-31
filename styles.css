@@ -1,13 +1,13 @@
 :root {
-    --primary-color: rgb(33, 51, 44);       /* 主色（深绿色） */
-    --secondary-color: #46f09b;             /* 辅助色（亮绿色） */
-    --accent-color: #09753f;                /* 强调色（红色） */
-    --text-color: #333;                     /* 文本颜色（深灰色） */
-    --background-color: #f8f9fa;            /* 背景色（浅灰色） */
-    --border-radius: 8px;                   /* 圆角半径 */
-    --card-bg: white;                       /* 卡片背景色 */
-    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 投影样式 */
-    --transition: all 0.3s ease;            /* 过渡动画 */
+    --primary-color: #ffc0c2;       /* 主色（深绿色） */
+    --secondary-color: #f7e9e3;             /* 辅助色（亮绿色） */
+    --accent-color: #6dc9c8;                /* 强调色（红色） */
+    --text-color: #0e3150;                     
+    --background-color: #f8f9fa;          
+    --border-radius: 8px;                   
+    --card-bg: white;                      
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    --transition: all 0.3s ease;           
 }
 .navbar {
     display: flex;
