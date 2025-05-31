@@ -616,7 +616,6 @@
                 th.classList.remove("sorted-asc", "sorted-desc");
             });
             
-            // Add current sort indicator
             const header = document.querySelector(`th[data-ability="${sortBy}"]`);
             if (header) {
                 header.classList.add(direction === "asc" ? "sorted-asc" : "sorted-desc");
