@@ -144,6 +144,7 @@
             "Generation": ["LongWriter"], 
             "Specialization": ["LIBRA"] 
             };
+            
 
 
     
@@ -151,6 +152,205 @@
             <p> 
                 The model leaderboard showcases performance rankings across LOOM-Scope's multidimensional benchmarks, evaluating models on key capabilities including Faithfulness, General tasks, Reasoning, Retrieval, Generation, and Specialization.
             </p> 
+            <div class="flex flex-wrap gap-3 mb-6">
+                <button id="btn-leaderboard-1" class="bg-primary text-white px-5 py-2 rounded-lg font-medium btn-hover active">
+                    Overall Leaderboard
+                </button>
+                <button id="btn-leaderboard-2" class="bg-white text-dark px-5 py-2 rounded-lg font-medium btn-hover border border-gray-200">
+                    Faithfulness
+                </button>
+                <button id="btn-leaderboard-3" class="bg-white text-dark px-5 py-2 rounded-lg font-medium btn-hover border border-gray-200">
+                    General Ability
+                </button>
+                <button id="btn-leaderboard-4" class="bg-white text-dark px-5 py-2 rounded-lg font-medium btn-hover border border-gray-200">
+                    Reasoning
+                </button>
+                <button id="btn-leaderboard-5" class="bg-white text-dark px-5 py-2 rounded-lg font-medium btn-hover border border-gray-200">
+                    Retrieval
+                </button>
+                <button id="btn-leaderboard-6" class="bg-white text-dark px-5 py-2 rounded-lg font-medium btn-hover border border-gray-200">
+                    Generation
+                </button>
+                <button id="btn-leaderboard-7" class="bg-white text-dark px-5 py-2 rounded-lg font-medium btn-hover border border-gray-200">
+                    Specialization
+                </button>
+            </div>
+            <div class="bg-white rounded-xl overflow-hidden table-shadow">
+                <div id="leaderboard-1" class="p-6">
+                    <h2 class="text-xl font-semibold mb-4">Overall Performance Leaderboard</h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-gray-50 text-dark">
+                                <tr>
+                                    <th class="px-4 py-3 font-medium cursor-pointer group" data-sort="rank">
+                                        <div class="flex items-center">
+                                            Rank
+                                            <i class="fa fa-sort sort-icon"></i>
+                                        </div>
+                                    </th>
+                                    <th class="px-4 py-3 font-medium cursor-pointer group" data-sort="model">
+                                        <div class="flex items-center">
+                                            Model
+                                            <i class="fa fa-sort sort-icon"></i>
+                                        </div>
+                                    </th>
+                                    <th class="px-4 py-3 font-medium cursor-pointer group" data-sort="avgScore">
+                                        <div class="flex items-center">
+                                            Avg Score
+                                            <i class="fa fa-sort-desc sort-icon sort-active"></i>
+                                        </div>
+                                    </th>
+                                    <th class="px-4 py-3 font-medium cursor-pointer group" data-sort="faithfulness">
+                                        <div class="flex items-center">
+                                            Faithfulness
+                                            <i class="fa fa-sort sort-icon"></i>
+                                        </div>
+                                    </th>
+                                    <th class="px-4 py-3 font-medium cursor-pointer group" data-sort="general">
+                                        <div class="flex items-center">
+                                            General
+                                            <i class="fa fa-sort sort-icon"></i>
+                                        </div>
+                                    </th>
+                                    <th class="px-4 py-3 font-medium cursor-pointer group" data-sort="reasoning">
+                                        <div class="flex items-center">
+                                            Reasoning
+                                            <i class="fa fa-sort sort-icon"></i>
+                                        </div>
+                                    </th>
+                                    <th class="px-4 py-3 font-medium cursor-pointer group" data-sort="retrieval">
+                                        <div class="flex items-center">
+                                            Retrieval
+                                            <i class="fa fa-sort sort-icon"></i>
+                                        </div>
+                                    </th>
+                                    <th class="px-4 py-3 font-medium cursor-pointer group" data-sort="generation">
+                                        <div class="flex items-center">
+                                            Generation
+                                            <i class="fa fa-sort sort-icon"></i>
+                                        </div>
+                                    </th>
+                                    <th class="px-4 py-3 font-medium cursor-pointer group" data-sort="specialization">
+                                        <div class="flex items-center">
+                                            Specialization
+                                            <i class="fa fa-sort sort-icon"></i>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="leaderboard-1-body">
+                                <!-- Dynamically generated table content -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>            
+            </div>
+            const modelScores = {
+                    "Qwen3-30B-A3B": [37.96,40.61,11.61,78.32,43.24,60.31,48.96,41.30,22.82,28.42,100.00,24.12,14.14,83.24,56.09],
+                    "Qwen3-14B": [35.64,43.84,11.79,74.94,45.47,59.15,56.41,31.95,21.26,29.85,100.00,27.35,10.24,85.75,55.87],
+                    "Meta-Llama-3.1-8B-Instruct": [25.79,39.70,11.81,86.79,37.94,57.42,37.68,25.40,25.66,30.40,91.00,20.06,33.64,45.96,51.24],
+                    "Qwen3-8B": [33.18,41.15,11.67,67.68,38.62,55.28,52.32,32.61,15.15,27.25,64.00,21.92,8.06,81.99,51.78],
+                    "Qwen3-4B": [24.55,39.03,11.69,70.29,39.32,55.01,42.06,33.66,18.24,32.52,62.00,17.95,13.05,74.25,46.92]
+                };
+
+                const metricSequence = ["L_CiteEval", "LEval", "LooGLE", "RULER（0-128k）", "longbench", 
+                                    "babilong（0-128k）", "Counting-Stars", "LongIns", "LVEval", 
+                                    "longbench_v2", "NIAH", "NThread", "InfiniteBench", "LongWriter", "LIBRA"];
+
+                const abilityMetrics = {
+                    "Faithfulness": ["L_CiteEval"], 
+                    "General": ["LEval", "LooGLE", "RULER（0-128k）", "longbench"],
+                    "Reasoning": ["Counting-Stars", "LongIns", "LVEval", "longbench_v2", "NIAH"], 
+                    "Retrieval": ["NThread", "InfiniteBench", "LongWriter"], 
+                    "Generation": ["LongWriter"], 
+                    "Specialization": ["LIBRA"] 
+                };
+
+                // Process data to calculate ability scores
+                const processedData = Object.entries(modelScores).map(([modelName, scores]) => {
+                    const abilityScores = {};
+                    Object.entries(abilityMetrics).forEach(([ability, metrics]) => {
+                        const metricValues = metrics.map(metric => scores[metricSequence.indexOf(metric)]);
+                        abilityScores[ability] = metricValues.reduce((sum, val) => sum + val, 0) / metricValues.length;
+                    });
+                    return {
+                        model: modelName,
+                        modelType: modelName.startsWith('Qwen') ? 'Qwen' : 'Llama',
+                        avgScore: scores.reduce((sum, val) => sum + val, 0) / scores.length,
+                        ...abilityScores
+                    };
+                });
+
+                // Leaderboard switching logic
+                const leaderboardBtns = document.querySelectorAll('[id^="btn-leaderboard-"]');
+                const leaderboardSections = document.querySelectorAll('[id^="leaderboard-"]');
+
+                leaderboardBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        leaderboardBtns.forEach(b => b.classList.remove('bg-primary', 'text-white'));
+                        btn.classList.add('bg-primary', 'text-white');
+                        
+                        leaderboardSections.forEach(section => section.classList.add('hidden'));
+                        document.getElementById(btn.id.replace('btn-', '')).classList.remove('hidden');
+                    });
+                });
+
+                // Sorting logic
+                let sortConfig = {
+                    column: 'avgScore',
+                    direction: 'desc'
+                };
+
+                function renderOverallLeaderboard() {
+                    const sortedData = [...processedData].sort((a, b) => {
+                        const valA = a[sortConfig.column];
+                        const valB = b[sortConfig.column];
+                        return sortConfig.direction === 'asc' ? valA - valB : valB - valA;
+                    });
+
+                    const rankedData = sortedData.map((item, index) => ({...item, rank: index + 1}));
+                    
+                    const tableBody = document.getElementById('leaderboard-1-body');
+                    tableBody.innerHTML = rankedData.map(item => `
+                        <tr class="${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-gray-100 transition-colors duration-200">
+                            <td class="px-4 py-3 font-medium">${item.rank}</td>
+                            <td class="px-4 py-3">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                    item.modelType === 'Qwen' ? 'bg-blue-100 text-blue-800' : 'bg-orange-100 text-orange-800'
+                                }">
+                                    ${item.model}
+                                </span>
+                            </td>
+                            <td class="px-4 py-3 font-medium">${item.avgScore.toFixed(2)}</td>
+                            <td class="px-4 py-3">${item.Faithfulness.toFixed(2)}</td>
+                            <td class="px-4 py-3">${item.General.toFixed(2)}</td>
+                            <td class="px-4 py-3">${item.Reasoning.toFixed(2)}</td>
+                            <td class="px-4 py-3">${item.Retrieval.toFixed(2)}</td>
+                            <td class="px-4 py-3">${item.Generation.toFixed(2)}</td>
+                            <td class="px-4 py-3">${item.Specialization.toFixed(2)}</td>
+                        </tr>
+                    `).join('');
+                }
+
+                // Header sorting handlers
+                const sortHeaders = document.querySelectorAll('#leaderboard-1 th[data-sort]');
+                sortHeaders.forEach(header => {
+                    header.addEventListener('click', () => {
+                        const sortKey = header.getAttribute('data-sort');
+                        sortConfig = sortConfig.column === sortKey ? 
+                            {column: sortKey, direction: sortConfig.direction === 'asc' ? 'desc' : 'asc'} :
+                            {column: sortKey, direction: 'desc'};
+                        
+                        sortHeaders.forEach(h => h.querySelector('.sort-icon').classList.remove('sort-active'));
+                        header.querySelector('.sort-icon').classList.add('sort-active');
+                        
+                        renderOverallLeaderboard();
+                    });
+                });
+
+                // Initial render
+                renderOverallLeaderboard();
+                document.getElementById('leaderboard-1').classList.remove('hidden');
             <div class="table-container">
                 <table>
                     <thead>
