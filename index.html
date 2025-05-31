@@ -3,206 +3,418 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LOOM-Scope Model Leaderboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>LOOM-Scope - LOng-cOntext Model evaluation framework</title>
+    <meta name="description" content="Providing a convenient and comprehensive framework for long-context model evaluation.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+        /* Global styles */
+        :root {
+            --primary-color: #00043c;
+            --secondary-color: #6dc9c8;
+            --accent-color: #ffc0c2;
+            --text-color: #333;
+            --background-color: #f8f9fa;
+            --max-width: 1100px;
+            --border-radius: 8px;
+            --card-bg: white;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
-        
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-            color: #f0f8ff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             line-height: 1.6;
-            padding: 20px;
-            min-height: 100vh;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            background-image: 
+                radial-gradient(at 40% 20%, rgba(52, 152, 219, 0.1) 0px, transparent 50%),
+                radial-gradient(at 80% 0%, rgba(44, 62, 80, 0.1) 0px, transparent 50%),
+                radial-gradient(at 0% 50%, rgba(231, 76, 60, 0.1) 0px, transparent 50%);
+            background-attachment: fixed;
         }
-        
-        .container {
-            max-width: 1400px;
+
+        main {
+            max-width: var(--max-width);
             margin: 0 auto;
-            padding: 20px;
+            padding: 2rem;
         }
-        
-        header {
+
+        .hero {
             text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: rgba(16, 42, 67, 0.7);
-            border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(4px);
+            padding: 2rem 0;
+            max-width: 900px;
+            margin: 0 auto;
+            animation: fadeInUp 1s ease;
         }
-        
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         h1 {
-            font-size: 2.8rem;
-            margin-bottom: 10px;
-            color: #4fc3f7;
-            text-shadow: 0 0 10px rgba(79, 195, 247, 0.5);
+            font-size: 4.5rem;
+            margin-bottom: 0.8rem;
+            color: var(--primary-color);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            position: relative;
+            display: inline-block;
         }
-        
-        .subtitle {
-            font-size: 1.2rem;
-            max-width: 800px;
-            margin: 0 auto;
-            color: #bbdefb;
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(to right, var(--secondary-color), var(--accent-color));
+            border-radius: 2px;
         }
-        
-        .capability-info {
-            background: rgba(25, 65, 105, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            border-left: 4px solid #3a7bd5;
-        }
-        
-        .capability-info h2 {
-            color: #4fc3f7;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .capability-info p {
-            color: #e3f2fd;
-            font-size: 1.1rem;
-            line-height: 1.7;
-        }
-        
-        .table-container {
-            overflow-x: auto;
-            background: rgba(16, 42, 67, 0.7);
-            border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            padding: 20px;
-            backdrop-filter: blur(4px);
-            margin-bottom: 30px;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 1000px;
-        }
-        
-        th, td {
-            padding: 14px 10px;
-            text-align: center;
-            border: 1px solid rgba(58, 123, 213, 0.3);
-        }
-        
-        thead th {
-            background: rgba(25, 65, 105, 0.9);
-            color: #bbdefb;
+
+        h2 {
+            font-size: 2.2rem;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
             font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .hero h2 {
+            font-size: 2.0rem;
+            max-width: 900px;
+            text-align: center;
+            margin: 0 auto 2rem;
+            white-space: pre-line;
+            background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 3rem 0 0 0;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem 1.8rem;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: var(--transition);
+            border: 2px solid var(--primary-color);
+            min-width: 140px;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .button i {
+            font-size: 1.2em;
+            transition: var(--transition);
+        }
+
+        .button:hover {
+            background-color: transparent;
+            color: var(--primary-color);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .button:hover i {
+            transform: scale(1.1);
+        }
+
+        section {
+            margin-bottom: 4rem;
+        }
+
+        /* Evaluation Section */
+        .evaluation {
+            overflow-x: auto;
+            margin: 20px 0;
+            padding: 0 20px;
+            width: 100%;
+            max-width: 100%;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .evaluation .table-container {
+            width: 100%;
+            overflow-x: auto;
+            margin-bottom: 10px;
+        }
+
+        .evaluation table {
+            border-collapse: collapse;
+            min-width: 100%;
+            width: max-content;
+            margin: 20px auto;
+            font-size: 14px;
+        }
+
+        .evaluation th, .evaluation td {
+            padding: 8px 15px;
+            text-align: center;
+            border: none;
+            min-width: 80px;
+            white-space: nowrap;
+        }
+
+        .evaluation tbody tr {
+            border-bottom: 1px solid #ddd;
+        }
+
+        .evaluation thead tr {
+            border-bottom: 2px solid #000;
+        }
+
+        .evaluation th {
+            background-color: transparent;
+            font-weight: bold;
+            white-space: nowrap;
+            height: 40px;
             position: sticky;
             top: 0;
-            cursor: pointer;
-            transition: background 0.3s;
+            background: white;
+            z-index: 1;
+        }
+
+        .evaluation th.rank-col {
+            min-width: 60px;
+            position: sticky;
+            left: 0;
+            z-index: 2;
+            background: white;
+        }
+
+        .evaluation th.model-col {
+            min-width: 200px;
+        }
+
+        .evaluation th.score-col {
+            min-width: 100px;
+        }
+
+        .evaluation th.algorithm-col {
+            min-width: 100px;
         }
         
-        thead th:hover {
-            background: rgba(40, 85, 135, 0.9);
+        .General{
+            background-color: #f5f5f5;
         }
-        
-        thead th.sorted-asc::after {
-            content: " ▲";
-            font-size: 0.8em;
+        .Reasoning{
+            background-color: #86ccec;
         }
-        
-        thead th.sorted-desc::after {
-            content: " ▼";
-            font-size: 0.8em;
+        .Retrieval{
+            background-color: #ffebee
         }
-        
-        tbody tr:nth-child(odd) {
-            background: rgba(30, 50, 80, 0.4);
+        .Faithfulness{
+            background-color: #d4cc83
         }
-        
-        tbody tr:nth-child(even) {
-            background: rgba(20, 40, 70, 0.4);
+        .Specialization{
+            background-color: #e3f2fd;
         }
-        
-        tbody tr:hover {
-            background: rgba(58, 123, 213, 0.2);
+        .Generation {
+            background-color: #e8f5e9
         }
-        
-        .rank-col {
-            width: 70px;
-            font-weight: bold;
-            color: #4fc3f7;
+
+        .evaluation tr:hover {
+            background-color: #f5f5f5;
         }
-        
-        .model-col {
-            min-width: 220px;
-            text-align: left;
+
+        .Qwen {
+            background-color: #e3f2fd;
+        }
+
+        .Llama {
+            background-color: #ffebee;
+        }
+
+        .algorithm-group {
+            border-left: none;
             padding-left: 15px;
-        }
-        
-        .score-col {
-            width: 100px;
             font-weight: bold;
-            cursor: pointer;
+        }
+
+        .model-type-legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 10px 0;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        .best-score {
+            font-weight: bold;
+        }
+
+        .second-best {
+            text-decoration: underline;
+        }
+
+        .basic-header {
+            height: 60px !important;
+        }
+
+        .evaluation::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .evaluation::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .evaluation::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        .evaluation::-webkit-scrollbar-thumb:hover {
+            background: #555;
         }
         
+        /* Table styles */
+        .table-container {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin: 2rem 0;
+            animation: scaleIn 0.8s ease-out;
+        }
+
+        .evaluation table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 14px;
+        }
+
+        .evaluation th {
+            background: white;
+            color: var(--primary-color);
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            padding: 1.2rem 1rem;
+            border-right: 1px solid #eee;
+            border-bottom: 2px solid var(--primary-color);
+            text-align: center;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .evaluation th.basic-header {
+            background: white;
+            height: auto !important;
+            padding: 1.5rem 1rem;
+        }
+
+        .algorithm-group {
+            background: white !important;
+            color: var(--primary-color) !important;
+            font-weight: 800 !important;
+            text-align: center;
+            border-bottom: 2px solid var(--primary-color) !important;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            padding: 1.2rem 1rem !important;
+            font-size: 0.85rem;
+        }
+
+        .evaluation td {
+            padding: 1rem;
+            border-right: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .evaluation tr:hover td {
+            background-color: rgba(52, 152, 219, 0.05);
+            transform: scale(1.01);
+        }
+
         .model-label {
-            display: inline-block;
             padding: 6px 15px;
             border-radius: 20px;
             font-weight: 600;
             font-size: 0.95rem;
         }
-        
-        .Qwen {
-            background: linear-gradient(135deg, #2193b0, #6dd5ed);
-            color: #003350;
-        }
-        
-        .Llama {
-            background: linear-gradient(135deg, #f46b45, #eea849);
-            color: #4d1c00;
-        }
-        
+
+        /* Best score highlighting */
         .best-score {
-            background: rgba(79, 195, 247, 0.2);
-            color: #4fc3f7;
-            font-weight: bold;
-            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            position: relative;
+            transition: all 0.3s ease;
+            font-size: 1rem;
         }
-        
-        .legend {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin: 20px 0;
-            flex-wrap: wrap;
+
+        .best-score:hover {
+            transform: scale(1.1);
+            color: var(--accent-color);
         }
-        
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
-        }
-        
-        .legend-color {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-        }
-        
-        .legend-qwen {
-            background: linear-gradient(135deg, #2193b0, #6dd5ed);
-        }
-        
-        .legend-llama {
-            background: linear-gradient(135deg, #f46b45, #eea849);
-        }
-        
+
+        /* Capability controls */
         .capability-controls {
             display: flex;
             justify-content: center;
@@ -210,7 +422,7 @@
             margin-bottom: 20px;
             flex-wrap: wrap;
         }
-        
+
         .capability-btn {
             background: rgba(30, 70, 110, 0.8);
             border: 1px solid #3a7bd5;
@@ -224,110 +436,241 @@
             min-width: 140px;
             text-align: center;
         }
-        
-        .capability-btn:hover {
-            background: rgba(58, 123, 213, 0.6);
-            transform: translateY(-2px);
-        }
-        
-        .capability-btn.active {
+
+        .capability-btn:hover, .capability-btn.active {
             background: rgba(58, 123, 213, 0.9);
             box-shadow: 0 0 12px rgba(58, 123, 213, 0.7);
         }
-        
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            padding: 20px;
-            color: #bbdefb;
+
+        /* Legend */
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             font-size: 0.9rem;
         }
-        
-        /* Animation for table rows */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
         }
-        
-        tbody tr {
-            animation: fadeIn 0.5s ease-out;
-            animation-fill-mode: both;
+
+        .legend-qwen {
+            background: linear-gradient(135deg, #2193b0, #6dd5ed);
         }
-        
-        tbody tr:nth-child(1) { animation-delay: 0.1s; }
-        tbody tr:nth-child(2) { animation-delay: 0.2s; }
-        tbody tr:nth-child(3) { animation-delay: 0.3s; }
-        tbody tr:nth-child(4) { animation-delay: 0.4s; }
-        tbody tr:nth-child(5) { animation-delay: 0.5s; }
-        
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.2rem;
+
+        .legend-llama {
+            background: linear-gradient(135deg, #f46b45, #eea849);
+        }
+
+        /* Citation section */
+        .citation-container {
+            position: relative;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-top: 1rem;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .citation-container:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        #bibtex {
+            background: white;
+            margin: 0;
+            padding: 0;
+            overflow-x: auto;
+            font-size: 1rem;
+            line-height: 1.6;
+            font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+            color: var(--primary-color);
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 1.2rem;
+            right: 1.2rem;
+            padding: 0.6rem 1.2rem;
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .copy-button:hover {
+            background: var(--primary-color);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .copy-button i {
+            font-size: 1.1rem;
+        }
+
+        /* Animations */
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
             }
-            
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero h2 {
+                font-size: 1.5rem;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .button {
+                width: 100%;
+                max-width: 250px;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+
+            .evaluation th {
+                font-size: 0.85rem;
+                padding: 1rem 0.8rem;
+            }
+
+            .evaluation td {
+                padding: 0.8rem;
+                font-size: 0.9rem;
+            }
+
             .capability-btn {
                 padding: 10px 15px;
                 min-width: 120px;
                 font-size: 0.9rem;
             }
-            
-            table {
-                min-width: 800px;
-            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1><i class="fas fa-chart-bar"></i> LOOM-Scope Model Leaderboard</h1>
-            <p class="subtitle">
-                Comprehensive performance evaluation across multidimensional benchmarks
+    <main>
+        <section class="hero">
+            <h1>LOOM-Scope</h1>
+            <h2>Providing a convenient and comprehensive framework for long-context model evaluation.</h2>            
+            <div class="nav-buttons">
+                <a href="" class="button">
+                    <i class="fas fa-file-alt"></i>
+                    Paper
+                </a>
+                <a href="https://gitlab.com/ZetangForward1/LOOM-Scape" class="button">
+                    <i class="fab fa-github"></i>
+                    Code
+                </a>
+                <a href="" class="button">
+                    <i class="fas fa-video"></i>
+                    Video
+                </a>
+            </div>
+        </section>
+
+        <section class="evaluation">
+            <h2><i class="fas fa-chart-bar"></i> Model Leaderboard</h2>
+            <p> 
+                The model leaderboard showcases performance rankings across LOOM-Scope's multidimensional benchmarks, evaluating models on key capabilities including Faithfulness, General tasks, Reasoning, Retrieval, Generation, and Specialization.
             </p>
-        </header>
-        
-        <div class="capability-controls">
-            <button class="capability-btn active" data-capability="overview">Overview</button>
-            <button class="capability-btn" data-capability="faithfulness">Faithfulness</button>
-            <button class="capability-btn" data-capability="general">General Tasks</button>
-            <button class="capability-btn" data-capability="reasoning">Reasoning</button>
-            <button class="capability-btn" data-capability="retrieval">Retrieval</button>
-            <button class="capability-btn" data-capability="generation">Generation</button>
-            <button class="capability-btn" data-capability="specialization">Specialization</button>
-        </div>
-        
-        <div class="capability-info" id="capability-info">
-            <h2><i class="fas fa-info-circle"></i> <span id="info-title">Model Performance Overview</span></h2>
-            <p id="info-description">Overall model performance across all capabilities and benchmark tests.</p>
-        </div>
-        
-        <div class="table-container">
-            <table id="model-leaderboard">
-                <thead id="table-header-row">
-                    <!-- Header will be generated dynamically -->
-                </thead>
-                <tbody>
-                    <!-- Table content will be generated by JavaScript -->
-                </tbody>
-            </table>
-        </div>
-        
-        <div class="legend">
-            <div class="legend-item">
-                <div class="legend-color legend-qwen"></div>
-                <span>Qwen Model Series</span>
+            
+            <div class="capability-controls">
+                <button class="capability-btn active" data-ability="all">All Capabilities</button>
+                <button class="capability-btn" data-ability="faithfulness">Faithfulness</button>
+                <button class="capability-btn" data-ability="general">General Tasks</button>
+                <button class="capability-btn" data-ability="reasoning">Reasoning</button>
+                <button class="capability-btn" data-ability="retrieval">Retrieval</button>
+                <button class="capability-btn" data-ability="generation">Generation</button>
+                <button class="capability-btn" data-ability="specialization">Specialization</button>
             </div>
-            <div class="legend-item">
-                <div class="legend-color legend-llama"></div>
-                <span>Llama Model Series</span>
+            
+            <div class="table-container">
+                <table id="model-leaderboard">
+                    <thead>
+                        <tr>
+                            <th class="basic-header rank-col">Rank</th>
+                            <th class="basic-header model-col">Model</th>
+                            <th class="basic-header score-col">Avg Score</th>
+                            <th class="algorithm-group Faithfulness" data-ability="faithfulness">Faithfulness</th>
+                            <th class="algorithm-group General" data-ability="general">General Tasks</th>
+                            <th class="algorithm-group Reasoning" data-ability="reasoning">Reasoning</th>
+                            <th class="algorithm-group Retrieval" data-ability="retrieval">Retrieval</th>
+                            <th class="algorithm-group Generation" data-ability="generation">Generation</th>
+                            <th class="algorithm-group Specialization" data-ability="specialization">Specialization</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Table content will be generated by JavaScript -->
+                    </tbody>
+                </table>
             </div>
-        </div>
+            
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color legend-qwen"></div>
+                    <span>Qwen Model Series</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color legend-llama"></div>
+                    <span>Llama Model Series</span>
+                </div>
+            </div>
+        </section>
         
-        <footer>
-            <p>LOOM-Scope Model Evaluation Benchmark | Data updated: June 1, 2025</p>
-            <p>© 2025 DeepSeek AI Research. All rights reserved.</p>
-        </footer>
-    </div>
+        <section class="citation">
+            <h2><i class="fas fa-quote-right"></i> BibTeX</h2>
+            <div class="citation-container">
+                <button class="copy-button" onclick="copyBibTeX()">
+                    <i class="fas fa-copy"></i> Copy
+                </button>
+                <pre id="bibtex">@misc{loomscope2024,
+    title={LOOM-Scope: LOng-cOntext Model evaluation framework}, 
+    author={Zetang Forward Team},
+    year={2024},
+    eprint={2504.19093},
+    archivePrefix={arXiv},
+    primaryClass={cs.CL},
+    url={https://arxiv.org/abs/2504.19093}, 
+}</pre>
+            </div>
+        </section>
+    </main>
 
     <script>
         // Model performance data
@@ -341,89 +684,40 @@
         
         // Capability definitions and tests
         const capabilities = {
-            "overview": {
-                "description": "Overall model performance across all capabilities and benchmark tests",
-                "columns": [
-                    { name: "Rank", type: "fixed", sortable: true },
-                    { name: "Model", type: "fixed", sortable: false },
-                    { name: "Avg Score", type: "fixed", sortable: true },
-                    { name: "Faithfulness", type: "capability", sortable: true },
-                    { name: "General Tasks", type: "capability", sortable: true },
-                    { name: "Reasoning", type: "capability", sortable: true },
-                    { name: "Retrieval", type: "capability", sortable: true },
-                    { name: "Generation", type: "capability", sortable: true },
-                    { name: "Specialization", type: "capability", sortable: true }
-                ]
-            },
             "faithfulness": {
                 "tests": ["L_CiteEval"],
-                "description": "Evaluates model consistency with source information, avoiding hallucinations or inaccuracies. Measures how well models can produce factually accurate outputs based on given inputs.",
-                "columns": [
-                    { name: "Rank", type: "fixed", sortable: true },
-                    { name: "Model", type: "fixed", sortable: false },
-                    { name: "Avg Score", type: "fixed", sortable: true },
-                    { name: "L_CiteEval", type: "test", sortable: true }
-                ]
+                "description": "Evaluates model consistency with source information, avoiding hallucinations or inaccuracies."
             },
             "general": {
                 "tests": ["LEval", "LooGLE", "RULER(0-128k)", "longbench"],
-                "description": "Measures performance on common NLP tasks including text understanding, classification, and information extraction across diverse domains and contexts.",
-                "columns": [
-                    { name: "Rank", type: "fixed", sortable: true },
-                    { name: "Model", type: "fixed", sortable: false },
-                    { name: "Avg Score", type: "fixed", sortable: true },
-                    { name: "LEval", type: "test", sortable: true },
-                    { name: "LooGLE", type: "test", sortable: true },
-                    { name: "RULER(0-128k)", type: "test", sortable: true },
-                    { name: "longbench", type: "test", sortable: true }
-                ]
+                "description": "Measures performance on common NLP tasks including text understanding and classification."
             },
             "reasoning": {
                 "tests": ["Counting-Stars", "LongIns", "LVEval", "longbench_v2", "NIAH"],
-                "description": "Tests logical reasoning, mathematical computation, causal inference and complex problem-solving abilities. Evaluates multi-step reasoning and abstract thinking capabilities.",
-                "columns": [
-                    { name: "Rank", type: "fixed", sortable: true },
-                    { name: "Model", type: "fixed", sortable: false },
-                    { name: "Avg Score", type: "fixed", sortable: true },
-                    { name: "Counting-Stars", type: "test", sortable: true },
-                    { name: "LongIns", type: "test", sortable: true },
-                    { name: "LVEval", type: "test", sortable: true },
-                    { name: "longbench_v2", type: "test", sortable: true },
-                    { name: "NIAH", type: "test", sortable: true }
-                ]
+                "description": "Tests logical reasoning, mathematical computation, and complex problem-solving abilities."
             },
             "retrieval": {
                 "tests": ["NThread", "InfiniteBench", "LongWriter"],
-                "description": "Assesses ability to locate, extract and synthesize relevant information from large contexts. Measures performance in long-document processing and information localization.",
-                "columns": [
-                    { name: "Rank", type: "fixed", sortable: true },
-                    { name: "Model", type: "fixed", sortable: false },
-                    { name: "Avg Score", type: "fixed", sortable: true },
-                    { name: "NThread", type: "test", sortable: true },
-                    { name: "InfiniteBench", type: "test", sortable: true },
-                    { name: "LongWriter", type: "test", sortable: true }
-                ]
+                "description": "Assesses ability to locate and extract relevant information from large contexts."
             },
             "generation": {
                 "tests": ["LongWriter"],
-                "description": "Evaluates coherent, contextually appropriate, and creative text generation. Measures fluency, coherence, and creativity in content creation tasks.",
-                "columns": [
-                    { name: "Rank", type: "fixed", sortable: true },
-                    { name: "Model", type: "fixed", sortable: false },
-                    { name: "Avg Score", type: "fixed", sortable: true },
-                    { name: "LongWriter", type: "test", sortable: true }
-                ]
+                "description": "Evaluates coherent, contextually appropriate, and creative text generation."
             },
             "specialization": {
                 "tests": ["LIBRA"],
-                "description": "Measures expertise in specialized domains like law, medicine, programming and finance. Tests domain-specific knowledge and problem-solving abilities.",
-                "columns": [
-                    { name: "Rank", type: "fixed", sortable: true },
-                    { name: "Model", type: "fixed", sortable: false },
-                    { name: "Avg Score", type: "fixed", sortable: true },
-                    { name: "LIBRA", type: "test", sortable: true }
-                ]
+                "description": "Measures expertise in specialized domains like law, medicine, and programming."
             }
+        };
+        
+        // Capability weightings
+        const abilitySize = {
+            "faithfulness": 1,
+            "general": 4,
+            "reasoning": 5,
+            "retrieval": 3,
+            "generation": 1,
+            "specialization": 1
         };
         
         // Test sequence
@@ -433,14 +727,9 @@
             "longbench_v2", "NIAH", "NThread", "InfiniteBench", "LongWriter", "LIBRA"
         ];
         
-        // State variables
-        let currentCapability = "overview";
-        let sortColumn = "Avg Score";
-        let sortDirection = "desc";
-        let models = [];
-        
         // Calculate capability averages
-        const calculateAbilityAverage = (modelScores, tests) => {
+        const calculateAbilityAverage = (modelScores, abilityName) => {
+            const tests = capabilities[abilityName].tests;
             const testIndices = tests.map(test => sequence.indexOf(test));
             
             let sum = 0;
@@ -460,203 +749,131 @@
                     name: model,
                     scores: modelScores,
                     avgScore: avgScore,
-                    faithScore: calculateAbilityAverage(modelScores, capabilities.faithfulness.tests),
-                    generalScore: calculateAbilityAverage(modelScores, capabilities.general.tests),
-                    reasoningScore: calculateAbilityAverage(modelScores, capabilities.reasoning.tests),
-                    retrievalScore: calculateAbilityAverage(modelScores, capabilities.retrieval.tests),
-                    generationScore: calculateAbilityAverage(modelScores, capabilities.generation.tests),
-                    specializationScore: calculateAbilityAverage(modelScores, capabilities.specialization.tests)
+                    faithScore: calculateAbilityAverage(modelScores, "faithfulness"),
+                    generalScore: calculateAbilityAverage(modelScores, "general"),
+                    reasoningScore: calculateAbilityAverage(modelScores, "reasoning"),
+                    retrievalScore: calculateAbilityAverage(modelScores, "retrieval"),
+                    generationScore: calculateAbilityAverage(modelScores, "generation"),
+                    specializationScore: calculateAbilityAverage(modelScores, "specialization")
                 };
             });
         };
         
-        // Render table header based on current capability
-        const renderTableHeader = () => {
-            const headerRow = document.getElementById("table-header-row");
-            headerRow.innerHTML = "";
+        // Generate table row for each model
+        const generateModelRow = (model, rank) => {
+            const isQwen = model.name.includes("Qwen");
+            const modelClass = isQwen ? "Qwen" : "Llama";
             
-            const capability = capabilities[currentCapability];
-            
-            capability.columns.forEach(col => {
-                const th = document.createElement("th");
-                th.textContent = col.name;
-                
-                if (col.sortable) {
-                    th.classList.add("sortable");
-                    
-                    // Add sort indicator if this is the current sort column
-                    if (col.name === sortColumn) {
-                        th.classList.add(sortDirection === "asc" ? "sorted-asc" : "sorted-desc");
-                    }
-                    
-                    th.addEventListener("click", () => {
-                        if (col.sortable) {
-                            // Toggle direction if clicking the same column
-                            if (sortColumn === col.name) {
-                                sortDirection = sortDirection === "asc" ? "desc" : "asc";
-                            } else {
-                                sortColumn = col.name;
-                                sortDirection = "desc";
-                            }
-                            renderTable();
-                        }
-                    });
-                }
-                
-                headerRow.appendChild(th);
-            });
+            return `<tr>
+                <td class="rank-col">${rank}</td>
+                <td class="model-col"><span class="model-label ${modelClass}">${model.name}</span></td>
+                <td class="best-score">${model.avgScore.toFixed(2)}</td>
+                <td>${model.faithScore.toFixed(2)}</td>
+                <td>${model.generalScore.toFixed(2)}</td>
+                <td>${model.reasoningScore.toFixed(2)}</td>
+                <td>${model.retrievalScore.toFixed(2)}</td>
+                <td>${model.generationScore.toFixed(2)}</td>
+                <td>${model.specializationScore.toFixed(2)}</td>
+            </tr>`;
         };
         
-        // Get score for a specific test
-        const getTestScore = (model, testName) => {
-            const testIndex = sequence.indexOf(testName);
-            return model.scores[testIndex];
-        };
-        
-        // Get score for a capability
-        const getCapabilityScore = (model, capability) => {
-            switch(capability) {
-                case "faithfulness": return model.faithScore;
-                case "general": return model.generalScore;
-                case "reasoning": return model.reasoningScore;
-                case "retrieval": return model.retrievalScore;
-                case "generation": return model.generationScore;
-                case "specialization": return model.specializationScore;
-                default: return 0;
-            }
-        };
-        
-        // Get the appropriate score for the Avg Score column
-        const getAvgScore = (model) => {
-            if (currentCapability === "overview") {
-                return model.avgScore;
-            } else {
-                return getCapabilityScore(model, currentCapability);
-            }
-        };
-        
-        // Render table body
-        const renderTableBody = () => {
+        // Render the leaderboard table
+        const renderTable = (models) => {
             const tbody = document.querySelector("#model-leaderboard tbody");
             tbody.innerHTML = "";
             
+            models.forEach((model, index) => {
+                tbody.innerHTML += generateModelRow(model, index + 1);
+            });
+        };
+        
+        // Sort table by capability
+        const sortTable = (ability, direction = "desc") => {
+            let models = prepareModelData();
+            
+            // Update sort indicators
+            document.querySelectorAll("th[data-ability]").forEach(th => {
+                th.classList.remove("sorted-asc", "sorted-desc");
+            });
+            
+            // Add current sort indicator
+            const header = document.querySelector(`th[data-ability="${ability}"]`);
+            if (header) {
+                header.classList.add(direction === "asc" ? "sorted-asc" : "sorted-desc");
+            }
+            
             // Sort models
-            const sortedModels = [...models];
-            sortedModels.sort((a, b) => {
-                let aValue, bValue;
+            models.sort((a, b) => {
+                const aScore = a[`${ability}Score`];
+                const bScore = b[`${ability}Score`];
                 
-                if (sortColumn === "Rank") {
-                    return 0; // Ranking is based on position
-                } else if (sortColumn === "Avg Score") {
-                    aValue = getAvgScore(a);
-                    bValue = getAvgScore(b);
-                } else if (capabilities[currentCapability].tests && 
-                           capabilities[currentCapability].tests.includes(sortColumn)) {
-                    aValue = getTestScore(a, sortColumn);
-                    bValue = getTestScore(b, sortColumn);
-                } else if (currentCapability === "overview") {
-                    // For overview, sort by capability scores
-                    aValue = getCapabilityScore(a, sortColumn.toLowerCase().replace(" ", ""));
-                    bValue = getCapabilityScore(b, sortColumn.toLowerCase().replace(" ", ""));
+                if (direction === "asc") {
+                    return aScore - bScore;
                 } else {
-                    aValue = 0;
-                    bValue = 0;
-                }
-                
-                return sortDirection === "asc" ? aValue - bValue : bValue - aValue;
-            });
-            
-            // Render models
-            sortedModels.forEach((model, index) => {
-                const isQwen = model.name.includes("Qwen");
-                const modelClass = isQwen ? "Qwen" : "Llama";
-                
-                const row = document.createElement("tr");
-                
-                capabilities[currentCapability].columns.forEach(col => {
-                    const td = document.createElement("td");
-                    
-                    if (col.name === "Rank") {
-                        td.textContent = index + 1;
-                        td.classList.add("rank-col");
-                    } else if (col.name === "Model") {
-                        td.innerHTML = `<span class="model-label ${modelClass}">${model.name}</span>`;
-                        td.classList.add("model-col");
-                    } else if (col.name === "Avg Score") {
-                        td.textContent = getAvgScore(model).toFixed(2);
-                        td.classList.add("best-score");
-                    } else if (capabilities[currentCapability].tests && 
-                               capabilities[currentCapability].tests.includes(col.name)) {
-                        // Test score
-                        td.textContent = getTestScore(model, col.name).toFixed(2);
-                    } else if (currentCapability === "overview") {
-                        // Capability score
-                        const capabilityName = col.name.toLowerCase().replace(" ", "");
-                        td.textContent = getCapabilityScore(model, capabilityName).toFixed(2);
-                    }
-                    
-                    row.appendChild(td);
-                });
-                
-                tbody.appendChild(row);
-            });
-        };
-        
-        // Update capability info
-        const updateCapabilityInfo = () => {
-            const title = document.getElementById("info-title");
-            const description = document.getElementById("info-description");
-            
-            title.textContent = currentCapability === "overview" 
-                ? "Model Performance Overview" 
-                : currentCapability.charAt(0).toUpperCase() + currentCapability.slice(1);
-            
-            description.textContent = capabilities[currentCapability].description;
-        };
-        
-        // Update capability buttons
-        const updateCapabilityButtons = () => {
-            document.querySelectorAll(".capability-btn").forEach(btn => {
-                if (btn.dataset.capability === currentCapability) {
-                    btn.classList.add("active");
-                } else {
-                    btn.classList.remove("active");
+                    return bScore - aScore;
                 }
             });
-        };
-        
-        // Render entire table
-        const renderTable = () => {
-            updateCapabilityInfo();
-            renderTableHeader();
-            renderTableBody();
-            updateCapabilityButtons();
+            
+            renderTable(models);
         };
         
         // Initialize event listeners
         const initEventListeners = () => {
-            // Capability buttons
+            // Capability header sorting
+            document.querySelectorAll("th[data-ability]").forEach(th => {
+                th.addEventListener("click", (e) => {
+                    const ability = e.target.dataset.ability;
+                    const currentDirection = e.target.classList.contains("sorted-asc") ? "desc" : "asc";
+                    sortTable(ability, currentDirection);
+                });
+            });
+            
+            // Capability filter buttons
             document.querySelectorAll(".capability-btn").forEach(btn => {
                 btn.addEventListener("click", (e) => {
-                    currentCapability = e.target.dataset.capability;
-                    // Reset sorting to default for new view
-                    sortColumn = "Avg Score";
-                    sortDirection = "desc";
-                    renderTable();
+                    const ability = e.target.dataset.ability;
+                    
+                    // Update active button
+                    document.querySelectorAll(".capability-btn").forEach(b => {
+                        b.classList.remove("active");
+                    });
+                    e.target.classList.add("active");
+                    
+                    // If a specific capability is selected, sort by that capability
+                    if (ability !== "all") {
+                        sortTable(ability, "desc");
+                    } else {
+                        // For "all", sort by average score
+                        sortTable("avg", "desc");
+                    }
                 });
             });
         };
         
+        // Copy BibTeX function
+        function copyBibTeX() {
+            const bibtex = document.getElementById('bibtex').textContent;
+            navigator.clipboard.writeText(bibtex).then(() => {
+                const button = document.querySelector('.copy-button');
+                const originalContent = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                setTimeout(() => {
+                    button.innerHTML = originalContent;
+                }, 2000);
+            });
+        }
+        
         // Initialize on page load
         window.onload = () => {
-            // Prepare model data
-            models = prepareModelData();
-            
-            // Set default sorting
-            models.sort((a, b) => b.avgScore - a.avgScore);
-            
             initEventListeners();
-            renderTable();
+            
+            // Initial render (sorted by average score)
+            let models = prepareModelData();
+            models.sort((a, b) => b.avgScore - a.avgScore);
+            renderTable(models);
+            
+            // Set initial sort indicator for average score
+            document.querySelector(".score-col").classList.add("sorted-desc");
         };
     </script>
 </body>
