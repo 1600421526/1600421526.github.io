@@ -38,13 +38,25 @@ main {
 }
 
 .hero {
-    text-align: center;
     padding: 2rem 0;
     max-width: 900px;
     margin: 0 auto;
     animation: fadeInUp 1s ease;
 }
-
+.hero-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.project-info {
+    max-width: 600px;
+}
+.nav-buttons-group {
+    display: flex;
+    gap: 15px;
+}
 @keyframes fadeInUp {
     from {
         opacity: 0;
