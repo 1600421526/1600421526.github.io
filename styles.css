@@ -50,13 +50,7 @@ main {
     max-width: 1200px;
     margin: 0 auto;
 }
-.project-info {
-    max-width: 600px;
-}
-.nav-buttons-group {
-    display: flex;
-    gap: 15px;
-}
+
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -111,17 +105,6 @@ h2 {
 }
 
 
-
-
-
-/* Navigation Buttons */
-.nav-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    margin: 3rem 0 0 0;
-}
-
 .button {
     display: inline-flex;
     align-items: center;
@@ -175,33 +158,11 @@ h2 {
     transform: scale(1.1);
 }
 
-.authors {
-    margin: 2rem 0;
-    font-size: 1.1rem;
-    padding: 2rem;
-    background: transparent;
-    border-radius: var(--border-radius);
-    backdrop-filter: blur(10px);
-    /* box-shadow: var(--shadow); */
-}
-
-.affiliations {
-    color: #666;
-    margin-top: 0.5rem;
-}
 
 section {
     margin-bottom: 4rem;
 }
 
-/* Citation section */
-.citation pre {
-    background-color: #f1f1f1;
-    padding: 1.5rem;
-    border-radius: 5px;
-    overflow-x: auto;
-    font-size: 0.9rem;
-}
 
 /* Evaluation Section */
 
@@ -391,50 +352,6 @@ section {
 }
 
 
-/* Responsive design */
-@media (max-width: 768px) {
-    .hero h1 {
-        font-size: 3rem;
-    }
-
-    .hero h2 {
-        font-size: 1.6rem;
-
-    }
-
-    .nav-buttons {
-        flex-direction: column;
-        align-items: center;
-        gap: 1rem;
-    }
-
-    .button {
-        width: 100%;
-        max-width: 300px;
-    }
-
-    main {
-        padding: 1rem;
-    }
-
-    .dataset-content {
-        padding: 1.5rem;
-    }
-
-    .authors {
-        padding: 1.5rem;
-        font-size: 1rem;
-    }
-
-    .findings {
-        padding: 1.5rem;
-    }
-
-    .model-type p {
-        padding-left: 1.5rem;
-    }
-}
-
 /* Overview Image */
 .overview-image {
     margin: 0 auto 4rem;
@@ -453,30 +370,7 @@ section {
 
 
 
-/* Authors section icons */
-.authors i {
-    color: var(--secondary-color);
-    margin-right: 0.5rem;
-    font-size: 1.2rem;
-}
 
-.affiliations i {
-    color: var(--accent-color);
-}
-
-/* List icons */
-.dataset-content ul li i {
-    color: var(--secondary-color);
-    margin-right: 0.8rem;
-    width: 20px;
-    text-align: center;
-    transition: var(--transition);
-}
-
-.dataset-content ul li:hover i {
-    transform: scale(1.2);
-    color: var(--accent-color);
-}
 
 /* Section headers */
 section h2 {
@@ -573,95 +467,5 @@ section h2:hover i {
     font-size: 1.1rem;
 }
 
-/* Best score highlighting */
-.best-score {
-    font-weight: 700;
-    color: var(--secondary-color);
-    position: relative;
-    transition: all 0.3s ease;
-    font-size: 1rem;
-}
 
-.best-score:hover {
-    transform: scale(1.1);
-    color: var(--accent-color);
-}
 
-/* Additional responsive adjustments */
-@media (max-width: 768px) {
-    .logo {
-        font-size: 3rem;
-    }
-
-    .dataset-content ul li i {
-        width: 16px;
-        margin-right: 0.5rem;
-    }
-
-    section h2 i {
-        font-size: 0.8em;
-    }
-}
-
-/* Animations */
-@keyframes slideInLeft {
-    from {
-        opacity: 0;
-        transform: translateX(-30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes slideInRight {
-    from {
-        opacity: 0;
-        transform: translateX(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes scaleIn {
-    from {
-        opacity: 0;
-        transform: scale(0.9);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-/* Responsive adjustments for table */
-@media (max-width: 768px) {
-    .evaluation th {
-        font-size: 0.85rem;
-        padding: 1rem 0.8rem;
-        letter-spacing: 0.8px;
-    }
-
-    .algorithm-group {
-        font-size: 0.8rem;
-        padding: 1rem 0.8rem !important;
-    }
-
-    .evaluation td {
-        padding: 0.8rem;
-        font-size: 0.9rem;
-    }
-
-    .citation pre {
-        font-size: 0.9rem;
-        line-height: 1.5;
-    }
-
-    .copy-button {
-        padding: 0.5rem 1rem;
-        font-size: 0.9rem;
-    }
-} 
