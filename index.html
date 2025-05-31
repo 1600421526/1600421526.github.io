@@ -133,6 +133,19 @@
             
                 
         </section>
+        <th class="sortable" data-sort="score">Avg Score</th>
+
+        <script>
+        // 添加表头点击事件
+        document.querySelector('[data-sort="score"]').addEventListener('click', function() {
+            rows.sort((a, b) => this.dataset.sort === 'score' ? b.score - a.score : a.score - b.score);
+            rows.forEach((item, index) => {
+                item.rankCell.textContent = index + 1;
+                tbody.appendChild(item.row);
+            });
+            this.dataset.sort = this.dataset.sort === 'score' ? 'score-desc' : 'score';
+        });
+        </script>
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 // 获取表格tbody元素
