@@ -521,8 +521,8 @@ section {
     }
 
     .button {
-        width: 100%;
-        max-width: 300px;
+        width: 70%;
+        max-width: 200px;
     }
 
     main {
