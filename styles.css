@@ -9,9 +9,12 @@
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
     --transition: all 0.3s ease;           
 }
+
 .navbar {
     display: flex;
-    align-items: center; /* 垂直居中 */
-    gap: 20px;
-    height: 30px; /* 设置具体高度（根据需要调整） */
+    justify-content: space-between; 
+    align-items: center;
+    background-color: --primary-color;
+    padding: 0 20px; 
+    height: 60px;
 }
