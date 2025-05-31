@@ -3,604 +3,675 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LOOM-Scope - LOng-cOntext Model evaluation framework</title>
-    <meta name="description" content="Providing a convient and comprehensive framework for long-context model evaluation.">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>LOOM-Scope Model Leaderboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-
-        .evaluation {
-            overflow-x: auto;
-            margin: 20px 0;
-            padding: 0 20px;
-            width: 100%;
-            max-width: 100%;
-            -webkit-overflow-scrolling: touch; /* 为iOS设备添加平滑滚动 */
-        }
-
-        .evaluation .table-container {
-            width: 100%;
-            overflow-x: auto;
-            margin-bottom: 10px;
-        }
-
-        
-        .evaluation table {
-            border-collapse: collapse;
-            min-width: 100%;
-            width: max-content;
-            margin: 20px auto;
-            font-size: 14px;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
         
-        .evaluation th, .evaluation td {
-            padding: 8px 15px;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #f0f8ff;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
             text-align: center;
-            border: none;
-            min-width: 80px;
-            white-space: nowrap; /* 防止内容换行 */
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(16, 42, 67, 0.7);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(4px);
         }
         
-        .evaluation tbody tr {
-            border-bottom: 1px solid #ddd;
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            color: #4fc3f7;
+            text-shadow: 0 0 10px rgba(79, 195, 247, 0.5);
         }
         
-        
-        .evaluation thead tr {
-            border-bottom: 2px solid #000;
+        .subtitle {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            color: #bbdefb;
         }
         
-        .evaluation th {
-            background-color: transparent;
-            font-weight: bold;
-            white-space: nowrap;
-            height: 40px;
-            position: sticky; /* 固定表头 */
+        .capability-info {
+            background: rgba(25, 65, 105, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #3a7bd5;
+        }
+        
+        .capability-info h2 {
+            color: #4fc3f7;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .capability-info p {
+            color: #e3f2fd;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            background: rgba(16, 42, 67, 0.7);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            padding: 20px;
+            backdrop-filter: blur(4px);
+            margin-bottom: 30px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1000px;
+        }
+        
+        th, td {
+            padding: 14px 10px;
+            text-align: center;
+            border: 1px solid rgba(58, 123, 213, 0.3);
+        }
+        
+        thead th {
+            background: rgba(25, 65, 105, 0.9);
+            color: #bbdefb;
+            font-weight: 600;
+            position: sticky;
             top: 0;
-            background: white; /* 确保表头不透明 */
-            z-index: 1;
+            cursor: pointer;
+            transition: background 0.3s;
         }
         
-        .evaluation th.rank-col {
-            min-width: 60px;
-            position: sticky; /* 固定第一列 */
-            left: 0;
-            z-index: 2;
-            background: white;
+        thead th:hover {
+            background: rgba(40, 85, 135, 0.9);
         }
         
-        .evaluation th.type-col {
-            min-width: 120px;
+        thead th.sorted-asc::after {
+            content: " ▲";
+            font-size: 0.8em;
         }
         
-        .evaluation th.model-col {
-            min-width: 200px;
+        thead th.sorted-desc::after {
+            content: " ▼";
+            font-size: 0.8em;
         }
         
-        .evaluation th.score-col {
-            min-width: 100px;
+        tbody tr:nth-child(odd) {
+            background: rgba(30, 50, 80, 0.4);
         }
         
-        .evaluation th.algorithm-col {
-            min-width: 100px;
-        }
-        .Generation{
-            background-color: #e8f5e9
-        }
-        .General{
-            background-color: #f5f5f5;
-        }
-        .Reasoning{
-            background-color: #86ccec;
-        }
-        .Retrieval{
-            background-color: #ffebee
-        }
-        .Faithfulness{
-            background-color: #d4cc83
-        }
-        .Specialization{
-            background-color: #e3f2fd;
-        }
-
-        
-        .evaluation tr:hover {
-            background-color: #f5f5f5;
-        }
-        .Llama {
-            background-color: #ffebee
+        tbody tr:nth-child(even) {
+            background: rgba(20, 40, 70, 0.4);
         }
         
-        .model-type-reasoning {
-            background-color: #e8f5e9;
+        tbody tr:hover {
+            background: rgba(58, 123, 213, 0.2);
+        }
+        
+        .rank-col {
+            width: 70px;
+            font-weight: bold;
+            color: #4fc3f7;
+        }
+        
+        .model-col {
+            min-width: 220px;
+            text-align: left;
+            padding-left: 15px;
+        }
+        
+        .score-col {
+            width: 100px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .model-label {
+            display: inline-block;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.95rem;
         }
         
         .Qwen {
-            background-color: #e3f2fd;
+            background: linear-gradient(135deg, #2193b0, #6dd5ed);
+            color: #003350;
         }
         
-        .algorithm-group {
-            border-left: none;
-            padding-left: 15px;
+        .Llama {
+            background: linear-gradient(135deg, #f46b45, #eea849);
+            color: #4d1c00;
+        }
+        
+        .best-score {
+            background: rgba(79, 195, 247, 0.2);
+            color: #4fc3f7;
             font-weight: bold;
+            font-size: 1.1rem;
         }
         
-        .model-type-legend {
+        .legend {
             display: flex;
             justify-content: center;
             gap: 20px;
-            margin: 10px 0;
+            margin: 20px 0;
+            flex-wrap: wrap;
         }
         
         .legend-item {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
+            font-size: 0.9rem;
         }
         
         .legend-color {
             width: 20px;
             height: 20px;
-            border-radius: 4px;
+            border-radius: 50%;
         }
-
-        .best-score {
-            font-weight: bold;
+        
+        .legend-qwen {
+            background: linear-gradient(135deg, #2193b0, #6dd5ed);
         }
-
-        .second-best {
-            text-decoration: underline;
+        
+        .legend-llama {
+            background: linear-gradient(135deg, #f46b45, #eea849);
         }
-
-        .basic-header {
-            height: 60px !important;
+        
+        .capability-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
         }
-
-        .evaluation::-webkit-scrollbar {
-            height: 8px;
+        
+        .capability-btn {
+            background: rgba(30, 70, 110, 0.8);
+            border: 1px solid #3a7bd5;
+            color: #e3f2fd;
+            padding: 12px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            font-weight: 600;
+            min-width: 140px;
+            text-align: center;
         }
-
-        .evaluation::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 4px;
+        
+        .capability-btn:hover {
+            background: rgba(58, 123, 213, 0.6);
+            transform: translateY(-2px);
         }
-
-        .evaluation::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 4px;
+        
+        .capability-btn.active {
+            background: rgba(58, 123, 213, 0.9);
+            box-shadow: 0 0 12px rgba(58, 123, 213, 0.7);
         }
-
-        .evaluation::-webkit-scrollbar-thumb:hover {
-            background: #555;
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #bbdefb;
+            font-size: 0.9rem;
+        }
+        
+        /* Animation for table rows */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        tbody tr {
+            animation: fadeIn 0.5s ease-out;
+            animation-fill-mode: both;
+        }
+        
+        tbody tr:nth-child(1) { animation-delay: 0.1s; }
+        tbody tr:nth-child(2) { animation-delay: 0.2s; }
+        tbody tr:nth-child(3) { animation-delay: 0.3s; }
+        tbody tr:nth-child(4) { animation-delay: 0.4s; }
+        tbody tr:nth-child(5) { animation-delay: 0.5s; }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .capability-btn {
+                padding: 10px 15px;
+                min-width: 120px;
+                font-size: 0.9rem;
+            }
+            
+            table {
+                min-width: 800px;
+            }
         }
     </style>
 </head>
 <body>
-    <main>
-        <section class="hero">
-            <h1>LOOM-Scope</h1>
-            <h2>Providing a convient and comprehensive framework for long-context model evaluation.</h2>
-
-            <div class="authors">
-                <p>
-                    <i class="fas fa-users"></i>
-                    NONE
-                </p>
-                <p class="affiliations">
-                    <i class="fas fa-university"></i>
-                    NONE
-                </p>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-chart-bar"></i> LOOM-Scope Model Leaderboard</h1>
+            <p class="subtitle">
+                Comprehensive performance evaluation across multidimensional benchmarks
+            </p>
+        </header>
+        
+        <div class="capability-controls">
+            <button class="capability-btn active" data-capability="overview">Overview</button>
+            <button class="capability-btn" data-capability="faithfulness">Faithfulness</button>
+            <button class="capability-btn" data-capability="general">General</button>
+            <button class="capability-btn" data-capability="reasoning">Reasoning</button>
+            <button class="capability-btn" data-capability="retrieval">Retrieval</button>
+            <button class="capability-btn" data-capability="generation">Generation</button>
+            <button class="capability-btn" data-capability="specialization">Specialization</button>
+        </div>
+        
+        <div class="capability-info" id="capability-info">
+            <h2><i class="fas fa-info-circle"></i> <span id="info-title">Model Performance Overview</span></h2>
+            <p id="info-description">Overall model performance across all capabilities and benchmark tests.</p>
+        </div>
+        
+        <div class="table-container">
+            <table id="model-leaderboard">
+                <thead id="table-header-row">
+                    <!-- Header will be generated dynamically -->
+                </thead>
+                <tbody>
+                    <!-- Table content will be generated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color legend-qwen"></div>
+                <span>Qwen Model Series</span>
             </div>
+            <div class="legend-item">
+                <div class="legend-color legend-llama"></div>
+                <span>Llama Model Series</span>
+            </div>
+        </div>
+        
+        <footer>
+            <p>LOOM-Scope Model Evaluation Benchmark | Data updated: June 1, 2025</p>
+            <p>© 2025 DeepSeek AI Research. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Model performance data
+        const scores = {
+            "Qwen3-30B-A3B": [37.96,40.61,11.61,78.32,43.24,60.31,48.96,41.30,22.82,28.42,100.00,24.12,14.14,83.24,56.09],
+            "Qwen3-14B": [35.64,43.84,11.79,74.94,45.47,59.15,56.41,31.95,21.26,29.85,100.00,27.35,10.24,85.75,55.87],
+            "Meta-Llama-3.1-8B-Instruct": [25.79,39.70,11.81,86.79,37.94,57.42,37.68,25.40,25.66,30.40,91.00,20.06,33.64,45.96,51.24],
+            "Qwen3-8B": [33.18,41.15,11.67,67.68,38.62,55.28,52.32,32.61,15.15,27.25,64.00,21.92,8.06,81.99,51.78],
+            "Qwen3-4B": [24.55,39.03,11.69,70.29,39.32,55.01,42.06,33.66,18.24,32.52,62.00,17.95,13.05,74.25,46.92]
+        };
+        
+        // Capability definitions and tests
+        const capabilities = {
+            "overview": {
+                "description": "Overall model performance across all capabilities and benchmark tests",
+                "columns": [
+                    { name: "Rank", type: "fixed", sortable: true },
+                    { name: "Model", type: "fixed", sortable: false },
+                    { name: "Avg Score", type: "fixed", sortable: true },
+                    { name: "Faithfulness", type: "capability", sortable: true },
+                    { name: "General", type: "capability", sortable: true },
+                    { name: "Reasoning", type: "capability", sortable: true },
+                    { name: "Retrieval", type: "capability", sortable: true },
+                    { name: "Generation", type: "capability", sortable: true },
+                    { name: "Specialization", type: "capability", sortable: true }
+                ]
+            },
+            "faithfulness": {
+                "tests": ["L_CiteEval"],
+                "description": "Evaluates model consistency with source information, avoiding hallucinations or inaccuracies. Measures how well models can produce factually accurate outputs based on given inputs.",
+                "columns": [
+                    { name: "Rank", type: "fixed", sortable: true },
+                    { name: "Model", type: "fixed", sortable: false },
+                    { name: "Avg Score", type: "fixed", sortable: true },
+                    { name: "L_CiteEval", type: "test", sortable: true }
+                ]
+            },
+            "general": {
+                "tests": ["LEval", "LooGLE", "RULER", "longbench"],
+                "description": "Measures performance on common NLP tasks including text understanding, classification, and information extraction across diverse domains and contexts.",
+                "columns": [
+                    { name: "Rank", type: "fixed", sortable: true },
+                    { name: "Model", type: "fixed", sortable: false },
+                    { name: "Avg Score", type: "fixed", sortable: true },
+                    { name: "LEval", type: "test", sortable: true },
+                    { name: "LooGLE", type: "test", sortable: true },
+                    { name: "RULER", type: "test", sortable: true },
+                    { name: "longbench", type: "test", sortable: true }
+                ]
+            },
+            "reasoning": {
+                "tests": ["Counting_Stars", "LongIns", "LVEval", "longbench_v2", "NIAH","babilong"],
+                "description": "Tests logical reasoning, mathematical computation, causal inference and complex problem-solving abilities. Evaluates multi-step reasoning and abstract thinking capabilities.",
+                "columns": [
+                    { name: "Rank", type: "fixed", sortable: true },
+                    { name: "Model", type: "fixed", sortable: false },
+                    { name: "Avg Score", type: "fixed", sortable: true },
+                    { name: "Counting-Stars", type: "test", sortable: true },
+                    { name: "LongIns", type: "test", sortable: true },
+                    { name: "LVEval", type: "test", sortable: true },
+                    { name: "longbench_v2", type: "test", sortable: true },
+                    { name: "NIAH", type: "test", sortable: true },
+                    { name: "babilong", type: "test", sortable: true }
+                ]
+            },
+            "retrieval": {
+                "tests": ["NThread", "InfiniteBench", "LongWriter"],
+                "description": "Assesses ability to locate, extract and synthesize relevant information from large contexts. Measures performance in long-document processing and information localization.",
+                "columns": [
+                    { name: "Rank", type: "fixed", sortable: true },
+                    { name: "Model", type: "fixed", sortable: false },
+                    { name: "Avg Score", type: "fixed", sortable: true },
+                    { name: "NThread", type: "test", sortable: true },
+                    { name: "InfiniteBench", type: "test", sortable: true },
+                    { name: "LongWriter", type: "test", sortable: true }
+                ]
+            },
+            "generation": {
+                "tests": ["LongWriter"],
+                "description": "Evaluates coherent, contextually appropriate, and creative text generation. Measures fluency, coherence, and creativity in content creation tasks.",
+                "columns": [
+                    { name: "Rank", type: "fixed", sortable: true },
+                    { name: "Model", type: "fixed", sortable: false },
+                    { name: "Avg Score", type: "fixed", sortable: true },
+                    { name: "LongWriter", type: "test", sortable: true }
+                ]
+            },
+            "specialization": {
+                "tests": ["LIBRA"],
+                "description": "Measures expertise in specialized domains like law, medicine, programming and finance. Tests domain-specific knowledge and problem-solving abilities.",
+                "columns": [
+                    { name: "Rank", type: "fixed", sortable: true },
+                    { name: "Model", type: "fixed", sortable: false },
+                    { name: "Avg Score", type: "fixed", sortable: true },
+                    { name: "LIBRA", type: "test", sortable: true }
+                ]
+            }
+        };
+        
+        const sequence = [
+            "L_CiteEval", "LEval", "LooGLE", "RULER", "longbench", 
+            "babilong", "Counting_Stars", "LongIns", "LVEval", 
+            "longbench_v2", "NIAH", "NThread", "InfiniteBench", "LongWriter", "LIBRA"
+        ];
+        
+        // State variables
+        let currentCapability = "overview";
+        let sortColumn = "Avg Score";
+        let sortDirection = "desc";
+        let models = [];
+        
+        // Calculate capability averages
+        const calculateAbilityAverage = (modelScores, tests) => {
+            const testIndices = tests.map(test => sequence.indexOf(test));
             
-            <div class="nav-buttons">
-                <a href="" class="button">
-                    <i class="fas fa-file-alt"></i>
-                    Paper
-                </a>
-                <a href="https://gitlab.com/ZetangForward1/LOOM-Scape" class="button">
-                    <i class="fab fa-github"></i>
-                    Code
-                </a>
-                <a href="" class="button">
-                    <i class="fas fa-video"></i>
-                    Video
-                </a>
-            </div>
-        </section>
-
-        <section class="introduction">
-            <h2><i class="fas fa-info-circle"></i> Introduction</h2>
-            <div class="overview-image" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
-                <div id="sunburst-chart" style="max-width: 100%; width: 800px; height: 600px;">
-                </div>
-                <p class="image-caption">
-                    Sunburst Chart of LOOM - Scope with all of our benchmarks (classified)
-                </p>
-            </div>
-        </section>
-        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-        
-        <script>
-            // 定义标签（labels）和父节点（parents）
-            const labels = ["Synthetic Tasks", "Real-World Tasks", "S-Doc QA", "M-Doc QA", "Choose", "Long QA", "Summ", "Writing", " Synthetic Recall ", "Synthetic Recall", "Code & Math", "Code & Math ", "Cite", "ICL", " RULER", " LongIns", "LEval", "LVEval", " LongBench-V2 ", " RULER ", "Babilong ", " LongIns ", " NThread ", " Babilong", "LongIns  ", "L-Cite-Eval ", "LEval ", "LongBench ", "LooGLE ", "InfiniteBench ", " LEval", "LongWriter", " LEval ", "LVEval ", " LongBench", " LooGLE", " LIBRA", " L-Cite-Eval", "LongBench-V2", " InfiniteBench", "LIBRA ", " LongBench ", "LongBench-V2 ", "LEval  ", " LVEval ", " LongBench-V2", "RULER", "Babilong", " InfiniteBench ", "LongIns", "NThread", "L-Cite-Eval  ", "  LEval", "LVEval  ", "LongBench  ", "RULER ", "InfiniteBench  ", "LongIns ", "Counting-Stars", "   NIAH   ", "NThread ", " LIBRA ", "  LEval  ", "  LVEval  ", "  InfiniteBench  "]
-            const parents = ["", "", "Synthetic Tasks", "Synthetic Tasks", "Synthetic Tasks", "Real-World Tasks", "Real-World Tasks", "Real-World Tasks", "Synthetic Tasks", "Real-World Tasks", "Synthetic Tasks", "Real-World Tasks", "Real-World Tasks", "Real-World Tasks", "S-Doc QA", "S-Doc QA", "M-Doc QA", "M-Doc QA", "M-Doc QA", "M-Doc QA", "M-Doc QA", "M-Doc QA", "M-Doc QA", "Choose", "Choose", "Summ", "Summ", "Summ", "Summ", "Summ", "Writing", "Writing", "Synthetic Recall", "Synthetic Recall", "Synthetic Recall", "Synthetic Recall", "Synthetic Recall", "Cite", "Code & Math ", "Code & Math ", "Code & Math ", "ICL", "ICL", "Long QA", "Long QA", "Long QA", "Long QA", "Long QA", "Long QA", "Long QA", "Long QA", " Synthetic Recall ", " Synthetic Recall ", " Synthetic Recall ", " Synthetic Recall ", " Synthetic Recall ", " Synthetic Recall ", " Synthetic Recall ", " Synthetic Recall ", " Synthetic Recall ", " Synthetic Recall ", " Synthetic Recall ", "Code & Math", "Code & Math", "Code & Math"];
-            const values = [650, 650, 52, 182, 52, 200, 125, 50, 286, 125, 78, 75, 25, 50, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26];
-            const x = 14 + 11 + 5 + 2 + 5 + 1 + 3 + 2 + 8 + 11 + 3;
-            const labels_trimmed = labels.slice(0, x);
-            const parents_trimmed = parents.slice(0, x);
-            const values_trimmed = values.slice(0, x);
-        
-            // 定义颜色
-            const colors = [];
-            const main_colors = ["#1f77b4", "#ff7f0e"]; // 主类别颜色
-            const secondary_colors = ["#aec7e8", "#ffbb78"]; // 二级类别颜色
-            const tertiary_colors = ["#c6dbef", "#fdd0a2"]; // 三级类别颜色
-        
-            for (let i = 0; i < labels_trimmed.length; i++) {
-                const label = labels_trimmed[i];
-                const parent = parents_trimmed[i];
-                if (parent === "") {
-                    colors.push(main_colors[labels_trimmed.indexOf(label)]);
-                } else if (parent === "Synthetic Tasks" || parent === "Real-World Tasks") {
-                    const index = labels_trimmed.indexOf(parent) % 2;
-                    colors.push(secondary_colors[index]);
-                } else {
-                    const index = labels_trimmed.indexOf(parent) % 2;
-                    if (parent === "Summ" || parent === "Cite") {
-                        colors.push(tertiary_colors[1]);
-                    } else if (parent === "M-Doc QA") {
-                        colors.push(tertiary_colors[0]);
-                    } else {
-                        colors.push(tertiary_colors[index]);
-                    }
+            let sum = 0;
+            let count = 0;
+            for (const index of testIndices) {
+                if (index !== -1) {
+                    sum += modelScores[index];
+                    count++;
                 }
             }
+            return count > 0 ? sum / count : 0;
+        };
         
-            // 生成旭日图
-            const fig = {
-                data: [{
-                    type: 'sunburst',
-                    labels: labels_trimmed,
-                    parents: parents_trimmed,
-                    values: values_trimmed,
-                    branchvalues: "total",
-                    maxdepth: 3,
-                    marker: {
-                        colors: colors,
-                        line: {
-                            color: 'white',
-                            width: 0.5
-                        }
-                    },
-                    hovertemplate: '<b>%{label}</b><br>Value: %{value}<extra></extra>'
-                }],
-                layout: {
-                    margin: { t: 20, l: 20, r: 20, b: 20 },
-                    font: {
-                        size: 12,
-                        color: "black"
-                    },
-                    autosize: false,
-                    width: 800,
-                    height: 600,
-                    paper_bgcolor: "transparent", // 画布背景透明
-                    plot_bgcolor: "transparent"  // 绘图区域背景透明
-                }
-            };
-        
-            // 渲染图表到指定的 div 元素中
-            Plotly.newPlot('sunburst-chart', fig);
-        </script>
-            <p> 
-                🔥 LOOM-Scope offers a comprehensive suite of tools, featuring 15 standard long-context benchmarks covering faithfulness, retrieval, reasoning, generation, and more. With hundreds of subtasks and support for diverse model architectures including Transformers, Mamba, and RWKV it enables researchers to rigorously assess model capabilities under real-world long-context demands. A standout feature is its single-line command workflow, automating dataset/model detection, download, and evaluation for seamless usability.<br>
-                <br>
-                🚀 Efficiency is at the core of LOOM-Scope: it integrates 12 computational acceleration methods like CakeKV and FlexPrefill, leveraging vLLM for fast, memory-efficient inference. We have evaluated a range of GPU hardware, from the 3090 with 24GB VRAM to the H20 with 96GB VRAM, and publicly documented their computational costs while ensuring reproducible results across platforms. Whether evaluating base models or adapters (via HuggingFace PEFT), LOOM-Scope ensures consistency and scalability.<br>
-            </p>
-            
+        // Prepare model data with calculated metrics
+        const prepareModelData = () => {
+            return Object.keys(scores).map(model => {
+                const modelScores = scores[model];
+                const avgScore = modelScores.reduce((sum, score) => sum + score, 0) / modelScores.length;
                 
-        </section>
-
-        <section class="evaluation">
-            <h2><i class="fas fa-chart-bar"></i> Model leaderboard</h2>
-            <p> 
-                The model leaderboard showcases performance rankings across LOOM-Scope's multidimensional benchmarks, evaluating models on key capabilities including Faithfulness, General tasks, Reasoning, Retrieval, Generation, and Specialization.
-            </p> 
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th rowspan="3" class="basic-header rank-col">Rank</th>
-                            <th rowspan="2" class="basic-header model-col">Model</th>
-                            <th rowspan="2" class="basic-header score-col">Avg Score</th>
-                            <th colspan="1" class="algorithm-group">Faithfulness</th>
-                            <th colspan="4" class="algorithm-group">General</th>
-                            <th colspan="5" class="algorithm-group">Reasoning</th>
-                            <th colspan="3" class="algorithm-group">Retrieval</th>
-                            <th colspan="1" class="algorithm-group">Generation</th>
-                            <th colspan="1" class="algorithm-group">Specialization</th>
-                        </tr>
-                        <tr>
-                            <th class="algorithm-col">L_CiteEval</th>
-                            <th class="algorithm-col">LEval</th>
-                            <th class="algorithm-col">LooGLE</th>
-                            <th class="algorithm-col">RULER（0-128k）</th>
-                            <th class="algorithm-col">longbench</th>
-                            <th class="algorithm-col">babilong（0-128k）</th>
-                            <th class="algorithm-col">Counting-Stars</th>
-                            <th class="algorithm-col">LongIns</th>
-                            <th class="algorithm-col">LVEval</th>
-                            <th class="algorithm-col">longbench_v2</th>
-                            <th class="algorithm-col">NIAH</th>
-                            <th class="algorithm-col">NThread</th>
-                            <th class="algorithm-col">InfiniteBench</th>
-                            <th class="algorithm-col">LongWriter</th>
-                            <th class="algorithm-col">LIBRA</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td><span class="model-label Qwen">Qwen3-30B-A3B</span></td>
-                            <td class="best-score">46.08</td> 
-                            <td>37.96</td>
-                            <td>40.61</td>
-                            <td>11.61</td>
-                            <td>78.32</td>
-                            <td>43.24</td>
-                            <td>60.31</td>
-                            <td>48.96</td>
-                            <td>41.30</td>
-                            <td>22.82</td>
-                            <td>28.42</td>
-                            <td>100.00</td>
-                            <td>24.12</td>
-                            <td>14.14</td>
-                            <td>83.24</td>
-                            <td>56.09</td>
-                        </tr>    
-                        <tr>
-                            <td>2</td>
-                            <td><span class="model-label Qwen">Qwen3-14B</span></td>
-                            <td class="best-score">45.97</td>
-                            <td>35.64</td>
-                            <td>43.84</td>
-                            <td>11.79</td>
-                            <td>74.94</td>
-                            <td>45.47</td>
-                            <td>59.15</td>
-                            <td>56.41</td>
-                            <td>31.95</td>
-                            <td>21.26</td>
-                            <td>29.85</td>
-                            <td>100.00</td>
-                            <td>27.35</td>
-                            <td>10.24</td>
-                            <td>85.75</td>
-                            <td>55.87</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td><span class="model-label Llama">Meta-Llama-3.1-8B-Instruct</span></td>
-                            <td class="best-score">41.37</td>
-                            <td>25.79</td>
-                            <td>39.70</td>
-                            <td>11.81</td>
-                            <td>86.79</td>
-                            <td>37.94</td>
-                            <td>57.42</td>
-                            <td>37.68</td>
-                            <td>25.40</td>
-                            <td>25.66</td>
-                            <td>30.40</td>
-                            <td>91.00</td>
-                            <td>20.06</td>
-                            <td>33.64</td>
-                            <td>45.96</td>
-                            <td>51.24</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td><span class="model-label Qwen">Qwen3-8B</span></td>
-                            <td class="best-score">40.18</td>
-                            <td>33.18</td>
-                            <td>41.15</td>
-                            <td>11.67</td>
-                            <td>67.68</td>
-                            <td>38.62</td>
-                            <td>55.28</td>
-                            <td>52.32</td>
-                            <td>32.61</td>
-                            <td>15.15</td>
-                            <td>27.25</td>
-                            <td>64.00</td>
-                            <td>21.92</td>
-                            <td>8.06</td>
-                            <td>81.99</td>
-                            <td>51.78</td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td><span class="model-label Qwen">Qwen3-4B</span></td>
-                            <td class="best-score">38.70</td>
-                            <td>24.55</td>
-                            <td>39.03</td>
-                            <td>11.69</td>
-                            <td>70.29</td>
-                            <td>39.32</td>
-                            <td>55.01</td>
-                            <td>42.06</td>
-                            <td>33.66</td>
-                            <td>18.24</td>
-                            <td>32.52</td>
-                            <td>62.00</td>
-                            <td>17.95</td>
-                            <td>13.05</td>
-                            <td>74.25</td>
-                            <td>46.92</td>
-                        </tr>    
-                    </tbody>
-                </table>
-            </div>
-        </section>
-        
-        <section class="evaluation">
-            <h2><i class="fa-solid fa-flask"></i> Benchmark Validation Platform</h2>
-            <p>
-                The Benchmark Validation Platform provides a side-by-side comparison of scores from our framework’s evaluations and official scores reported in benchmark papers, demonstrating research findings’ reproducibility.
-            </p>
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th rowspan="3" class="basic-header rank-col">Ability</th>
-                            <th rowspan="3" class="basic-header rank-col">Benchmark</th>
-                            <th rowspan="3" class="basic-header rank-col">Model</th>
-                            <th rowspan="3" class="basic-header model-col">Scores (Evaluated)</th>
-                            <th rowspan="3" class="basic-header score-col">Official Scores (Reported in Paper)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td rowspan="5">Reasoning</td>
-                            <td>babilong</td>
-                            <td><span class="model-label Retrieval">Llama-3.1-8B-Instruct</span></td>
-                            <td>57.0</td>
-                            <td>59.0</td>
-                        </tr>
-                        <tr>
-                            <td>Counting_Stars</td>
-                            <td><span class="model-label Retrieval">Llama-3.1-8B-Instruct</span></td>
-                            <td>38.2</td>
-                            <td>43.5</td>
-                        </tr>
-                        <tr>
-                            <td>LongBench_v2</td>
-                            <td><span class="model-label Retrieval">Llama-3.1-8B-Instruct</span></td>
-                            <td>30.4</td>
-                            <td>30.0</td>
-                        </tr>
-                        <tr>
-                            <td>LongIns</td>
-                            <td><span class="model-label Specialization">ChatGLM2-6B</span></td>
-                            <td>11.5</td>
-                            <td>12.0</td>
-                        </tr>
-                        <tr>
-                            <td>LVEval</td>
-                            <td><span class="model-label Retrieval">Llama2-7B-32k-Instruct</span></td>
-                            <td>7.3</td>
-                            <td>7.4</td>
-                        </tr>
-                        <tr>
-                            <td rowspan="4">General</td>
-                            <td>LEval</td>
-                            <td><span class="model-label Retrieval">Llama-3.1-8B-Instruct</span></td>
-                            <td>60.5</td>
-                            <td>58.7</td>
-                        </tr>
-                        <tr>
-                            <td>LongBench</td>
-                            <td><span class="model-label Specialization">ChatGLM2-6B</span></td>
-                            <td>24.9</td>
-                            <td>25.7</td>
-                        </tr>
-                        <tr>
-                            <td>LooGLE</td>
-                            <td><span class="model-label Specialization">ChatGLM2-6b-32k</span></td>
-                            <td>19.6</td>
-                            <td>15.1</td>
-                        </tr>
-                        <tr>
-                            <td>RULER</td>
-                            <td><span class="model-label Retrieval">Llama-3.1-8B-Instruct</span></td>
-                            <td>90.7</td>
-                            <td>88.3</td>
-                        </tr>
-                        <tr>
-                            <td rowspan="3">Retrieval</td>
-                            <td>InfiniteBench</td>
-                            <td><span class="model-label Specialization">ChatGLM3-6b-128k</span></td>
-                            <td>24.5</td>
-                            <td>19.5</td>
-                        </tr>
-                        <tr>
-                            <td>NIAH</td>
-                            <td><span class="model-label Retrieval">Llama-3.1-8B-Instruct</span></td>
-                            <td>97.6</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>NThread</td>
-                            <td><span class="model-label Retrieval">Llama-3.1-8B-Instruct</span></td>
-                            <td>34.3</td>
-                            <td>41.4</td>
-                        </tr>
-                        <tr>
-                            <td>Generation</td>
-                            <td>LongWriter</td>
-                            <td><span class="model-label Retrieval">Llama-3.1-8B-Instruct</span></td>
-                            <td>58.5</td>
-                            <td>60.3</td>
-                        </tr>
-                        <tr>
-                            <td>Specialization</td>
-                            <td>LIBRA</td>
-                            <td><span class="model-label Retrieval">Llama-3-8B-Instruct</span></td>
-                            <td>56.8</td>
-                            <td>57.4</td>
-                        </tr>
-                        <tr>
-                            <td>Faithfulness</td>
-                            <td>L_CiteEval</td>
-                            <td><span class="model-label Retrieval">Llama-3.1-8B-Instruct</span></td>
-                            <td>27.7</td>
-                            <td>25.5</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-        <section class="citation">
-            <h2><i class="fas fa-video"></i>  *************** </h2>
-            <p>
-                空
-            </p>
-            <video>
-                空
-            </video>
-         </section>
-                
-        <section class="citation">
-            <h2><i class="fas fa-quote-right"></i> BibTeX</h2>
-            <div class="citation-container">
-                <button class="copy-button" onclick="copyBibTeX()">
-                    <i class="fas fa-copy"></i> Copy
-                </button>
-                <pre id="bibtex">@misc{,
-    title={LOOM-Scope: LOng-cOntext Model evaluation framework }, 
-    author={ },
-    year={2025},
-    eprint={2504.19093},
-    archivePrefix={arXiv},
-    primaryClass={cs.CR},
-    url={}, 
-}</pre>
-            </div>
-        </section>
-
-        <script>
-        function copyBibTeX() {
-            const bibtex = document.getElementById('bibtex').textContent;
-            navigator.clipboard.writeText(bibtex).then(() => {
-                const button = document.querySelector('.copy-button');
-                const originalContent = button.innerHTML;
-                button.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                setTimeout(() => {
-                    button.innerHTML = originalContent;
-                }, 2000);
+                return {
+                    name: model,
+                    scores: modelScores,
+                    avgScore: avgScore,
+                    faithScore: calculateAbilityAverage(modelScores, capabilities.faithfulness.tests),
+                    generalScore: calculateAbilityAverage(modelScores, capabilities.general.tests),
+                    reasoningScore: calculateAbilityAverage(modelScores, capabilities.reasoning.tests),
+                    retrievalScore: calculateAbilityAverage(modelScores, capabilities.retrieval.tests),
+                    generationScore: calculateAbilityAverage(modelScores, capabilities.generation.tests),
+                    specializationScore: calculateAbilityAverage(modelScores, capabilities.specialization.tests)
+                };
             });
-        }
-        </script>
-    </main>
+        };
+        
+        // Render table header based on current capability
+        const renderTableHeader = () => {
+            const headerRow = document.getElementById("table-header-row");
+            headerRow.innerHTML = "";
+            
+            const capability = capabilities[currentCapability];
+            
+            capability.columns.forEach(col => {
+                const th = document.createElement("th");
+                th.textContent = col.name;
+                
+                if (col.sortable) {
+                    th.classList.add("sortable");
+                    
+                    // Add sort indicator if this is the current sort column
+                    if (col.name === sortColumn) {
+                        th.classList.add(sortDirection === "asc" ? "sorted-asc" : "sorted-desc");
+                    }
+                    
+                    th.addEventListener("click", () => {
+                        if (col.sortable) {
+                            // Toggle direction if clicking the same column
+                            if (sortColumn === col.name) {
+                                sortDirection = sortDirection === "asc" ? "desc" : "asc";
+                            } else {
+                                sortColumn = col.name;
+                                sortDirection = "desc";
+                            }
+                            renderTable();
+                        }
+                    });
+                }
+                
+                headerRow.appendChild(th);
+            });
+        };
+        
+        // Get score for a specific test
+        const getTestScore = (model, testName) => {
+            // Normalize test names (replace hyphens with underscores)
+            const normalizedTestName = testName.replace(/-/g, '_');
+            const testIndex = sequence.indexOf(normalizedTestName);
+            return testIndex !== -1 ? model.scores[testIndex] : 0;
+        };
+        
+        // Get score for a capability
+        const getCapabilityScore = (model, capability) => {
+            // 修复能力名大小写问题
+            const capabilityName = capability.toLowerCase().replace(/\s+/g, '');
+            
+            switch(capabilityName) {
+                case "faithfulness": return model.faithScore;
+                case "general": return model.generalScore;
+                case "reasoning": return model.reasoningScore;
+                case "retrieval": return model.retrievalScore;
+                case "generation": return model.generationScore;
+                case "specialization": return model.specializationScore;
+                default: return 0;
+            }
+        };
+        
+        // Get the appropriate score for the Avg Score column
+        const getAvgScore = (model) => {
+            if (currentCapability === "overview") {
+                return model.avgScore;
+            } else {
+                // Calculate average of current capability tests
+                return calculateAbilityAverage(model.scores, capabilities[currentCapability].tests);
+            }
+        };
+        
+        // Render table body
+        const renderTableBody = () => {
+            const tbody = document.querySelector("#model-leaderboard tbody");
+            tbody.innerHTML = "";
+            
+            // Sort models
+            const sortedModels = [...models];
+            sortedModels.sort((a, b) => {
+                let aValue = 0, bValue = 0;
+                
+                if (sortColumn === "Rank") {
+                    return 0; // Ranking is based on position
+                } else if (sortColumn === "Avg Score") {
+                    aValue = getAvgScore(a);
+                    bValue = getAvgScore(b);
+                } else if (currentCapability === "overview") {
+                    // 在overview视图中，能力列排序
+                    aValue = getCapabilityScore(a, sortColumn);
+                    bValue = getCapabilityScore(b, sortColumn);
+                } else if (capabilities[currentCapability].tests) {
+                    // 测试列排序
+                    const normalizedSortColumn = sortColumn.replace(/-/g, '_');
+                    if (capabilities[currentCapability].tests.includes(normalizedSortColumn)) {
+                        aValue = getTestScore(a, sortColumn);
+                        bValue = getTestScore(b, sortColumn);
+                    }
+                }
+                
+                return sortDirection === "asc" ? aValue - bValue : bValue - aValue;
+            });
+            
+            // Render models
+            sortedModels.forEach((model, index) => {
+                const isQwen = model.name.includes("Qwen");
+                const modelClass = isQwen ? "Qwen" : "Llama";
+                
+                const row = document.createElement("tr");
+                
+                capabilities[currentCapability].columns.forEach(col => {
+                    const td = document.createElement("td");
+                    
+                    if (col.name === "Rank") {
+                        td.textContent = index + 1;
+                        td.classList.add("rank-col");
+                    } else if (col.name === "Model") {
+                        td.innerHTML = `<span class="model-label ${modelClass}">${model.name}</span>`;
+                        td.classList.add("model-col");
+                    } else if (col.name === "Avg Score") {
+                        td.textContent = getAvgScore(model).toFixed(2);
+                        td.classList.add("best-score");
+                    } else if (currentCapability === "overview" && 
+                              ["Faithfulness", "General", "Reasoning", "Retrieval", "Generation", "Specialization"].includes(col.name)) {
+                        // 能力分数
+                        td.textContent = getCapabilityScore(model, col.name).toFixed(2);
+                    } else if (capabilities[currentCapability].tests) {
+                        // 测试分数
+                        const normalizedColName = col.name.replace(/-/g, '_');
+                        if (capabilities[currentCapability].tests.includes(normalizedColName)) {
+                            td.textContent = getTestScore(model, col.name).toFixed(2);
+                        }
+                    }
+                    
+                    row.appendChild(td);
+                });
+                
+                tbody.appendChild(row);
+            });
+        };
+        
+        // Update capability info
+        const updateCapabilityInfo = () => {
+            const title = document.getElementById("info-title");
+            const description = document.getElementById("info-description");
+            
+            let displayName = currentCapability.charAt(0).toUpperCase() + currentCapability.slice(1);
+            if (currentCapability === "general") displayName = "General";
+            
+            title.textContent = currentCapability === "overview" 
+                ? "Model Performance Overview" 
+                : displayName + " Capability";
+            
+            description.textContent = capabilities[currentCapability].description;
+        };
+        
+        // Update capability buttons
+        const updateCapabilityButtons = () => {
+            document.querySelectorAll(".capability-btn").forEach(btn => {
+                if (btn.dataset.capability === currentCapability) {
+                    btn.classList.add("active");
+                } else {
+                    btn.classList.remove("active");
+                }
+            });
+        };
+        
+        // Render entire table
+        const renderTable = () => {
+            updateCapabilityInfo();
+            renderTableHeader();
+            renderTableBody();
+            updateCapabilityButtons();
+        };
+        
+        // Initialize event listeners
+        const initEventListeners = () => {
+            // Capability buttons
+            document.querySelectorAll(".capability-btn").forEach(btn => {
+                btn.addEventListener("click", (e) => {
+                    currentCapability = e.target.dataset.capability;
+                    // Reset sorting to default for new view
+                    sortColumn = "Avg Score";
+                    sortDirection = "desc";
+                    renderTable();
+                });
+            });
+        };
+        
+        window.onload = () => {
+            // Prepare model data
+            models = prepareModelData();
+            
+            // Set default sorting
+            models.sort((a, b) => b.avgScore - a.avgScore);
+            
+            initEventListeners();
+            renderTable();
+        };
+    </script>
 </body>
-</html> 
+</html>
