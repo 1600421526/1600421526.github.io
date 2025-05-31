@@ -128,26 +128,72 @@
 
 
         <section class="evaluation">
-            const scores= {
-            "Qwen3-30B-A3B":[37.96,40.61,11.61,78.32,43.24,60.31,48.96,41.30,22.82,28.42,100.00,24.12,14.14,83.24,56.09],
-            "Qwen3-14B":[35.64,43.84,11.79,74.94,45.47,59.15,56.41,31.95,21.26,29.85,100.00,27.35,10.24,85.75,55.87],
-            "Meta-Llama-3.1-8B-Instruct":[5.79,39.70,11.81,86.79,37.94,57.42,37.68,25.40,25.66,30.40,91.00,20.06,33.64,45.96,51.24],
-            "Qwen3-8B":[33.18,41.15,11.67,67.68,38.62,55.28,52.32,32.61,15.15,27.25,64.00,21.92,8.06,81.99,51.78],
-            "Qwen3-4B":[24.55,39.03,11.69,70.29,39.32,55.01,42.06,33.66,18.24,32.52,62.00,17.95,13.05,74.25,46.92]
-            }
-            const sequence = ["L_CiteEval",	"LEval","LooGLE", "RULER（0-128k）, "longbench","babilong（0-128k）", "Counting-Stars", "LongIns" ,"LVEval", "longbench_v2", "NIAH","NThread","InfiniteBench" ,"LongWriter","LIBRA" ]
-            const ability = {
-            "Faithfulness": ["L_CiteEval"], 
-            "General": ["LEval", "LooGLE", "RULER（0-128k）", "longbench"],
-            "Reasoning": ["Counting-Stars", "LongIns", "LVEval", "longbench_v2", "NIAH"], 
-            "Retrieval": ["NThread", "InfiniteBench", "LongWriter"], 
-            "Generation": ["LongWriter"], 
-            "Specialization": ["LIBRA"] 
-            }
             <h2><i class="fas fa-chart-bar"></i> Model leaderboard</h2>
             <p> 
                 The model leaderboard showcases performance rankings across LOOM-Scope's multidimensional benchmarks, evaluating models on key capabilities including Faithfulness, General tasks, Reasoning, Retrieval, Generation, and Specialization.
             </p> 
+            <script>
+                const scores= {
+                "Qwen3-30B-A3B":[37.96,40.61,11.61,78.32,43.24,60.31,48.96,41.30,22.82,28.42,100.00,24.12,14.14,83.24,56.09],
+                "Qwen3-14B":[35.64,43.84,11.79,74.94,45.47,59.15,56.41,31.95,21.26,29.85,100.00,27.35,10.24,85.75,55.87],
+                "Meta-Llama-3.1-8B-Instruct":[5.79,39.70,11.81,86.79,37.94,57.42,37.68,25.40,25.66,30.40,91.00,20.06,33.64,45.96,51.24],
+                "Qwen3-8B":[33.18,41.15,11.67,67.68,38.62,55.28,52.32,32.61,15.15,27.25,64.00,21.92,8.06,81.99,51.78],
+                "Qwen3-4B":[24.55,39.03,11.69,70.29,39.32,55.01,42.06,33.66,18.24,32.52,62.00,17.95,13.05,74.25,46.92]
+                }
+                const sequence = ["L_CiteEval",	"LEval","LooGLE", "RULER（0-128k）", "longbench","babilong（0-128k）", "Counting-Stars", "LongIns" ,"LVEval", "longbench_v2", "NIAH","NThread","InfiniteBench" ,"LongWriter","LIBRA" ]
+                const ability = {
+                "Faithfulness": ["L_CiteEval"], 
+                "General": ["LEval", "LooGLE", "RULER（0-128k）", "longbench"],
+                "Reasoning": ["Counting-Stars", "LongIns", "LVEval", "longbench_v2", "NIAH"], 
+                "Retrieval": ["NThread", "InfiniteBench", "LongWriter"], 
+                "Generation": ["LongWriter"], 
+                "Specialization": ["LIBRA"] 
+                }
+                const models = Object.entries(scores).map(([model, arr]) => {
+                const avgScore = arr.reduce((a, b) => a + b, 0) / arr.length;
+                const abilityScores = {};
+                
+                // 计算每个能力的分数（取对应指标的平均值）
+                for (const [abilityName, metrics] of Object.entries(ability)) {
+                    const metricScores = metrics.map(metric => arr[sequence.indexOf(metric)]);
+                    abilityScores[abilityName] = metricScores.reduce((a, b) => a + b, 0) / metricScores.length;
+                }
+                
+                return {
+                    model,
+                    avgScore: avgScore.toFixed(2),
+                    ...abilityScores
+                };
+                });
+
+                // 按平均分降序排序
+                models.sort((a, b) => parseFloat(b.avgScore) - parseFloat(a.avgScore));
+
+                // 生成排名
+                models.forEach((model, index) => model.rank = index + 1);
+
+                // 动态生成表格
+                const table = document.getElementById('leaderboard');
+                table.innerHTML = `
+                <tr>
+                    <th>Rank</th>
+                    <th>Model</th>
+                    <th>Avg Score</th>
+                    ${Object.keys(ability).map(abilityName => `<th>${abilityName}</th>`).join('')}
+                </tr>
+                ${models.map(model => `
+                    <tr>
+                    <td>${model.rank}</td>
+                    <td>${model.model}</td>
+                    <td>${model.avgScore}</td>
+                    ${Object.values(ability).map(metrics => {
+                        const metric = metrics[0]; // 对于单指标能力直接取第一个值
+                        return `<td>${model[Object.keys(ability).find(key => key.toLowerCase() === abilityName.toLowerCase())].toFixed(2)}</td>`;
+                    }).join('')}
+                    </tr>
+                `).join('')}
+                `;
+            </script>
             <div class="table-container">
                 <table>
                     <thead>
