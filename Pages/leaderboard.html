@@ -5,44 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LOOM-Scope - LOng-cOntext Model evaluation framework</title>
     <meta name="description" content="Providing a convient and comprehensive framework for long-context model evaluation.">
-    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
     <main>
         <section class="hero">
             <h1>LOOM-Scope</h1>
-            <h2>Providing a convient and comprehensive framework for long-context model evaluation.</h2>
-            
-
-            <div class="authors">
-                <p>
-                    <i class="fas fa-users"></i>
-                    NONE
-                </p>
-                <p class="affiliations">
-                    <i class="fas fa-university"></i>
-                    NONE
-                </p>
-            </div>
+            <h2>Providing a convient and comprehensive framework for long-context model evaluation.</h2>            
             <div class="nav-buttons">
-                <a href="/Pages/benchmark.html" class="button">
-                    <i class="fas fa-chart-bar"></i> Model Leaderboard
-                </a>
-                <a href="/Pages/leaderboard.html" class="button">
-                    <i class="fa-solid fa-flask"></i> Benchmark Validation
-                </a>
                 <a href="" class="button">
-                    <i class="fas fa-file-alt"></i> Paper
+                    <i class="fas fa-file-alt"></i>
+                    Paper
                 </a>
                 <a href="https://gitlab.com/ZetangForward1/LOOM-Scape" class="button">
-                    <i class="fab fa-github"></i> Code
+                    <i class="fab fa-github"></i>
+                    Code
                 </a>
                 <a href="" class="button">
-                    <i class="fas fa-video"></i> Video
+                    <i class="fas fa-video"></i>
+                    Video
                 </a>
             </div>
-
         </section>
 
         <section class="introduction">
@@ -58,6 +42,7 @@
         <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
         
         <script>
+            // 定义标签（labels）和父节点（parents）
             const labels = ["Synthetic Tasks", "Real-World Tasks", "S-Doc QA", "M-Doc QA", "Choose", "Long QA", "Summ", "Writing", " Synthetic Recall ", "Synthetic Recall", "Code & Math", "Code & Math ", "Cite", "ICL", " RULER", " LongIns", "LEval", "LVEval", " LongBench-V2 ", " RULER ", "Babilong ", " LongIns ", " NThread ", " Babilong", "LongIns  ", "L-Cite-Eval ", "LEval ", "LongBench ", "LooGLE ", "InfiniteBench ", " LEval", "LongWriter", " LEval ", "LVEval ", " LongBench", " LooGLE", " LIBRA", " L-Cite-Eval", "LongBench-V2", " InfiniteBench", "LIBRA ", " LongBench ", "LongBench-V2 ", "LEval  ", " LVEval ", " LongBench-V2", "RULER", "Babilong", " InfiniteBench ", "LongIns", "NThread", "L-Cite-Eval  ", "  LEval", "LVEval  ", "LongBench  ", "RULER ", "InfiniteBench  ", "LongIns ", "Counting-Stars", "   NIAH   ", "NThread ", " LIBRA ", "  LEval  ", "  LVEval  ", "  InfiniteBench  "]
             const parents = ["", "", "Synthetic Tasks", "Synthetic Tasks", "Synthetic Tasks", "Real-World Tasks", "Real-World Tasks", "Real-World Tasks", "Synthetic Tasks", "Real-World Tasks", "Synthetic Tasks", "Real-World Tasks", "Real-World Tasks", "Real-World Tasks", "S-Doc QA", "S-Doc QA", "M-Doc QA", "M-Doc QA", "M-Doc QA", "M-Doc QA", "M-Doc QA", "M-Doc QA", "M-Doc QA", "Choose", "Choose", "Summ", "Summ", "Summ", "Summ", "Summ", "Writing", "Writing", "Synthetic Recall", "Synthetic Recall", "Synthetic Recall", "Synthetic Recall", "Synthetic Recall", "Cite", "Code & Math ", "Code & Math ", "Code & Math ", "ICL", "ICL", "Long QA", "Long QA", "Long QA", "Long QA", "Long QA", "Long QA", "Long QA", "Long QA", " Synthetic Recall ", " Synthetic Recall ", " Synthetic Recall ", " Synthetic Recall ", " Synthetic Recall ", " Synthetic Recall ", " Synthetic Recall ", " Synthetic Recall ", " Synthetic Recall ", " Synthetic Recall ", " Synthetic Recall ", "Code & Math", "Code & Math", "Code & Math"];
             const values = [650, 650, 52, 182, 52, 200, 125, 50, 286, 125, 78, 75, 25, 50, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26];
@@ -92,7 +77,6 @@
                 }
             }
         
-            // 生成旭日图
             const fig = {
                 data: [{
                     type: 'sunburst',
@@ -135,6 +119,7 @@
             
                 
         </section>
+        <th class="sortable" data-sort="score">Avg Score</th>
 
         <section class="evaluation">
             <h2><i class="fas fa-chart-bar"></i> Model leaderboard</h2>
@@ -278,6 +263,7 @@
                 </table>
             </div>
         </section>
+ 
         
         <section class="evaluation">
             <h2><i class="fa-solid fa-flask"></i> Benchmark Validation Platform</h2>
@@ -423,7 +409,6 @@
 }</pre>
             </div>
         </section>
-
         <script>
         function copyBibTeX() {
             const bibtex = document.getElementById('bibtex').textContent;
