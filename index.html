@@ -156,10 +156,13 @@
         .score-col {
             width: 100px;
             font-weight: bold;
+            cursor: pointer;
         }
         
         .algorithm-group {
             background: rgba(40, 80, 120, 0.7);
+            cursor: pointer;
+            position: relative;
         }
         
         .model-label {
@@ -274,6 +277,95 @@
             font-size: 0.9rem;
         }
         
+        /* Detailed test view */
+        .test-detail-view {
+            display: none;
+            margin-top: 30px;
+            background: rgba(16, 42, 67, 0.7);
+            padding: 20px;
+            border-radius: 12px;
+        }
+        
+        .test-detail-view h3 {
+            color: #4fc3f7;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .test-detail-view .close-btn {
+            cursor: pointer;
+            color: #bbdefb;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+        
+        .test-detail-view .close-btn:hover {
+            color: #4fc3f7;
+        }
+        
+        /* Modal for capability explanation */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #1a2a3a, #2c3e50);
+            width: 80%;
+            max-width: 700px;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 0 40px rgba(79, 195, 247, 0.3);
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.8rem;
+            color: #bbdefb;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .modal-close:hover {
+            color: #4fc3f7;
+        }
+        
+        .modal h2 {
+            color: #4fc3f7;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .modal p {
+            color: #e3f2fd;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        
+        .test-list {
+            margin-top: 20px;
+            padding-left: 20px;
+        }
+        
+        .test-list li {
+            margin-bottom: 10px;
+            color: #e3f2fd;
+        }
+        
         @media (max-width: 768px) {
             h1 {
                 font-size: 2.2rem;
@@ -287,6 +379,11 @@
             
             table {
                 min-width: 800px;
+            }
+            
+            .modal-content {
+                width: 95%;
+                padding: 20px;
             }
         }
         
@@ -348,6 +445,25 @@
             </table>
         </div>
         
+        <!-- Detailed test view -->
+        <div class="test-detail-view" id="test-detail-view">
+            <h3>
+                <span id="detail-capability"></span>
+                <span class="close-btn" id="close-detail-view">&times;</span>
+            </h3>
+            <table id="test-detail-table">
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <!-- Test headers will be added here -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Test scores will be added here -->
+                </tbody>
+            </table>
+        </div>
+        
         <div class="legend">
             <div class="legend-item">
                 <div class="legend-color legend-qwen"></div>
@@ -359,33 +475,14 @@
             </div>
         </div>
         
-        <div class="ability-explanation">
-            <h2><i class="fas fa-lightbulb"></i> Capability Dimensions</h2>
-            <div class="ability-list">
-                <div class="ability-item">
-                    <h3><i class="fas fa-check-circle"></i> Faithfulness</h3>
-                    <p>Evaluates model consistency with source information, avoiding hallucinations or inaccuracies.</p>
-                </div>
-                <div class="ability-item">
-                    <h3><i class="fas fa-tasks"></i> General Tasks</h3>
-                    <p>Measures performance on common NLP tasks including text understanding and classification.</p>
-                </div>
-                <div class="ability-item">
-                    <h3><i class="fas fa-brain"></i> Reasoning</h3>
-                    <p>Tests logical reasoning, mathematical computation, and complex problem-solving abilities.</p>
-                </div>
-                <div class="ability-item">
-                    <h3><i class="fas fa-search"></i> Retrieval</h3>
-                    <p>Assesses ability to locate and extract relevant information from large contexts.</p>
-                </div>
-                <div class="ability-item">
-                    <h3><i class="fas fa-pen-alt"></i> Generation</h3>
-                    <p>Evaluates coherent, contextually appropriate, and creative text generation.</p>
-                </div>
-                <div class="ability-item">
-                    <h3><i class="fas fa-graduation-cap"></i> Specialization</h3>
-                    <p>Measures expertise in specialized domains like law, medicine, and programming.</p>
-                </div>
+        <!-- Modal for capability explanation -->
+        <div class="modal" id="capability-modal">
+            <div class="modal-content">
+                <span class="modal-close" id="modal-close">&times;</span>
+                <h2 id="modal-title">Capability Explanation</h2>
+                <p id="modal-description"></p>
+                <h3>Benchmark Tests:</h3>
+                <ul class="test-list" id="modal-tests"></ul>
             </div>
         </div>
         
@@ -405,14 +502,32 @@
             "Qwen3-4B": [24.55,39.03,11.69,70.29,39.32,55.01,42.06,33.66,18.24,32.52,62.00,17.95,13.05,74.25,46.92]
         };
         
-        // Capability definitions
-        const ability = {
-            "faithfulness": ["L_CiteEval"], 
-            "general": ["LEval", "LooGLE", "RULER(0-128k)", "longbench"],
-            "reasoning": ["Counting-Stars", "LongIns", "LVEval", "longbench_v2", "NIAH"], 
-            "retrieval": ["NThread", "InfiniteBench", "LongWriter"], 
-            "generation": ["LongWriter"], 
-            "specialization": ["LIBRA"] 
+        // Capability definitions and tests
+        const capabilities = {
+            "faithfulness": {
+                "tests": ["L_CiteEval"],
+                "description": "Evaluates model consistency with source information, avoiding hallucinations or inaccuracies. Measures how well models can produce factually accurate outputs based on given inputs."
+            },
+            "general": {
+                "tests": ["LEval", "LooGLE", "RULER(0-128k)", "longbench"],
+                "description": "Measures performance on common NLP tasks including text understanding, classification, and information extraction across diverse domains and contexts."
+            },
+            "reasoning": {
+                "tests": ["Counting-Stars", "LongIns", "LVEval", "longbench_v2", "NIAH"],
+                "description": "Tests logical reasoning, mathematical computation, causal inference and complex problem-solving abilities. Evaluates multi-step reasoning and abstract thinking capabilities."
+            },
+            "retrieval": {
+                "tests": ["NThread", "InfiniteBench", "LongWriter"],
+                "description": "Assesses ability to locate, extract and synthesize relevant information from large contexts. Measures performance in long-document processing and information localization."
+            },
+            "generation": {
+                "tests": ["LongWriter"],
+                "description": "Evaluates coherent, contextually appropriate, and creative text generation. Measures fluency, coherence, and creativity in content creation tasks."
+            },
+            "specialization": {
+                "tests": ["LIBRA"],
+                "description": "Measures expertise in specialized domains like law, medicine, programming and finance. Tests domain-specific knowledge and problem-solving abilities."
+            }
         };
         
         // Capability weightings
@@ -425,30 +540,23 @@
             "specialization": 1
         };
         
+        // Test sequence
+        const sequence = [
+            "L_CiteEval", "LEval", "LooGLE", "RULER(0-128k)", "longbench", 
+            "babilong(0-128k)", "Counting-Stars", "LongIns", "LVEval", 
+            "longbench_v2", "NIAH", "NThread", "InfiniteBench", "LongWriter", "LIBRA"
+        ];
+        
         // Calculate capability averages
         const calculateAbilityAverage = (modelScores, abilityName) => {
-            const abilityTests = ability[abilityName];
-            const startIndex = getAbilityStartIndex(abilityName);
-            const count = abilitySize[abilityName];
+            const tests = capabilities[abilityName].tests;
+            const testIndices = tests.map(test => sequence.indexOf(test));
             
             let sum = 0;
-            for (let i = startIndex; i < startIndex + count; i++) {
-                sum += modelScores[i];
+            for (const index of testIndices) {
+                sum += modelScores[index];
             }
-            return sum / count;
-        };
-        
-        // Get starting index for each capability
-        const getAbilityStartIndex = (abilityName) => {
-            let index = 0;
-            const abilities = Object.keys(ability);
-            
-            for (const ability of abilities) {
-                if (ability === abilityName) break;
-                index += abilitySize[ability];
-            }
-            
-            return index;
+            return sum / tests.length;
         };
         
         // Prepare model data with calculated metrics
@@ -499,8 +607,8 @@
             });
         };
         
-        // Sort table by capability
-        const sortTable = (ability, direction = "desc") => {
+        // Sort table by capability or average score
+        const sortTable = (sortBy, direction = "desc") => {
             let models = prepareModelData();
             
             // Update sort indicators
@@ -509,15 +617,24 @@
             });
             
             // Add current sort indicator
-            const header = document.querySelector(`th[data-ability="${ability}"]`);
+            const header = document.querySelector(`th[data-ability="${sortBy}"]`);
             if (header) {
                 header.classList.add(direction === "asc" ? "sorted-asc" : "sorted-desc");
+            } else if (sortBy === "avg") {
+                document.querySelector(".score-col").classList.add(direction === "asc" ? "sorted-asc" : "sorted-desc");
             }
             
             // Sort models
             models.sort((a, b) => {
-                const aScore = a[`${ability}Score`];
-                const bScore = b[`${ability}Score`];
+                let aScore, bScore;
+                
+                if (sortBy === "avg") {
+                    aScore = a.avgScore;
+                    bScore = b.avgScore;
+                } else {
+                    aScore = a[`${sortBy}Score`];
+                    bScore = b[`${sortBy}Score`];
+                }
                 
                 if (direction === "asc") {
                     return aScore - bScore;
@@ -529,27 +646,76 @@
             renderTable(models);
         };
         
-        // Filter visible capabilities
-        const filterAbilities = (selectedAbility) => {
-            // Show all columns initially
-            document.querySelectorAll("th[data-ability], td").forEach(cell => {
-                cell.style.display = "";
+        // Show detailed test view for a capability
+        const showTestDetailView = (capability) => {
+            const detailView = document.getElementById("test-detail-view");
+            const detailCapability = document.getElementById("detail-capability");
+            const testTable = document.getElementById("test-detail-table");
+            
+            // Set capability title
+            detailCapability.textContent = capability.charAt(0).toUpperCase() + capability.slice(1) + " Tests";
+            
+            // Clear previous content
+            testTable.querySelector("thead tr").innerHTML = "<th>Model</th>";
+            testTable.querySelector("tbody").innerHTML = "";
+            
+            // Add test headers
+            capabilities[capability].tests.forEach(test => {
+                const th = document.createElement("th");
+                th.textContent = test;
+                testTable.querySelector("thead tr").appendChild(th);
             });
             
-            // Update active button
-            document.querySelectorAll(".ability-btn").forEach(btn => {
-                btn.classList.remove("active");
-            });
-            document.querySelector(`.ability-btn[data-ability="${selectedAbility}"]`).classList.add("active");
-            
-            // Hide non-selected capabilities
-            if (selectedAbility !== "all") {
-                document.querySelectorAll("th[data-ability], td").forEach((cell, index) => {
-                    if (index > 2 && cell.dataset.ability !== selectedAbility) {
-                        cell.style.display = "none";
-                    }
+            // Add model rows with test scores
+            const models = prepareModelData();
+            models.forEach(model => {
+                const row = document.createElement("tr");
+                
+                // Model name
+                const modelCell = document.createElement("td");
+                const isQwen = model.name.includes("Qwen");
+                const modelClass = isQwen ? "Qwen" : "Llama";
+                modelCell.innerHTML = `<span class="model-label ${modelClass}">${model.name}</span>`;
+                row.appendChild(modelCell);
+                
+                // Test scores
+                capabilities[capability].tests.forEach(test => {
+                    const testIndex = sequence.indexOf(test);
+                    const score = model.scores[testIndex];
+                    
+                    const scoreCell = document.createElement("td");
+                    scoreCell.textContent = score.toFixed(2);
+                    row.appendChild(scoreCell);
                 });
-            }
+                
+                testTable.querySelector("tbody").appendChild(row);
+            });
+            
+            // Show the detail view
+            detailView.style.display = "block";
+        };
+        
+        // Show capability explanation modal
+        const showCapabilityModal = (capability) => {
+            const modal = document.getElementById("capability-modal");
+            const modalTitle = document.getElementById("modal-title");
+            const modalDescription = document.getElementById("modal-description");
+            const modalTests = document.getElementById("modal-tests");
+            
+            // Set modal content
+            modalTitle.textContent = capability.charAt(0).toUpperCase() + capability.slice(1);
+            modalDescription.textContent = capabilities[capability].description;
+            
+            // Add tests to modal
+            modalTests.innerHTML = "";
+            capabilities[capability].tests.forEach(test => {
+                const li = document.createElement("li");
+                li.textContent = test;
+                modalTests.appendChild(li);
+            });
+            
+            // Show the modal
+            modal.style.display = "flex";
         };
         
         // Initialize event listeners
@@ -563,19 +729,54 @@
                 });
             });
             
+            // Capability header for test details
+            document.querySelectorAll("th[data-ability]").forEach(th => {
+                th.addEventListener("dblclick", (e) => {
+                    const ability = e.target.dataset.ability;
+                    showTestDetailView(ability);
+                });
+            });
+            
+            // Avg score sorting
+            document.querySelector(".score-col").addEventListener("click", (e) => {
+                const currentDirection = e.target.classList.contains("sorted-asc") ? "desc" : "asc";
+                sortTable("avg", currentDirection);
+            });
+            
             // Capability filter buttons
             document.querySelectorAll(".ability-btn").forEach(btn => {
                 btn.addEventListener("click", (e) => {
                     const ability = e.target.dataset.ability;
-                    filterAbilities(ability);
                     
-                    // Apply sorting when selecting a capability
+                    // Update active button
+                    document.querySelectorAll(".ability-btn").forEach(b => {
+                        b.classList.remove("active");
+                    });
+                    e.target.classList.add("active");
+                    
+                    // Show capability explanation if not "all"
                     if (ability !== "all") {
-                        sortTable(ability, "desc");
-                    } else {
-                        sortTable("avg", "desc");
+                        showCapabilityModal(ability);
                     }
                 });
+            });
+            
+            // Close detailed test view
+            document.getElementById("close-detail-view").addEventListener("click", () => {
+                document.getElementById("test-detail-view").style.display = "none";
+            });
+            
+            // Close modal
+            document.getElementById("modal-close").addEventListener("click", () => {
+                document.getElementById("capability-modal").style.display = "none";
+            });
+            
+            // Close modal when clicking outside
+            window.addEventListener("click", (e) => {
+                const modal = document.getElementById("capability-modal");
+                if (e.target === modal) {
+                    modal.style.display = "none";
+                }
             });
         };
         
@@ -588,8 +789,8 @@
             models.sort((a, b) => b.avgScore - a.avgScore);
             renderTable(models);
             
-            // Set initial sort indicator
-            document.querySelector("th[data-ability]").classList.add("sorted-desc");
+            // Set initial sort indicator for average score
+            document.querySelector(".score-col").classList.add("sorted-desc");
         };
     </script>
 </body>
