@@ -470,7 +470,6 @@
                 };
             });
         };
-        
         // Generate table row for each model
         const generateModelRow = (model, rank) => {
             const isQwen = model.name.includes("Qwen");
