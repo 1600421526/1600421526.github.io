@@ -366,7 +366,7 @@
                 ]
             },
             "general": {
-                "tests": ["LEval", "LooGLE", "RULER(0-128k)", "longbench"],
+                "tests": ["LEval", "LooGLE", "RULER", "longbench"],
                 "description": "Measures performance on common NLP tasks including text understanding, classification, and information extraction across diverse domains and contexts.",
                 "columns": [
                     { name: "Rank", type: "fixed", sortable: true },
@@ -374,7 +374,7 @@
                     { name: "Avg Score", type: "fixed", sortable: true },
                     { name: "LEval", type: "test", sortable: true },
                     { name: "LooGLE", type: "test", sortable: true },
-                    { name: "RULER(0-128k)", type: "test", sortable: true },
+                    { name: "RULER", type: "test", sortable: true },
                     { name: "longbench", type: "test", sortable: true }
                 ]
             },
@@ -428,8 +428,8 @@
         
         // Test sequence
         const sequence = [
-            "L_CiteEval", "LEval", "LooGLE", "RULER(0-128k)", "longbench", 
-            "babilong(0-128k)", "Counting_Stars", "LongIns", "LVEval", 
+            "L_CiteEval", "LEval", "LooGLE", "RULER", "longbench", 
+            "babilong", "Counting_Stars", "LongIns", "LVEval", 
             "longbench_v2", "NIAH", "NThread", "InfiniteBench", "LongWriter", "LIBRA"
         ];
         
