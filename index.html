@@ -56,9 +56,9 @@
         
             // 定义颜色
             const colors = [];
-            const main_colors = ["#1f77b4", "#ff7f0e"]; // 主类别颜色
-            const secondary_colors = ["#aec7e8", "#ffbb78"]; // 二级类别颜色
-            const tertiary_colors = ["#c6dbef", "#fdd0a2"]; // 三级类别颜色
+            const main_colors = ["#1f77b4", "#ff7f0e"]; 
+            const secondary_colors = ["#aec7e8", "#ffbb78"];
+            const tertiary_colors = ["#c6dbef", "#fdd0a2"]; 
         
             for (let i = 0; i < labels_trimmed.length; i++) {
                 const label = labels_trimmed[i];
@@ -80,7 +80,6 @@
                 }
             }
         
-            // 生成旭日图
             const fig = {
                 data: [{
                     type: 'sunburst',
@@ -107,12 +106,11 @@
                     autosize: false,
                     width: 800,
                     height: 600,
-                    paper_bgcolor: "transparent", // 画布背景透明
-                    plot_bgcolor: "transparent"  // 绘图区域背景透明
+                    paper_bgcolor: "transparent", 
+                    plot_bgcolor: "transparent"  
                 }
             };
         
-            // 渲染图表到指定的 div 元素中
             Plotly.newPlot('sunburst-chart', fig);
         </script>
     </main>
