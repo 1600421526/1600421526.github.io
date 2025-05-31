@@ -5,8 +5,175 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LOOM-Scope - LOng-cOntext Model evaluation framework</title>
     <meta name="description" content="Providing a convient and comprehensive framework for long-context model evaluation.">
-    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+
+        .evaluation {
+            overflow-x: auto;
+            margin: 20px 0;
+            padding: 0 20px;
+            width: 100%;
+            max-width: 100%;
+            -webkit-overflow-scrolling: touch; /* 为iOS设备添加平滑滚动 */
+        }
+
+        .evaluation .table-container {
+            width: 100%;
+            overflow-x: auto;
+            margin-bottom: 10px;
+        }
+
+        
+        .evaluation table {
+            border-collapse: collapse;
+            min-width: 100%;
+            width: max-content;
+            margin: 20px auto;
+            font-size: 14px;
+        }
+        
+        .evaluation th, .evaluation td {
+            padding: 8px 15px;
+            text-align: center;
+            border: none;
+            min-width: 80px;
+            white-space: nowrap; /* 防止内容换行 */
+        }
+        
+        .evaluation tbody tr {
+            border-bottom: 1px solid #ddd;
+        }
+        
+        
+        .evaluation thead tr {
+            border-bottom: 2px solid #000;
+        }
+        
+        .evaluation th {
+            background-color: transparent;
+            font-weight: bold;
+            white-space: nowrap;
+            height: 40px;
+            position: sticky; /* 固定表头 */
+            top: 0;
+            background: white; /* 确保表头不透明 */
+            z-index: 1;
+        }
+        
+        .evaluation th.rank-col {
+            min-width: 60px;
+            position: sticky; /* 固定第一列 */
+            left: 0;
+            z-index: 2;
+            background: white;
+        }
+        
+        .evaluation th.type-col {
+            min-width: 120px;
+        }
+        
+        .evaluation th.model-col {
+            min-width: 200px;
+        }
+        
+        .evaluation th.score-col {
+            min-width: 100px;
+        }
+        
+        .evaluation th.algorithm-col {
+            min-width: 100px;
+        }
+        .Generation{
+            background-color: #e8f5e9
+        }
+        .General{
+            background-color: #f5f5f5;
+        }
+        .Reasoning{
+            background-color: #86ccec;
+        }
+        .Retrieval{
+            background-color: #ffebee
+        }
+        .Faithfulness{
+            background-color: #d4cc83
+        }
+        .Specialization{
+            background-color: #e3f2fd;
+        }
+
+        
+        .evaluation tr:hover {
+            background-color: #f5f5f5;
+        }
+        .Llama {
+            background-color: #ffebee
+        }
+        
+        .model-type-reasoning {
+            background-color: #e8f5e9;
+        }
+        
+        .Qwen {
+            background-color: #e3f2fd;
+        }
+        
+        .algorithm-group {
+            border-left: none;
+            padding-left: 15px;
+            font-weight: bold;
+        }
+        
+        .model-type-legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 10px 0;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        .best-score {
+            font-weight: bold;
+        }
+
+        .second-best {
+            text-decoration: underline;
+        }
+
+        .basic-header {
+            height: 60px !important;
+        }
+
+        .evaluation::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .evaluation::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .evaluation::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        .evaluation::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
 </head>
 <body>
     <main>
@@ -24,24 +191,21 @@
                     NONE
                 </p>
             </div>
+            
             <div class="nav-buttons">
-                <a href="/Pages/benchmark.html" class="button">
-                    <i class="fas fa-chart-bar"></i> Model Leaderboard
-                </a>
-                <a href="/Pages/leaderboard.html" class="button">
-                    <i class="fa-solid fa-flask"></i> Benchmark Validation
-                </a>
                 <a href="" class="button">
-                    <i class="fas fa-file-alt"></i> Paper
+                    <i class="fas fa-file-alt"></i>
+                    Paper
                 </a>
                 <a href="https://gitlab.com/ZetangForward1/LOOM-Scape" class="button">
-                    <i class="fab fa-github"></i> Code
+                    <i class="fab fa-github"></i>
+                    Code
                 </a>
                 <a href="" class="button">
-                    <i class="fas fa-video"></i> Video
+                    <i class="fas fa-video"></i>
+                    Video
                 </a>
             </div>
-
         </section>
 
         <section class="introduction">
@@ -57,6 +221,7 @@
         <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
         
         <script>
+            // 定义标签（labels）和父节点（parents）
             const labels = ["Synthetic Tasks", "Real-World Tasks", "S-Doc QA", "M-Doc QA", "Choose", "Long QA", "Summ", "Writing", " Synthetic Recall ", "Synthetic Recall", "Code & Math", "Code & Math ", "Cite", "ICL", " RULER", " LongIns", "LEval", "LVEval", " LongBench-V2 ", " RULER ", "Babilong ", " LongIns ", " NThread ", " Babilong", "LongIns  ", "L-Cite-Eval ", "LEval ", "LongBench ", "LooGLE ", "InfiniteBench ", " LEval", "LongWriter", " LEval ", "LVEval ", " LongBench", " LooGLE", " LIBRA", " L-Cite-Eval", "LongBench-V2", " InfiniteBench", "LIBRA ", " LongBench ", "LongBench-V2 ", "LEval  ", " LVEval ", " LongBench-V2", "RULER", "Babilong", " InfiniteBench ", "LongIns", "NThread", "L-Cite-Eval  ", "  LEval", "LVEval  ", "LongBench  ", "RULER ", "InfiniteBench  ", "LongIns ", "Counting-Stars", "   NIAH   ", "NThread ", " LIBRA ", "  LEval  ", "  LVEval  ", "  InfiniteBench  "]
             const parents = ["", "", "Synthetic Tasks", "Synthetic Tasks", "Synthetic Tasks", "Real-World Tasks", "Real-World Tasks", "Real-World Tasks", "Synthetic Tasks", "Real-World Tasks", "Synthetic Tasks", "Real-World Tasks", "Real-World Tasks", "Real-World Tasks", "S-Doc QA", "S-Doc QA", "M-Doc QA", "M-Doc QA", "M-Doc QA", "M-Doc QA", "M-Doc QA", "M-Doc QA", "M-Doc QA", "Choose", "Choose", "Summ", "Summ", "Summ", "Summ", "Summ", "Writing", "Writing", "Synthetic Recall", "Synthetic Recall", "Synthetic Recall", "Synthetic Recall", "Synthetic Recall", "Cite", "Code & Math ", "Code & Math ", "Code & Math ", "ICL", "ICL", "Long QA", "Long QA", "Long QA", "Long QA", "Long QA", "Long QA", "Long QA", "Long QA", " Synthetic Recall ", " Synthetic Recall ", " Synthetic Recall ", " Synthetic Recall ", " Synthetic Recall ", " Synthetic Recall ", " Synthetic Recall ", " Synthetic Recall ", " Synthetic Recall ", " Synthetic Recall ", " Synthetic Recall ", "Code & Math", "Code & Math", "Code & Math"];
             const values = [650, 650, 52, 182, 52, 200, 125, 50, 286, 125, 78, 75, 25, 50, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26];
