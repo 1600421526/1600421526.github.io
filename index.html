@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -49,7 +48,7 @@
             --radius-lg: 12px;
             --radius-xl: 16px;
             
-            --transition: all 0.15s ease;
+            --transition: all 0.25s ease;
         }
 
         /* Reset and Base Styles */
@@ -66,6 +65,12 @@
             line-height: 1.6;
             font-size: 15px;
             font-weight: 400;
+            opacity: 0;
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
         }
 
         /* Layout */
@@ -99,6 +104,16 @@
             margin: 0;
             overflow: hidden;
             box-shadow: var(--shadow-lg);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: heroSlideIn 1s 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes heroSlideIn {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         .hero-content {
@@ -116,6 +131,16 @@
             margin-bottom: 2rem;
             letter-spacing: -0.02em;
             line-height: 1.2;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeSlideIn 0.8s 0.5s forwards;
+        }
+
+        @keyframes fadeSlideIn {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         .title-main {
@@ -132,6 +157,9 @@
             margin: 0 auto 3rem;
             font-weight: 400;
             line-height: 1.7;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeSlideIn 0.8s 0.7s forwards;
         }
 
         /* Feature Highlights */
@@ -153,10 +181,32 @@
             box-shadow: var(--shadow-md);
             border: 1px solid var(--border-light);
             transition: var(--transition);
+            transform: scale(0.9);
+            opacity: 0;
+            animation: popIn 0.6s forwards;
         }
 
+        @keyframes popIn {
+            0% {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            70% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .hero-feature:nth-child(1) { animation-delay: 0.9s; }
+        .hero-feature:nth-child(2) { animation-delay: 1.0s; }
+        .hero-feature:nth-child(3) { animation-delay: 1.1s; }
+        .hero-feature:nth-child(4) { animation-delay: 1.2s; }
+
         .hero-feature:hover {
-            transform: translateY(-2px);
+            transform: translateY(-5px);
             box-shadow: var(--shadow-lg);
         }
 
@@ -178,6 +228,9 @@
             gap: 1rem;
             margin-top: 2rem;
             flex-wrap: wrap;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeSlideIn 0.8s 1.3s forwards;
         }
 
         .button {
@@ -210,7 +263,7 @@
         }
 
         .button:hover {
-            transform: translateY(-3px);
+            transform: translateY(-5px);
             box-shadow: var(--shadow-xl);
             border-color: var(--primary-green);
             color: var(--primary-green);
@@ -230,7 +283,7 @@
         .button.primary:hover {
             background: linear-gradient(135deg, var(--secondary-green), var(--primary-green));
             color: white;
-            transform: translateY(-3px) scale(1.02);
+            transform: translateY(-5px) scale(1.05);
             box-shadow: var(--shadow-xl);
         }
 
@@ -242,6 +295,12 @@
         .section-header {
             text-align: center;
             margin-bottom: 3rem;
+            transform: translateY(20px);
+            opacity: 0;
+        }
+
+        .section-header.animate {
+            animation: fadeSlideIn 0.8s forwards;
         }
 
         .section-header h2 {
@@ -268,10 +327,16 @@
             transition: var(--transition);
             overflow: hidden;
             box-shadow: var(--shadow-md);
+            transform: translateY(20px);
+            opacity: 0;
+        }
+
+        .clean-card.animate {
+            animation: fadeSlideIn 0.6s forwards;
         }
 
         .clean-card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-10px);
             box-shadow: var(--shadow-xl);
             border-color: var(--border-medium);
         }
@@ -297,10 +362,21 @@
             transition: var(--transition);
             position: relative;
             box-shadow: var(--shadow-md);
+            transform: translateY(20px);
+            opacity: 0;
         }
 
+        .feature-card.animate {
+            animation: fadeSlideIn 0.6s forwards;
+        }
+
+        .feature-card:nth-child(1) { animation-delay: 0.1s; }
+        .feature-card:nth-child(2) { animation-delay: 0.2s; }
+        .feature-card:nth-child(3) { animation-delay: 0.3s; }
+        .feature-card:nth-child(4) { animation-delay: 0.4s; }
+
         .feature-card:hover {
-            transform: translateY(-6px);
+            transform: translateY(-10px);
             box-shadow: var(--shadow-xl);
         }
 
@@ -316,6 +392,11 @@
             color: white;
             font-size: 1.5rem;
             box-shadow: var(--shadow-md);
+            transition: var(--transition);
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1) rotate(5deg);
         }
 
         .feature-card h3 {
@@ -323,6 +404,11 @@
             font-weight: 600;
             color: var(--text-primary);
             margin-bottom: 1rem;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover h3 {
+            color: var(--accent-mint);
         }
 
         .feature-card p {
@@ -340,6 +426,7 @@
         }
 
         /* Clean Controls */
+        .implementation-controls,
         .benchmark-controls,
         .capability-controls {
             display: flex;
@@ -349,6 +436,7 @@
             flex-wrap: wrap;
         }
 
+        .implementation-btn,
         .benchmark-btn,
         .capability-btn {
             background: white;
@@ -364,18 +452,21 @@
             box-shadow: var(--shadow-sm);
         }
 
+        .implementation-btn:hover,
         .benchmark-btn:hover,
         .capability-btn:hover,
+        .implementation-btn.active,
         .benchmark-btn.active,
         .capability-btn.active {
             background: var(--primary-green);
             color: white;
             border-color: var(--primary-green);
-            transform: translateY(-1px);
+            transform: translateY(-3px);
             box-shadow: var(--shadow-md);
         }
 
         /* Benchmark Grid */
+        .implementation-grid,
         .benchmark-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -383,19 +474,29 @@
             margin-top: 2rem;
         }
 
+        .implementation-card,
         .benchmark-card {
             padding: 2rem;
             text-align: left;
             position: relative;
             transition: var(--transition);
             box-shadow: var(--shadow-md);
+            transform: translateY(20px);
+            opacity: 0;
         }
 
+        .implementation-card.animate,
+        .benchmark-card.animate {
+            animation: fadeSlideIn 0.6s forwards;
+        }
+
+        .implementation-card:hover,
         .benchmark-card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-10px);
             box-shadow: var(--shadow-lg);
         }
 
+        .implementation-name,
         .benchmark-name {
             display: inline-flex;
             align-items: center;
@@ -407,8 +508,16 @@
             font-size: 0.9rem;
             margin-bottom: 1.5rem;
             box-shadow: var(--shadow-sm);
+            transition: var(--transition);
         }
 
+        .implementation-card:hover .implementation-name,
+        .benchmark-card:hover .benchmark-name {
+            background: var(--secondary-blue);
+            transform: translateX(5px);
+        }
+
+        .implementation-description,
         .benchmark-description {
             color: var(--text-secondary);
             line-height: 1.7;
@@ -511,9 +620,14 @@
             color: var(--text-primary);
         }
 
+        .modern-table tbody tr {
+            transition: var(--transition);
+        }
+
         .modern-table tbody tr:hover {
             background: var(--neutral-50);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transform: scale(1.005);
         }
 
         .modern-table .model-col {
@@ -574,7 +688,7 @@
         }
 
         .legend-item:hover {
-            transform: translateY(-2px);
+            transform: translateY(-5px);
             box-shadow: var(--shadow-md);
         }
 
@@ -631,7 +745,7 @@
             background: var(--accent-mint);
             color: white;
             border-color: var(--accent-mint);
-            transform: translateY(-1px);
+            transform: translateY(-5px);
             box-shadow: var(--shadow-md);
         }
 
@@ -720,7 +834,7 @@
 
         .copy-button:hover {
             background: var(--secondary-green);
-            transform: translateY(-1px);
+            transform: translateY(-5px);
             box-shadow: var(--shadow-lg);
         }
 
@@ -735,6 +849,7 @@
                 grid-template-columns: repeat(2, 1fr);
             }
             
+            .implementation-grid,
             .benchmark-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -743,6 +858,98 @@
                 height: 500px;
                 padding: 1.5rem;
             }
+        }
+
+        /* View Toggle Controls */
+        .view-toggle-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0 3rem;
+            flex-wrap: wrap;
+        }
+
+        .view-toggle-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: white;
+            border: 2px solid var(--border-medium);
+            color: var(--text-secondary);
+            padding: 1rem 2rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: inherit;
+            box-shadow: var(--shadow-md);
+        }
+
+        .view-toggle-btn:hover,
+        .view-toggle-btn.active {
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            color: white;
+            border-color: var(--primary-green);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .view-toggle-btn i {
+            font-size: 1.1rem;
+        }
+        
+        /* Framework View Control */
+        .framework-view {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .framework-view.active {
+            display: block;
+        }
+        
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--neutral-100);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--neutral-300);
+            border-radius: 4px;
+            transition: background 0.3s ease;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--neutral-400);
+        }
+        
+        /* Animations for scroll */
+        .animate-on-scroll {
+            transform: translateY(20px);
+            opacity: 0;
+            transition: transform 0.6s ease, opacity 0.6s ease;
+        }
+        
+        .animate-on-scroll.animated {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        /* Chart animations */
+        .chart-showcase {
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+        }
+        
+        .chart-showcase:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
         }
 
         @media (max-width: 768px) {
@@ -766,6 +973,7 @@
                 align-items: center;
             }
 
+            .implementation-controls,
             .capability-controls,
             .benchmark-controls {
                 flex-direction: column;
@@ -773,6 +981,7 @@
                 gap: 0.5rem;
             }
 
+            .implementation-btn,
             .capability-btn,
             .benchmark-btn {
                 width: 100%;
@@ -784,6 +993,7 @@
                 padding: 1rem;
             }
 
+            .implementation-grid
             .feature-grid,
             .benchmark-grid {
                 grid-template-columns: 1fr;
@@ -809,47 +1019,6 @@
                 min-width: 800px;
             }
         }
-
-        /* Scrollbar Styling */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--neutral-100);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--neutral-300);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--neutral-400);
-        }
-
-        /* Micro animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .feature-card,
-        .benchmark-card {
-            animation: fadeInUp 0.6s ease forwards;
-        }
-
-        .feature-card:nth-child(2) { animation-delay: 0.1s; }
-        .feature-card:nth-child(3) { animation-delay: 0.2s; }
-        .feature-card:nth-child(4) { animation-delay: 0.3s; }
     </style>
 </head>
 <body>
@@ -898,12 +1067,12 @@
 
         <!-- Introduction Section -->
         <section class="introduction content-section">
-            <div class="section-header">
+            <div class="section-header animate-on-scroll">
                 <h2>Comprehensive Evaluation Framework</h2>
                 <p>LOOM-Scope provides a unified platform for rigorous long-context model assessment with cutting-edge benchmarks and performance analytics</p>
             </div>
             
-            <div class="chart-showcase clean-card" style="margin-bottom: 3rem;">
+            <div class="chart-showcase clean-card animate-on-scroll" style="margin-bottom: 3rem;">
                 <div id="sunburst-chart" style="width: 100%; height: 500px;"></div>
                 <p class="image-caption">
                     Interactive benchmark taxonomy visualization showcasing LOOM-Scope's comprehensive evaluation coverage
@@ -911,7 +1080,7 @@
             </div>
 
             <div class="feature-grid">
-                <div class="feature-card clean-card">
+                <div class="feature-card clean-card animate-on-scroll">
                     <div class="feature-icon">
                         <i class="fas fa-layer-group"></i>
                     </div>
@@ -919,7 +1088,7 @@
                     <p>15 standard long-context benchmarks covering faithfulness, retrieval, reasoning, generation, and specialized tasks with hundreds of subtasks.</p>
                 </div>
                 
-                <div class="feature-card clean-card">
+                <div class="feature-card clean-card animate-on-scroll">
                     <div class="feature-icon">
                         <i class="fas fa-bolt"></i>
                     </div>
@@ -927,7 +1096,7 @@
                     <p>12 acceleration methods including CakeKV and FlexPrefill, optimized for GPU hardware from 3090 to H20 with vLLM integration.</p>
                 </div>
                 
-                <div class="feature-card clean-card">
+                <div class="feature-card clean-card animate-on-scroll">
                     <div class="feature-icon">
                         <i class="fas fa-puzzle-piece"></i>
                     </div>
@@ -935,7 +1104,7 @@
                     <p>Single-line command workflow with automatic dataset/model detection, supporting Transformers, Mamba, and RWKV architectures.</p>
                 </div>
                 
-                <div class="feature-card clean-card">
+                <div class="feature-card clean-card animate-on-scroll">
                     <div class="feature-icon">
                         <i class="fas fa-chart-line"></i>
                     </div>
@@ -945,35 +1114,67 @@
             </div>
         </section>
 
-        <!-- Benchmark Details Section -->
-        <section class="benchmarks content-section">
-            <div class="section-header">
-                <h2>Benchmark Exploration</h2>
-                <p>Discover detailed information about each benchmark in our comprehensive evaluation suite, organized by capability domains</p>
+        <section class="framework-exploration content-section">
+            <div class="section-header animate-on-scroll">
+                <h2>Framework Exploration</h2>
+                <p>Comprehensive benchmark suite and implementation methods for long-context model evaluation</p>
             </div>
             
-            <div class="benchmark-controls">
-                <button class="benchmark-btn active" data-ability="Faithfulness">Faithfulness</button>
-                <button class="benchmark-btn" data-ability="General">General</button>
-                <button class="benchmark-btn" data-ability="Reasoning">Reasoning</button>
-                <button class="benchmark-btn" data-ability="Retrieve">Retrieve</button>
-                <button class="benchmark-btn" data-ability="Generation">Generation</button>
-                <button class="benchmark-btn" data-ability="Specialization">Specialization</button>
+            <!-- 主切换控制 -->
+            <div class="view-toggle-controls animate-on-scroll">
+                <button class="view-toggle-btn active" data-framework="benchmarks">
+                    <i class="fas fa-chart-bar"></i>
+                    Benchmark Suite
+                </button>
+                <button class="view-toggle-btn" data-framework="implementations">
+                    <i class="fas fa-cogs"></i>
+                    Implementation Methods
+                </button>
             </div>
             
-            <div id="benchmark-grid" class="benchmark-grid">
-                <!-- Benchmark cards will be dynamically generated here -->
+            <!-- Benchmark View -->
+            <div id="benchmarks-framework-view" class="framework-view active">
+                <div class="benchmark-controls animate-on-scroll">
+                    <button class="benchmark-btn active" data-ability="Faithfulness">Faithfulness</button>
+                    <button class="benchmark-btn" data-ability="General">General</button>
+                    <button class="benchmark-btn" data-ability="Reasoning">Reasoning</button>
+                    <button class="benchmark-btn" data-ability="Retrieve">Retrieve</button>
+                    <button class="benchmark-btn" data-ability="Generation">Generation</button>
+                    <button class="benchmark-btn" data-ability="Specialization">Specialization</button>
+                </div>
+                
+                <div id="benchmark-grid" class="benchmark-grid">
+                    <!-- Benchmark cards will be dynamically generated here -->
+                </div>
+            </div>
+            
+            <!-- Implementation View -->
+            <div id="implementations-framework-view" class="framework-view">
+                <div class="implementation-controls animate-on-scroll">
+                    <button class="implementation-btn active" data-ability="hf_models">HF_Models</button>
+                    <button class="implementation-btn" data-ability="server">Server</button>
+                    <button class="implementation-btn" data-ability="sparse_attention">Sparse Attention</button>
+                    <button class="implementation-btn" data-ability="token_eviction">Token Eviction</button>
+                    <button class="implementation-btn" data-ability="layer_wise">Layer-wise</button>
+                    <button class="implementation-btn" data-ability="quantization">Quantization</button>
+                    <button class="implementation-btn" data-ability="hybird">Hybrid</button>
+                    <button class="implementation-btn" data-ability="token_merge">Token Merge</button>
+                </div>
+                
+                <div id="implementation-grid" class="implementation-grid">
+                    <!-- Implementation cards will be dynamically generated here -->
+                </div>
             </div>
         </section>
         
         <!-- Model Leaderboard Section -->
         <section class="evaluation content-section">
-            <div class="section-header">
+            <div class="section-header animate-on-scroll">
                 <h2>Performance Leaderboard</h2>
                 <p>Comprehensive model rankings across six critical capabilities with real-time filtering and detailed performance analytics</p>
             </div>
             
-            <div class="capability-controls">
+            <div class="capability-controls animate-on-scroll">
                 <button class="capability-btn active" data-capability="overview">Overview</button>
                 <button class="capability-btn" data-capability="faithfulness">Faithfulness</button>
                 <button class="capability-btn" data-capability="general">General</button>
@@ -983,19 +1184,19 @@
                 <button class="capability-btn" data-capability="specialization">Specialization</button>
             </div>
             
-            <div class="capability-info clean-card" id="capability-info">
+            <div class="capability-info clean-card animate-on-scroll" id="capability-info">
                 <h3><i class="fas fa-info-circle"></i> <span id="info-title">Model Performance Overview</span></h3>
                 <p id="info-description">Overall model performance across all capabilities and benchmark tests.</p>
             </div>
             
-            <div class="table-container">
+            <div class="table-container animate-on-scroll">
                 <table class="modern-table" id="model-leaderboard">
                     <thead id="table-header-row"></thead>
                     <tbody></tbody>
                 </table>
             </div>
             
-            <div class="legend">
+            <div class="legend animate-on-scroll">
                 <div class="legend-item">
                     <div class="legend-color Qwen"></div>
                     <span>Qwen Model Series</span>
@@ -1009,28 +1210,28 @@
 
         <!-- Model Comparison Section -->
         <section class="evaluation content-section">
-            <div class="section-header">
+            <div class="section-header animate-on-scroll">
                 <h2>Interactive Model Comparison</h2>
                 <p>Dynamic radar chart analysis for side-by-side model performance comparison across all capability dimensions</p>
             </div>
             
-            <div class="model-selector">
+            <div class="model-selector animate-on-scroll">
                 <div class="model-checkboxes" id="modelCheckboxes"></div>
             </div>
             
-            <div class="chart-container clean-card">
+            <div class="chart-container clean-card animate-on-scroll">
                 <canvas id="modelComparisonChart"></canvas>
             </div>
         </section>
         
         <!-- Benchmark Validation Section -->
         <section class="evaluation content-section">
-            <div class="section-header">
+            <div class="section-header animate-on-scroll">
                 <h2>Validation & Reproducibility</h2>
                 <p>Scientific validation through direct comparison with official benchmark results, ensuring research integrity and reproducibility</p>
             </div>
             
-            <div class="table-container">
+            <div class="table-container animate-on-scroll">
                 <table class="modern-table">
                     <thead>
                         <tr>
@@ -1158,7 +1359,7 @@
                 </table>
             </div>
             
-            <div class="legend">
+            <div class="legend animate-on-scroll">
                 <div class="legend-item">
                     <div class="legend-color Qwen"></div>
                     <span>Qwen Model Series</span>
@@ -1172,12 +1373,12 @@
 
         <!-- Citation Section -->
         <section class="citation content-section">
-            <div class="section-header">
+            <div class="section-header animate-on-scroll">
                 <h2>Citation</h2>
                 <p>Reference this work in your research and publications</p>
             </div>
             
-            <div class="citation-container clean-card">
+            <div class="citation-container clean-card animate-on-scroll">
                 <button class="copy-button" onclick="copyBibTeX()">
                     Copy BibTeX
                 </button>
@@ -1391,9 +1592,10 @@
             
             container.innerHTML = '';
             
-            benchmarks.forEach(benchmark => {
+            benchmarks.forEach((benchmark, index) => {
                 const card = document.createElement('div');
-                card.className = 'benchmark-card kawaii-card';
+                card.className = 'benchmark-card clean-card animate-on-scroll';
+                card.style.animationDelay = `${index * 0.1}s`;
                 
                 card.innerHTML = `
                     <div class="benchmark-name">${benchmark.name}</div>
@@ -1402,6 +1604,9 @@
                 
                 container.appendChild(card);
             });
+            
+            // After adding, observe them for animation
+            setTimeout(observeElements, 100);
         }
 
         function updateBenchmarkButtons() {
@@ -1420,6 +1625,175 @@
                     currentAbility = e.target.dataset.ability;
                     updateBenchmarkButtons();
                     renderBenchmarkCards();
+                });
+            });
+        }
+
+        // Model Implementation functions
+        let currentFrameworkView = "benchmarks";
+        function switchFrameworkView(viewName) {
+            currentFrameworkView = viewName;
+            
+            // Update toggle buttons
+            document.querySelectorAll('.view-toggle-btn').forEach(btn => {
+                if (btn.dataset.framework === viewName) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // Switch views
+            document.querySelectorAll('.framework-view').forEach(view => {
+                if (view.id === `${viewName}-framework-view`) {
+                    view.classList.add('active');
+                } else {
+                    view.classList.remove('active');
+                }
+            });
+        }
+        const implementationData = {
+            "hf_models": [
+                {
+                    name: "HF_Models",
+                    description: "A collection of Hugging Face models optimized for long-context tasks, including Qwen3 and Llama series, with support for PEFT adapters."
+                }
+            ],
+            "server": [
+                {
+                    name: "VLLM",
+                    description: "A high-performance inference engine for large language models, supporting long-context tasks with efficient memory management and acceleration techniques."
+                },
+                {
+                    name: "SGLang", 
+                    description: "A server-side framework for deploying long-context models with advanced features like dynamic context management and real-time performance monitoring."
+                }
+            ],
+            "sparse_attention": [
+                {
+                    name: "FlexPrefill",
+                    description: "An advanced prefill strategy that optimizes attention mechanisms for long-context models, enabling efficient processing of large inputs while maintaining high accuracy."
+                },
+                {
+                    name: "XAttention",
+                    description: "A sparse attention mechanism designed to enhance long-context model performance by selectively focusing on relevant tokens, reducing computational overhead."
+                }
+            ],
+            "token_eviction": [
+                {
+                    name: "StreamingLLM",
+                    description: "A streaming inference framework that implements token eviction strategies to manage memory usage in long-context models, allowing for real-time processing of large inputs."
+                },
+                {
+                    name: "H2O",
+                    description: "A high-performance token eviction system that dynamically manages context length in long-context models, optimizing memory usage and inference speed."
+                },
+                {
+                    name: "SnapKV",
+                    description: "A token eviction mechanism that efficiently manages long-context inputs by selectively removing less relevant tokens, enhancing model performance and reducing memory footprint."
+                },
+                {
+                    name: "L2Compress",
+                    description: "A compression technique that reduces the memory footprint of long-context models by intelligently evicting less critical tokens, enabling efficient processing of large inputs."
+                }
+            ],
+            "layer_wise": [
+                {
+                    name: "PyramidKV",
+                    description: "A layer-wise attention mechanism that optimizes long-context processing by dynamically adjusting attention across different layers, improving model efficiency and performance."
+                },
+                {
+                    name: "CakeKV",
+                    description: "A layer-wise attention strategy that enhances long-context model performance by distributing attention across multiple layers, allowing for better context understanding and memory management."
+                }
+            ],
+            "quantization": [
+                {
+                    name: "KIVI", 
+                    description: "A quantization framework that optimizes long-context models by reducing precision while maintaining performance, enabling efficient deployment on resource-constrained devices."
+                }
+            ],
+            "hybird": [
+                {
+                    name: "ThinK", 
+                    description: "A hybrid approach combining token eviction and quantization attention to optimize long-context model performance, balancing memory usage and computational efficiency."
+                }
+            ],
+            "token_merge": [
+                {
+                    name: "CaM", 
+                    description: "A token merging technique that reduces the number of tokens in long-context models by intelligently combining similar tokens, enhancing processing efficiency and memory usage."
+                }
+            ]
+        };
+
+        let currentImplementation = "HF_Model";
+
+        function renderImplementationCards() {
+            const container = document.getElementById('implementation-grid');
+            const implementations = implementationData[currentImplementation] || [];
+            
+            container.innerHTML = '';
+            
+            implementations.forEach((implementation, index) => {
+                const card = document.createElement('div');
+                card.className = 'implementation-card clean-card animate-on-scroll';
+                card.style.animationDelay = `${index * 0.1}s`;
+                
+                card.innerHTML = `
+                    <div class="implementation-name">${implementation.name}</div>
+                    <div class="implementation-description">${implementation.description}</div>
+                `;
+                
+                container.appendChild(card);
+            });
+            
+            // After adding, observe them for animation
+            setTimeout(observeElements, 100);
+        }
+        function initFrameworkEventListeners() {
+            // Framework view toggle listeners
+            document.querySelectorAll('.view-toggle-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const frameworkType = e.target.dataset.framework;
+                    switchFrameworkView(frameworkType);
+                });
+            });
+            
+            // Benchmark listeners
+            document.querySelectorAll('.benchmark-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    currentAbility = e.target.dataset.ability;
+                    updateBenchmarkButtons();
+                    renderBenchmarkCards();
+                });
+            });
+            
+            // Implementation listeners
+            document.querySelectorAll('.implementation-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    currentImplementation = e.target.dataset.ability;
+                    updateImplementationButtons();
+                    renderImplementationCards();
+                });
+            });
+        }
+        function updateImplementationButtons() {
+            document.querySelectorAll('.implementation-btn').forEach(btn => {
+                if (btn.dataset.ability === currentImplementation) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        function initImplementationEventListeners() {
+            document.querySelectorAll('.implementation-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    currentImplementation = e.target.dataset.ability;
+                    updateImplementationButtons();
+                    renderImplementationCards();
                 });
             });
         }
@@ -2046,15 +2420,28 @@
                 });
             });
         }
-
-        // Page Load Handler
-        window.addEventListener('DOMContentLoaded', () => {
-            // Initialize sunburst chart
-            initSunburstChart();
+        
+        // Scroll animation observer
+        function observeElements() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animated');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
             
-            // Initialize benchmark section
-            initBenchmarkEventListeners();
+            document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                observer.observe(el);
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            initFrameworkEventListeners();
             renderBenchmarkCards();
+            renderImplementationCards();
             
             // Initialize leaderboard
             models = prepareModelData();
@@ -2066,10 +2453,11 @@
             createModelSelector();
             initRadarChart();
             
-            // Ensure initial chart state is correct
-            setTimeout(() => {
-                updateRadarChart();
-            }, 100);
+            // Initialize sunburst chart
+            initSunburstChart();
+            
+            // Observe elements for scroll animations
+            observeElements();
         });
     </script>
 </body>
